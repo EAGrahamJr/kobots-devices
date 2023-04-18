@@ -2,13 +2,6 @@
 
 STILL UNDER CONSTRUCTION!!!! Check out the source directories for devices and utilities.
 
-This will probably get broken up sometime in the future.
+The "biggie" is a translation of the [Adafruit SeeSaw](src/main/kotlin/crackers/kobots/devices/expander/AdafruitSeeSaw.kt) microprocessor code, which is not complete. Also note it has only been verified on a Raspberry Pi.
 
-## A Note on Concurrency
-
-Multithreaded operations are possible, and a framework is laid out in the [Flows](src/main/kotlin/crackers/kobots/ops/Flows.kt), there are certain inherent difficulties in doing so:
-
-* Possible contention on the various hardware buses (e.g. I<sup>2</sup>C)
-* Slave microcontrollers are typically underpowered in terms of raw processing power
-
-If not carefully orchestrated, this can lead to unexpected device shutdowns durning application runtimes.
+Another interesting note is the [PixelBuf](src/main/kotlin/crackers/kobots/devices/lighting/PixelBuf.kt) which, like it's Adafruit conterpart, underlies the various hardware-specific `NepPixel` (WS281x) interfaces. This deviates quite a bit from the `diozero` implementation, but I preferred using Java `Color` constructs since they are available.
