@@ -17,18 +17,13 @@
 package crackers.kobots.devices.lighting
 
 import crackers.kobots.devices.inRange
+import crackers.kobots.devices.lighting.WS2811.PixelColor
 import java.awt.Color
 import kotlin.math.roundToInt
 
 /**
- * Wrapper for colors that includes an optional white level for devices that support that. An optional [brightness]
- * can also be applied.
- */
-class PixelColor(val color: Color, val white: Int = 0, val brightness: Float? = null) : Cloneable {
-    public override fun clone() = PixelColor(color, white, brightness)
-}
-
-/**
+ * A set of one or more WS2811 addressable-LEDs.
+ *
  * A re-implementation of the "pure Python" Adafruit PixelBuf class, which is a re-implementation of the base Adafruit
  * `pixelbuf` implementation.
  *
@@ -44,7 +39,7 @@ abstract class PixelBuf(
     autoWriteEnabled: Boolean = false,
     header: ByteArray? = null,
     trailer: ByteArray? = null
-) {
+) : WS2811 {
     private val bpp: Int = byteOrder.length
     private val dotstarMode: Boolean
     private val hasWhite: Boolean
@@ -60,7 +55,7 @@ abstract class PixelBuf(
     private val BUFFER_RANGE = 0 until size
 
     private var _autoWrite = autoWriteEnabled
-    var autoWrite: Boolean
+    override var autoWrite: Boolean
         get() = _autoWrite
         set(b) {
             _autoWrite = b
@@ -70,7 +65,7 @@ abstract class PixelBuf(
      * Manage how bright things are
      */
     private var _brightness: Float = 0f
-    var brightness: Float
+    override var brightness: Float
         get() = _brightness
         set(b) {
             if (b < 0f || b > 1f) throw IllegalArgumentException("'brightness' is out of range (0.0-1.0)")
@@ -147,54 +142,28 @@ abstract class PixelBuf(
     }
 
     /**
-     * Shorthand for `fill(Color.BLACK)`
-     */
-    fun off() {
-        fill(Color.BLACK)
-    }
-
-    /**
      * Fill the entire device with this color. If [autoWrite] is enabled, the results are immediately uploaded.
      */
-    fun fill(color: PixelColor) {
+    override fun fill(color: PixelColor) {
         val parsed = parseColor(color)
         (0 until size).forEach { setItem(it, parsed) }
         if (_autoWrite) show()
     }
 
     /**
-     * Fill the entire device with this color. If [autoWrite] is enabled, the results are immediately uploaded.
-     */
-    fun fill(color: Color) {
-        fill(PixelColor(color))
-    }
-
-    operator fun plus(color: Color) {
-        fill(PixelColor(color))
-    }
-
-    operator fun plus(color: PixelColor) {
-        fill(color)
-    }
-
-    /**
      * Set an individual pixel (this is available as an _indexed_ value). If [autoWrite] is enabled, the results are
      * immediately uploaded.
      */
-    operator fun set(index: Int, color: PixelColor) {
+    override operator fun set(index: Int, color: PixelColor) {
         setItem(index, parseColor(color))
         currentColors[index] = color
         if (_autoWrite) show()
     }
 
-    operator fun set(index: Int, color: Color) {
-        set(index, PixelColor(color))
-    }
-
     /**
      * Set a range of pixels to a color. If [autoWrite] is enabled, the results are * immediately uploaded.
      */
-    operator fun set(start: Int, end: Int, color: PixelColor) {
+    override operator fun set(start: Int, end: Int, color: PixelColor) {
         val c = parseColor(color)
         (start..end).forEach {
             setItem(it, c)
@@ -203,15 +172,11 @@ abstract class PixelBuf(
         if (_autoWrite) show()
     }
 
-    operator fun set(start: Int, end: Int, color: Color) {
-        set(start, end, PixelColor(color))
-    }
-
     /**
      * Set a range of pixels to a range of colors. The color list must be equal to or larger than the range specified.
      * If [autoWrite] is enabled, the results are * immediately uploaded.
      */
-    operator fun set(start: Int, end: Int, colors: List<PixelColor>) {
+    override operator fun set(start: Int, end: Int, colors: List<PixelColor>) {
         (start..end).forEach {
             setItem(it, parseColor(colors[it]))
             currentColors[it] = colors[it]

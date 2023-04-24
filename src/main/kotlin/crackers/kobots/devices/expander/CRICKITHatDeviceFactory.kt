@@ -57,9 +57,9 @@ class CRICKITHatDeviceFactory(val seeSaw: AdafruitSeeSaw = CRICKITHat()) :
     constructor(i2CDevice: I2CDevice = defaultI2CDevice, initReset: Boolean = true) :
         this(CRICKITHat(i2CDevice, initReset))
 
-    private lateinit var neoPixelPort: NeoPixel
+    private lateinit var neoPixelPort: CRICKITNeoPixel
 
-    private val statusPixel by lazy { NeoPixel(seeSaw, 1, NeoPixel.CRICKIT_STATUS, 3) }
+    private val statusPixel by lazy { CRICKITNeoPixel(seeSaw, 1, CRICKITNeoPixel.CRICKIT_STATUS, 3) }
 
     enum class Types(internal val offset: Int) {
         SIGNAL(100), TOUCH(110), SERVO(120), MOTOR(130), DRIVE(140), NEOPIXEL(150), SPEAKER(160);
@@ -157,11 +157,11 @@ class CRICKITHatDeviceFactory(val seeSaw: AdafruitSeeSaw = CRICKITHat()) :
      *
      * TODO reconcile with `LedDriverInterface`?
      */
-    fun neoPixel(numPixels: Int, bitsPerPixel: Int = 3): NeoPixel =
+    fun neoPixel(numPixels: Int, bitsPerPixel: Int = 3): CRICKITNeoPixel =
         if (::neoPixelPort.isInitialized) {
             neoPixelPort
         } else {
-            NeoPixel(seeSaw, numPixels, NeoPixel.CRICKIT_PIN, bitsPerPixel).also { neoPixelPort = it }
+            CRICKITNeoPixel(seeSaw, numPixels, CRICKITNeoPixel.CRICKIT_PIN, bitsPerPixel).also { neoPixelPort = it }
         }
 
     /**

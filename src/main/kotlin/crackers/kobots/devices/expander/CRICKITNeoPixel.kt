@@ -29,7 +29,7 @@ import kotlin.concurrent.withLock
 /**
  * NeoPixel handling via the SeeSaw
  */
-class NeoPixel internal constructor(
+class CRICKITNeoPixel internal constructor(
     private val seeSaw: AdafruitSeeSaw,
     numPixels: Int,
     deviceNumber: Byte,

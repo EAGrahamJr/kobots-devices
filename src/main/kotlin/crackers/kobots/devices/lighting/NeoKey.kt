@@ -19,16 +19,16 @@ package crackers.kobots.devices.lighting
 import com.diozero.api.DeviceInterface
 import com.diozero.api.I2CDevice
 import crackers.kobots.devices.expander.AdafruitSeeSaw
-import crackers.kobots.devices.expander.NeoPixel
-import java.awt.Color
+import crackers.kobots.devices.expander.CRICKITNeoPixel
+import crackers.kobots.devices.lighting.WS2811.PixelColor
 
 /**
  * Adafruit https://www.adafruit.com/product/4980
  */
-class NeoKey(i2CDevice: I2CDevice = DEFAULT_I2C) : DeviceInterface {
+class NeoKey(i2CDevice: I2CDevice = DEFAULT_I2C) : DeviceInterface, WS2811 {
     private val seeSaw = AdafruitSeeSaw(i2CDevice)
 
-    val pixels = NeoPixel(seeSaw, 4, NEOPIX_DEVICE).apply {
+    val pixels = CRICKITNeoPixel(seeSaw, 4, NEOPIX_DEVICE).apply {
         brightness = 0.2f
     }
 
@@ -38,6 +38,17 @@ class NeoKey(i2CDevice: I2CDevice = DEFAULT_I2C) : DeviceInterface {
         }
     }
 
+    // auto-write is always enabled here
+    override var autoWrite: Boolean
+        get() = true
+        set(_) {}
+
+    override var brightness: Float
+        get() = pixels.brightness
+        set(b) {
+            pixels.brightness = b
+        }
+
     /**
      * Get a button value.
      *
@@ -45,18 +56,23 @@ class NeoKey(i2CDevice: I2CDevice = DEFAULT_I2C) : DeviceInterface {
      */
     operator fun get(index: Int): Boolean = !seeSaw.digitalRead(INPUT_PINS[index])
 
-    /**
-     * Set a pixel to color
-     */
-    operator fun set(index: Int, color: Color) {
+    override operator fun set(index: Int, color: PixelColor) {
         pixels[index] = color
     }
 
+    override fun set(start: Int, end: Int, color: PixelColor) {
+        pixels.set(start, end, color)
+    }
+
+    override fun set(start: Int, end: Int, colors: List<PixelColor>) {
+        pixels.set(start, end, colors)
+    }
+
     /**
-     * Set a pixel to color
+     * Fill the entire device with this color. If [autoWrite] is enabled, the results are immediately uploaded.
      */
-    operator fun set(index: Int, color: PixelColor) {
-        pixels[index] = color
+    override fun fill(color: PixelColor) {
+        pixels.fill(color)
     }
 
     companion object {

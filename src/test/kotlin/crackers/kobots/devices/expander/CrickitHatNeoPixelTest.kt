@@ -19,7 +19,7 @@ package crackers.kobots.devices.expander
 import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_BASE
 import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_BUF_LENGTH
 import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_PIN
-import crackers.kobots.devices.expander.NeoPixel.Companion.CRICKIT_PIN
+import crackers.kobots.devices.expander.CRICKITNeoPixel.Companion.CRICKIT_PIN
 import crackers.kobots.utilities.GOLDENROD
 import crackers.kobots.utilities.PURPLE
 import crackers.kobots.utilities.hex
@@ -30,7 +30,7 @@ import java.awt.Color
 import crackers.kobots.devices.MockI2CDevice.requests as mockRequests
 
 /**
- * Direct usage of NeoPixel (PixelBuf) objects.
+ * Direct usage of CRICKITNeoPixel (PixelBuf) objects.
  */
 class CrickitHatNeoPixelTest : FunSpec(
     {
@@ -39,7 +39,7 @@ class CrickitHatNeoPixelTest : FunSpec(
 
         context("Setup") {
             test("Strand of 30") {
-                NeoPixel(seeSaw, 30, CRICKIT_PIN)
+                CRICKITNeoPixel(seeSaw, 30, CRICKIT_PIN)
                 mockRequests shouldContainExactly listOf(NEOPIXEL_BASE, NEOPIXEL_PIN, CRICKIT_PIN) +
                     listOf(NEOPIXEL_BASE, NEOPIXEL_BUF_LENGTH, 0x00, 90)
                 println(mockRequests.joinToString("") { it.hex() })
@@ -50,7 +50,7 @@ class CrickitHatNeoPixelTest : FunSpec(
         }
 
         context("Use a 30-strand") {
-            val strand = NeoPixel(seeSaw, 30, CRICKIT_PIN)
+            val strand = CRICKITNeoPixel(seeSaw, 30, CRICKIT_PIN)
 
             context("Fill with colors") {
                 // because the output was capturred as text, this seems easier to validate with
