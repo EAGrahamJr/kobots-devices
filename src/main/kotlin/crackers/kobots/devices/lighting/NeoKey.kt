@@ -50,6 +50,13 @@ class NeoKey(i2CDevice: I2CDevice = DEFAULT_I2C) : DeviceInterface, WS2811 {
         }
 
     /**
+     * Read all the switches
+     *
+     * TODO for some reason, the read on a PULLUP is backwards
+     */
+    fun read(): List<Boolean> = INPUT_PINS.map { !seeSaw.digitalRead(it) }
+
+    /**
      * Get a button value.
      *
      * TODO for some reason, the read on a PULLUP is backwards
