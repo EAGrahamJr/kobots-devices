@@ -63,6 +63,16 @@ class NeoKey(i2CDevice: I2CDevice = DEFAULT_I2C) : DeviceInterface, WS2811 {
      */
     operator fun get(index: Int): Boolean = !seeSaw.digitalRead(INPUT_PINS[index])
 
+    /**
+     * Get the color of this key.
+     */
+    infix fun color(index: Int): PixelColor = pixels[index]
+
+    /**
+     * All the colors
+     */
+    fun colors(): List<PixelColor> = (0..4).map { pixels[it] }
+
     override operator fun set(index: Int, color: PixelColor) {
         pixels[index] = color
     }
