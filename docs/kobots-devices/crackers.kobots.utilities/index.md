@@ -1,0 +1,37 @@
+//[kobots-devices](../../index.md)/[crackers.kobots.utilities](index.md)
+
+# Package-level declarations
+
+## Types
+
+| Name | Summary |
+|---|---|
+| [PointerGauge](-pointer-gauge/index.md) | [jvm]<br>class [PointerGauge](-pointer-gauge/index.md)@[JvmOverloads](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html)constructor(graphics: [Graphics2D](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html), width: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), height: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), minimumValue: [Double](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html) = 0.0, maximumValue: [Double](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html) = 100.0, label: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null, shape: [PointerGauge.Shape](-pointer-gauge/-shape/index.md) = Shape.SEMICIRCLE, foreground: [Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html) = Color.WHITE, background: [Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html) = Color.BLACK, font: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) = Font.SANS_SERIF, fontColor: [Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html) = foreground)<br>A very simple circular- or arc-style &quot;gauge&quot; (e.g. &quot;dial&quot;, &quot;dial pointer&quot;), without resorting to large libraries. |
+| [SimpleAverageMeasurement](-simple-average-measurement/index.md) | [jvm]<br>class [SimpleAverageMeasurement](-simple-average-measurement/index.md)(val bucketSize: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), val initialValue: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html) = Float.MAX_VALUE)<br>Captures data in a simple FIFO buffer for averaging. Probably not suitable for large sizes. |
+
+## Functions
+
+| Name | Summary |
+|---|---|
+| [center](center.md) | [jvm]<br>fun [FontMetrics](https://docs.oracle.com/javase/8/docs/api/java/awt/FontMetrics.html).[center](center.md)(text: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), width: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)<br>Use font metrics to center some text in an area |
+| [colorInterval](color-interval.md) | [jvm]<br>fun [colorInterval](color-interval.md)(from: [Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html), to: [Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html), steps: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html)&gt;<br>Note this only extracts the HSB *hue* component of the color. |
+| [colorIntervalFromHSB](color-interval-from-h-s-b.md) | [jvm]<br>fun [colorIntervalFromHSB](color-interval-from-h-s-b.md)(angleFrom: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html), angleTo: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html), n: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html)&gt;<br>Generate a range of [n](color-interval-from-h-s-b.md) colors based on the HSB hue (0==red) [angleFrom](color-interval-from-h-s-b.md) to [angleTo](color-interval-from-h-s-b.md) |
+| [elapsed](elapsed.md) | [jvm]<br>fun [Instant](https://docs.oracle.com/javase/8/docs/api/java/time/Instant.html).[elapsed](elapsed.md)(): [Duration](https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html)<br>Elapsed time. |
+| [hex](hex.md) | [jvm]<br>fun [Byte](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte/index.html).[hex](hex.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>fun [ByteArray](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html).[hex](hex.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>fun [Short](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-short/index.html).[hex](hex.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>[jvm]<br>fun [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html).[hex](hex.md)(): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>Short form to get unsigned hex strings |
+| [kelvinToRGB](kelvin-to-r-g-b.md) | [jvm]<br>fun [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html).[kelvinToRGB](kelvin-to-r-g-b.md)(): [Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html) |
+| [loadImage](load-image.md) | [jvm]<br>fun [loadImage](load-image.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [BufferedImage](https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html)<br>Load an image. |
+| [microDuration](micro-duration.md) | [jvm]<br>fun [microDuration](micro-duration.md)(micros: [Long](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html)): [Duration](https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html) |
+| [scale](scale.md) | [jvm]<br>fun [Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html).[scale](scale.md)(percent: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html) |
+| [toByteArray](to-byte-array.md) | [jvm]<br>fun [Short](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-short/index.html).[toByteArray](to-byte-array.md)(): [ByteArray](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html) |
+| [toLong](to-long.md) | [jvm]<br>fun [ByteArray](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html).[toLong](to-long.md)(): [Long](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html) |
+| [toShort](to-short.md) | [jvm]<br>fun [ByteArray](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html).[toShort](to-short.md)(): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) |
+
+## Properties
+
+| Name | Summary |
+|---|---|
+| [BYTE_MASK](-b-y-t-e_-m-a-s-k.md) | [jvm]<br>const val [BYTE_MASK](-b-y-t-e_-m-a-s-k.md): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) = 255<br>This has probably been defined a million ways in that many variations. |
+| [GOLDENROD](-g-o-l-d-e-n-r-o-d.md) | [jvm]<br>val [GOLDENROD](-g-o-l-d-e-n-r-o-d.md): [Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html) |
+| [nativeDeviceFactory](native-device-factory.md) | [jvm]<br>val [nativeDeviceFactory](native-device-factory.md): NativeDeviceFactoryInterface<br>Default device factory. |
+| [ORANGISH](-o-r-a-n-g-i-s-h.md) | [jvm]<br>val [ORANGISH](-o-r-a-n-g-i-s-h.md): [Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html) |
+| [PURPLE](-p-u-r-p-l-e.md) | [jvm]<br>val [PURPLE](-p-u-r-p-l-e.md): [Color](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html) |
