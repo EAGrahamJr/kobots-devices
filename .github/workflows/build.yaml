@@ -23,5 +23,26 @@ jobs:
         with:
           java-version: '17'
           distribution: "temurin"
+      # plugins
+      - name: Checkout build plugins
+        uses: actions/checkout@v3
+        with:
+          repository: EAGrahamJr/gradle-scripts
+          path: gradle-scripts
+      - name: Build plugins
+        run: |
+          cd gradle-scripts
+          ./gradlew --no-daemon --quiet build publishToMavenLocal
+      # diozero
+      - name: Checkout diozero
+        uses: actions/checkout@v3
+        with:
+          repository: EAGrahamJr/diozero
+          ref: main
+          path: diozero
+      - name: Build diozero
+        run: |
+          cd diozero
+          mvn --quiet --batch-mode -DskipTests install
       - name: Build
         run: ./gradlew --no-daemon build
