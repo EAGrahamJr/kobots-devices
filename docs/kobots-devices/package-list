@@ -26,10 +26,6 @@ $dokka.location:crackers.kobots.devices.display/GrayOled/height/#/PointingToDecl
 $dokka.location:crackers.kobots.devices.display/GrayOled/invertDisplay/#kotlin.Boolean/PointingToDeclaration/kobots-devices/crackers.kobots.devices.display/-gray-oled/invert-display.md
 $dokka.location:crackers.kobots.devices.display/GrayOled/show/#/PointingToDeclaration/kobots-devices/crackers.kobots.devices.display/-gray-oled/show.md
 $dokka.location:crackers.kobots.devices.display/GrayOled/width/#/PointingToDeclaration/kobots-devices/crackers.kobots.devices.display/-gray-oled/width.md
-$dokka.location:crackers.kobots.devices.display/HD44780Lcd///PointingToDeclaration/kobots-devices/crackers.kobots.devices.display/-h-d44780-lcd/index.md
-$dokka.location:crackers.kobots.devices.display/HD44780Lcd/Pi2Line/#/PointingToDeclaration/kobots-devices/crackers.kobots.devices.display/-h-d44780-lcd/-pi2-line.md
-$dokka.location:crackers.kobots.devices.display/HD44780Lcd/Pi4Line/#/PointingToDeclaration/kobots-devices/crackers.kobots.devices.display/-h-d44780-lcd/-pi4-line.md
-$dokka.location:crackers.kobots.devices.display/HD44780Lcd/PiBackpack/#/PointingToDeclaration/kobots-devices/crackers.kobots.devices.display/-h-d44780-lcd/-pi-backpack.md
 $dokka.location:crackers.kobots.devices.display/LcdProgressBar///PointingToDeclaration/kobots-devices/crackers.kobots.devices.display/-lcd-progress-bar/index.md
 $dokka.location:crackers.kobots.devices.display/LcdProgressBar/LcdProgressBar/#com.diozero.devices.LcdInterface[*]#kotlin.Int#kotlin.Boolean/PointingToDeclaration/kobots-devices/crackers.kobots.devices.display/-lcd-progress-bar/-lcd-progress-bar.md
 $dokka.location:crackers.kobots.devices.display/LcdProgressBar/value/#/PointingToDeclaration/kobots-devices/crackers.kobots.devices.display/-lcd-progress-bar/value.md

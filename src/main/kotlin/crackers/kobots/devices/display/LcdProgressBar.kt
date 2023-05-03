@@ -17,7 +17,6 @@
 package crackers.kobots.devices.display
 
 import com.diozero.devices.LcdInterface
-import kotlin.math.roundToInt
 
 /**
  * Creates a "progress bar" that occupies one line of an LCD. The default line is `0`, or the top-most.
@@ -54,7 +53,7 @@ class LcdProgressBar(
                 latest = value
                 val columns = value * percentPerColumn
                 val cells = columns.toInt()
-                val bars = ((columns - cells) * 4).roundToInt()
+                val bars = ((columns - cells) * 4).toInt()
 
                 (0..cells).forEach {
                     if (cells <= rightMostColumn) {
