@@ -44,6 +44,8 @@ class PimoroniLEDShim(shimDevice: I2CDevice = DEFAULT_SHIM_DEVICE) : IS31FL3731(
 
     operator fun set(x: Int, color: Color) = pixelColor(x, color)
 
+    infix fun setAll(color: Color) = (0 until width).forEach { set(it, color) }
+
     /**
      * Someone else already did all the math...
      */

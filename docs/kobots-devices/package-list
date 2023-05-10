@@ -253,6 +253,7 @@ $dokka.location:crackers.kobots.devices.lighting/PimoroniLEDShim/pixelAddress/#k
 $dokka.location:crackers.kobots.devices.lighting/PimoroniLEDShim/pixelColor/#kotlin.Int#java.awt.Color#kotlin.Int/PointingToDeclaration/kobots-devices/crackers.kobots.devices.lighting/-pimoroni-l-e-d-shim/pixel-color.md
 $dokka.location:crackers.kobots.devices.lighting/PimoroniLEDShim/pixelRGB/#kotlin.Int#kotlin.Int#kotlin.Int#kotlin.Int#kotlin.Int/PointingToDeclaration/kobots-devices/crackers.kobots.devices.lighting/-pimoroni-l-e-d-shim/pixel-r-g-b.md
 $dokka.location:crackers.kobots.devices.lighting/PimoroniLEDShim/set/#kotlin.Int#java.awt.Color/PointingToDeclaration/kobots-devices/crackers.kobots.devices.lighting/-pimoroni-l-e-d-shim/set.md
+$dokka.location:crackers.kobots.devices.lighting/PimoroniLEDShim/setAll/#java.awt.Color/PointingToDeclaration/kobots-devices/crackers.kobots.devices.lighting/-pimoroni-l-e-d-shim/set-all.md
 $dokka.location:crackers.kobots.devices.lighting/PimoroniLEDShim/width/#/PointingToDeclaration/kobots-devices/crackers.kobots.devices.lighting/-pimoroni-l-e-d-shim/width.md
 $dokka.location:crackers.kobots.devices.lighting/PixelBuf.Companion///PointingToDeclaration/kobots-devices/crackers.kobots.devices.lighting/-pixel-buf/-companion/index.md
 $dokka.location:crackers.kobots.devices.lighting/PixelBuf.Companion/DOTSTAR_LED_START/#/PointingToDeclaration/kobots-devices/crackers.kobots.devices.lighting/-pixel-buf/-companion/-d-o-t-s-t-a-r_-l-e-d_-s-t-a-r-t.md
