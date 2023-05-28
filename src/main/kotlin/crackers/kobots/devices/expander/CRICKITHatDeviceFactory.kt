@@ -45,8 +45,6 @@ import javax.naming.OperationNotSupportedException
  * It is **HIGHLY** recommended to use the convenience functions instead of creating devices via the builders or
  * constructors as the pin numbering gets a little odd.
  */
-private const val NAME = "CRICKIT"
-
 class CRICKITHatDeviceFactory(val seeSaw: AdafruitSeeSaw = CRICKITHat()) :
     AbstractDeviceFactory(NAME),
     GpioDeviceFactoryInterface,
@@ -358,5 +356,9 @@ class CRICKITHatDeviceFactory(val seeSaw: AdafruitSeeSaw = CRICKITHat()) :
 
     private fun getInternalPwm(pinInfo: PinInfo, key: String, frequencyHz: Int? = null) = pinInfo.let {
         CRICKIInternalPwm(key, it.deviceNumber, this, it.physicalPin, frequencyHz)
+    }
+
+    companion object {
+        private const val NAME = "CRICKIT"
     }
 }

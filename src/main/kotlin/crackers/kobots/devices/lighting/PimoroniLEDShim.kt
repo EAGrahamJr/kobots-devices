@@ -19,9 +19,9 @@ package crackers.kobots.devices.lighting
 import com.diozero.api.I2CDevice
 import java.awt.Color
 
-const val DEFAULT_SHIM_ADDRESS = 0x75
-private val DEFAULT_SHIM_DEVICE by lazy { I2CDevice(1, DEFAULT_SHIM_ADDRESS) }
-
+/**
+ * Pimoroni LED shim - https://shop.pimoroni.com/products/led-shim?variant=3136952467466
+ */
 class PimoroniLEDShim(shimDevice: I2CDevice = DEFAULT_SHIM_DEVICE) : IS31FL3731(shimDevice) {
     override val height = 3
     override val width = 28
@@ -89,5 +89,10 @@ class PimoroniLEDShim(shimDevice: I2CDevice = DEFAULT_SHIM_DEVICE) : IS31FL3731(
                 else -> 93
             }
         }
+    }
+
+    companion object {
+        const val DEFAULT_SHIM_ADDRESS = 0x75
+        val DEFAULT_SHIM_DEVICE by lazy { I2CDevice(1, DEFAULT_SHIM_ADDRESS) }
     }
 }

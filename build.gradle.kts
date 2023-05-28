@@ -50,9 +50,13 @@ tasks {
         useJUnitPlatform()
     }
     // make docs
-    dokkaGfm {
-        outputDirectory.set(file("$projectDir/docs"))
-
+    dokkaJavadoc {
+        mustRunAfter("javadoc")
+        outputDirectory.set(file("$projectDir/build/docs"))
+    }
+    javadocJar {
+        mustRunAfter("dokkaJavadoc")
+        include("$projectDir/build/docs")
     }
     // jar docs
     register<Jar>("dokkaJavadocJar") {
