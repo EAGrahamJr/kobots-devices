@@ -2,6 +2,8 @@
 
 Herein are various drivers for some microprocessor peripherals, written in **Kotin** and using the [`diozero`](https://www.diozero.com) library.
 
+Javadocs are at [kobots-devices](https://eagrahamjr.github.io/kobots-devices/)
+
 * The "biggie" is a translation of the [Adafruit SeeSaw](src/main/kotlin/crackers/kobots/devices/expander/AdafruitSeeSaw.kt) microprocessor code, which is
   not complete.
 * Another interesting note is the [PixelBuf](src/main/kotlin/crackers/kobots/devices/lighting/PixelBuf.kt) which, like it's Adafruit conterpart, underlies the various hardware-specific `NepPixel` (WS281x) interfaces. This deviates quite a bit from the `diozero` implementation, as I preferred using Java `Color` constructs since they are available.
