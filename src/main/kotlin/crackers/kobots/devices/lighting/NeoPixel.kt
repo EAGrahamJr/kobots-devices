@@ -31,7 +31,7 @@ import kotlin.concurrent.withLock
  *
  * TODO add support for using "direct access" PWM pin?
  */
-class NeoPixel internal constructor(
+class NeoPixel(
     private val seeSaw: AdafruitSeeSaw,
     numPixels: Int,
     seesawPin: Byte,

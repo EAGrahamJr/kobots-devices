@@ -44,7 +44,7 @@ class CrickitHatNeoPixelTest : FunSpec(
                     AdafruitSeeSaw.NEOPIXEL_PIN,
                     CRICKITHat.NEOPIXEL_PIN
                 ) +
-                        listOf(NEOPIXEL_BASE, NEOPIXEL_BUF_LENGTH, 0x00, 90)
+                    listOf(NEOPIXEL_BASE, NEOPIXEL_BUF_LENGTH, 0x00, 90)
                 println(mockRequests.joinToString("") { it.hex() })
             }
             test("Status") {
