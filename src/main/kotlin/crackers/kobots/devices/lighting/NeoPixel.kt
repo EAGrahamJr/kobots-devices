@@ -34,11 +34,11 @@ import kotlin.concurrent.withLock
 class NeoPixel internal constructor(
     private val seeSaw: AdafruitSeeSaw,
     numPixels: Int,
-    deviceNumber: Byte,
+    seesawPin: Byte,
     bitsPerPixel: Int = 3
 ) : PixelBuf(numPixels, "GRB" + if (bitsPerPixel == 4) "W" else "", autoWriteEnabled = true) {
     init {
-        seeSaw.write(NEOPIXEL_BASE, NEOPIXEL_PIN, byteArrayOf(deviceNumber))
+        seeSaw.write(NEOPIXEL_BASE, NEOPIXEL_PIN, byteArrayOf(seesawPin))
         seeSaw.writeShort(NEOPIXEL_BASE, NEOPIXEL_BUF_LENGTH, (bitsPerPixel * numPixels).toShort())
     }
 
