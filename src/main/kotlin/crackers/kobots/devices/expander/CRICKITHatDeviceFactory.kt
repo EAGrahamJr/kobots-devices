@@ -32,10 +32,13 @@ import crackers.kobots.devices.expander.CRICKITHat.Companion.MOTOR1B
 import crackers.kobots.devices.expander.CRICKITHat.Companion.MOTOR2A
 import crackers.kobots.devices.expander.CRICKITHat.Companion.MOTOR2B
 import crackers.kobots.devices.expander.CRICKITHat.Companion.MOTORS
+import crackers.kobots.devices.expander.CRICKITHat.Companion.NEOPIXEL_PIN
 import crackers.kobots.devices.expander.CRICKITHat.Companion.SERVOS
+import crackers.kobots.devices.expander.CRICKITHat.Companion.STATUS_NEOPIXEL_PIN
 import crackers.kobots.devices.expander.CRICKITHat.Companion.TOUCH_PAD_PINS
 import crackers.kobots.devices.expander.CRICKITHat.Companion.defaultI2CDevice
 import crackers.kobots.devices.expander.CRICKITHatDeviceFactory.Types.*
+import crackers.kobots.devices.lighting.NeoPixel
 import javax.naming.OperationNotSupportedException
 
 /**
@@ -55,9 +58,9 @@ class CRICKITHatDeviceFactory(val seeSaw: AdafruitSeeSaw = CRICKITHat()) :
     constructor(i2CDevice: I2CDevice = defaultI2CDevice, initReset: Boolean = true) :
         this(CRICKITHat(i2CDevice, initReset))
 
-    private lateinit var neoPixelPort: CRICKITNeoPixel
+    private lateinit var neoPixelPort: NeoPixel
 
-    private val statusPixel by lazy { CRICKITNeoPixel(seeSaw, 1, CRICKITNeoPixel.CRICKIT_STATUS, 3) }
+    private val statusPixel by lazy { NeoPixel(seeSaw, 1, STATUS_NEOPIXEL_PIN, 3) }
 
     enum class Types(internal val offset: Int) {
         SIGNAL(100), TOUCH(110), SERVO(120), MOTOR(130), DRIVE(140), NEOPIXEL(150), SPEAKER(160);
@@ -155,11 +158,11 @@ class CRICKITHatDeviceFactory(val seeSaw: AdafruitSeeSaw = CRICKITHat()) :
      *
      * TODO reconcile with `LedDriverInterface`?
      */
-    fun neoPixel(numPixels: Int, bitsPerPixel: Int = 3): CRICKITNeoPixel =
+    fun neoPixel(numPixels: Int, bitsPerPixel: Int = 3): NeoPixel =
         if (::neoPixelPort.isInitialized) {
             neoPixelPort
         } else {
-            CRICKITNeoPixel(seeSaw, numPixels, CRICKITNeoPixel.CRICKIT_PIN, bitsPerPixel).also { neoPixelPort = it }
+            NeoPixel(seeSaw, numPixels, NEOPIXEL_PIN, bitsPerPixel).also { neoPixelPort = it }
         }
 
     /**

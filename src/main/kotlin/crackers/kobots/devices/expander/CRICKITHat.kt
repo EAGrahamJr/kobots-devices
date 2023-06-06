@@ -97,5 +97,8 @@ class CRICKITHat(i2CDevice: I2CDevice = defaultI2CDevice, initReset: Boolean = t
                 MOTOR2B, MOTOR2A, MOTOR1B, MOTOR1A,
                 DRIVE4, DRIVE3, DRIVE2, DRIVE1
             )
+
+        internal const val NEOPIXEL_PIN = 20.toByte()
+        internal const val STATUS_NEOPIXEL_PIN = 27.toByte()
     }
 }

@@ -20,7 +20,7 @@ repositories {
 
 val DIOZERO_VER = "1.4.0"
 group = "crackers.kobots"
-version = "0.0.1"
+version = "0.0.3"
 
 
 dependencies {

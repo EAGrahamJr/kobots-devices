@@ -19,7 +19,6 @@ package crackers.kobots.devices.lighting
 import com.diozero.api.DeviceInterface
 import com.diozero.api.I2CDevice
 import crackers.kobots.devices.expander.AdafruitSeeSaw
-import crackers.kobots.devices.expander.CRICKITNeoPixel
 import crackers.kobots.devices.lighting.WS2811.PixelColor
 
 /**
@@ -28,7 +27,7 @@ import crackers.kobots.devices.lighting.WS2811.PixelColor
 class NeoKey(i2CDevice: I2CDevice = DEFAULT_I2C) : DeviceInterface, WS2811 {
     private val seeSaw = AdafruitSeeSaw(i2CDevice)
 
-    val pixels = CRICKITNeoPixel(seeSaw, 4, NEOPIX_DEVICE).apply {
+    val pixels = NeoPixel(seeSaw, 4, NEOPIX_DEVICE).apply {
         brightness = 0.2f
     }
 

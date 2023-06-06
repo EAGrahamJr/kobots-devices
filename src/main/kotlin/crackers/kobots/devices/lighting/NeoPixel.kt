@@ -14,22 +14,24 @@
  * permissions and limitations under the License.
  */
 
-package crackers.kobots.devices.expander
+package crackers.kobots.devices.lighting
 
+import crackers.kobots.devices.expander.AdafruitSeeSaw
 import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_BASE
 import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_BUF
 import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_BUF_LENGTH
 import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_PIN
 import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_SHOW
-import crackers.kobots.devices.lighting.PixelBuf
 import crackers.kobots.devices.to2Bytes
 import crackers.kobots.devices.twoBytesAndBuffer
 import kotlin.concurrent.withLock
 
 /**
  * NeoPixel handling via the SeeSaw
+ *
+ * TODO add support for using "direct access" PWM pin?
  */
-class CRICKITNeoPixel internal constructor(
+class NeoPixel internal constructor(
     private val seeSaw: AdafruitSeeSaw,
     numPixels: Int,
     deviceNumber: Byte,
@@ -53,9 +55,6 @@ class CRICKITNeoPixel internal constructor(
     }
 
     companion object {
-        internal const val CRICKIT_PIN = 20.toByte()
-        internal const val CRICKIT_STATUS = 27.toByte()
-
         // magic buffer size as determined by Adafruit
         private const val OUTPUT_BUFFER_SIZE = 24
     }
