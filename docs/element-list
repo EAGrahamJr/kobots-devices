@@ -19,6 +19,9 @@ $dokka.location:crackers.kobots.devices.sensors/VCNL4040.ProximityInterruptType/
 $dokka.location:crackers.kobots.devices.sensors/VCNL4040.ProximityMultipulse///PointingToDeclaration/crackers/kobots/devices/sensors/VCNL4040.ProximityMultipulse.html
 $dokka.location:crackers.kobots.devices.sensors/VCNL4040.ProximityOperation///PointingToDeclaration/crackers/kobots/devices/sensors/VCNL4040.ProximityOperation.html
 $dokka.location:crackers.kobots.devices.sensors/VCNL4040.ProximityResolution///PointingToDeclaration/crackers/kobots/devices/sensors/VCNL4040.ProximityResolution.html
+$dokka.location:crackers.kobots.devices.sensors/VL6180X.Companion.ALSGain///PointingToDeclaration/crackers/kobots/devices/sensors/VL6180X.Companion.ALSGain.html
+$dokka.location:crackers.kobots.devices.sensors/VL6180X.Companion.Errors///PointingToDeclaration/crackers/kobots/devices/sensors/VL6180X.Companion.Errors.html
+$dokka.location:crackers.kobots.devices.sensors/VL6180X.Companion///PointingToDeclaration/crackers/kobots/devices/sensors/VL6180X.Companion.html
 $dokka.location:crackers.kobots.utilities/PointerGauge.Shape///PointingToDeclaration/crackers/kobots/utilities/PointerGauge.Shape.html
 crackers.kobots.devices
 crackers.kobots.devices.display

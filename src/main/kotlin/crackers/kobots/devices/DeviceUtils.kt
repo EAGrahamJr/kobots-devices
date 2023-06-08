@@ -18,7 +18,7 @@ package crackers.kobots.devices
 
 import com.diozero.devices.sandpit.motor.StepperMotorInterface
 import com.diozero.devices.sandpit.motor.StepperMotorInterface.Direction
-import com.diozero.util.SleepUtil
+import crackers.kobots.utilities.KobotSleep
 import java.io.Serializable
 import java.time.Duration
 import kotlin.experimental.and
@@ -86,6 +86,6 @@ fun StepperMotorInterface.rotate(
     for (i in 1..steps) {
         if (interruptus()) break
         step(direction)
-        SleepUtil.busySleep(pause.toNanos())
+        KobotSleep.duration(pause)
     }
 }

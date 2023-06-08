@@ -24,14 +24,15 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.roundToInt
 
 /**
- * Proximity and ambient light sensor on I2C bus.
+ * Proximity and ambient light sensor on I2C bus. Note that this is **not** a "ranging" device as the proximity _
+ * increases_ as an object approaches the sensor.
  *
  * * [Datasheet](https://www.vishay.com/docs/84274/vcnl4040.pdf)
  * * [Adafruit guide](https://learn.adafruit.com/adafruit-vcnl4040-proximity-sensor?view=all)
  */
 class VCNL4040(private val delegate: I2CDevice) : LuminositySensorInterface {
     @JvmOverloads
-    constructor(controller: Int = 1, address: Int = QWIIC_I2C_ADDRESS) : this(I2CDevice(controller, address))
+    constructor(controller: Int = 1, address: Int = DEFAULT_I2C_ADDRESS) : this(I2CDevice(controller, address))
 
     // Ambient light sensor integration times - ordinal matches data
     enum class AmbientLightIntegrationTime(m: Int) {
@@ -290,7 +291,7 @@ class VCNL4040(private val delegate: I2CDevice) : LuminositySensorInterface {
     // convenience ----------------------------------------------------------------------------------------------------
 
     companion object {
-        const val QWIIC_I2C_ADDRESS = 0x60
+        const val DEFAULT_I2C_ADDRESS = 0x60
         const val DEVICE_ID = 0x0186
 
         // the device uses 16-bit registers

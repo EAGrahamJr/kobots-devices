@@ -34,6 +34,12 @@ fun Short.toByteArray() = toInt().let {
     byteArrayOf((upper shr 8).toByte(), lower.toByte())
 }
 
+fun Int.toBytes(): Pair<Byte, Byte> {
+    val hi = ((this shr 8) and 0xFF).toByte()
+    val lo = (this and 0xFF).toByte()
+    return Pair(hi, lo)
+}
+
 /**
  * Short form to get unsigned hex strings
  */
