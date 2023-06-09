@@ -24,8 +24,9 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
 
     init {
         readByte(IDENTIFICATION_MODEL_ID).toByte().also { id ->
-            if (id != DEVICE_ID)
+            if (id != DEVICE_ID) {
                 throw NoSuchDeviceException("Unable to locate device (incorrect id: $id(")
+            }
         }
 
         // private settings from page 24 of app note
@@ -129,8 +130,9 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
         get() = if (continuousModeEnabled) readRangeContinuous() else readRangeSingle()
 
     val rangeFromHistory: List<Int>
-        get() = if (!rangeHistoryEnabled) emptyList()
-        else {
+        get() = if (!rangeHistoryEnabled) {
+            emptyList()
+        } else {
             (0 until 16).map { age ->
                 readByte(RESULT_HISTORY_BUFFER_0 + age).toInt()
             }
@@ -182,7 +184,6 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
         delegate.writeBytes(hi, lo, dataHi, dataLo)
     }
 
-
     companion object {
         const val DEVICE_ID = 0xB4.toByte()
         private const val IDENTIFICATION_MODEL_ID = 0x000
@@ -206,7 +207,6 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
         private const val RESULT_ALS_VAL = 0x050
         private const val RESULT_HISTORY_BUFFER_0 = 0x052
         private const val RESULT_RANGE_VAL = 0x062
-
 
         const val DEFAULT_I2C_ADDR = 0x29
 

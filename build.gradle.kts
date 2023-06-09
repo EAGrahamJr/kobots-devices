@@ -29,6 +29,7 @@ dependencies {
 
     // for adhoc testing
     testImplementation("com.diozero:diozero-provider-remote:$DIOZERO_VER")
+    testImplementation("com.diozero:diozero-provider-mock:$DIOZERO_VER")
 
     testImplementation("io.kotest:kotest-runner-junit5:5.5.4")
     testImplementation("io.mockk:mockk:1.13.3")

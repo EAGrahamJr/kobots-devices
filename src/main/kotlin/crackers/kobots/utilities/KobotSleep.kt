@@ -26,5 +26,4 @@ object KobotSleep {
     fun duration(d: Duration) {
         nanos(d.toNanos())
     }
-
 }
