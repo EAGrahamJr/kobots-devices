@@ -25,7 +25,7 @@ import kotlin.math.roundToInt
 
 /**
  * Proximity and ambient light sensor on I2C bus. Note that this is **not** a "ranging" device as the proximity _
- * increases_ as an object approaches the sensor.
+ * _increases_ as an object approaches the sensor. The value is also not linear, but geometric.
  *
  * * [Datasheet](https://www.vishay.com/docs/84274/vcnl4040.pdf)
  * * [Adafruit guide](https://learn.adafruit.com/adafruit-vcnl4040-proximity-sensor?view=all)

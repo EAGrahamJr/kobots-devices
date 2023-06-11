@@ -19,9 +19,9 @@ package crackers.kobots.devices.expander
 import com.diozero.api.I2CDevice
 
 /**
- * CRICKIT Hat pin definitions for the SeeSaw device.
+ * CRICKIT Hat pin definitions for the SeeSaw device. Used internally as an extension of the SeeSaw.
  */
-class CRICKITHat(i2CDevice: I2CDevice = defaultI2CDevice, initReset: Boolean = true) :
+internal class CRICKITHat(i2CDevice: I2CDevice = defaultI2CDevice, initReset: Boolean = true) :
     AdafruitSeeSaw(i2CDevice, initReset) {
     init {
         analogInputPins = DIGITAL_PINS

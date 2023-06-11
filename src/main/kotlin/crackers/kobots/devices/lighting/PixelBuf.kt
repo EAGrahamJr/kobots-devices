@@ -22,7 +22,7 @@ import java.awt.Color
 import kotlin.math.roundToInt
 
 /**
- * A set of one or more WS2811 addressable-LEDs.
+ * A set of one or more [WS2811] addressable-LEDs.
  *
  * A re-implementation of the "pure Python" Adafruit PixelBuf class, which is a re-implementation of the base Adafruit
  * `pixelbuf` implementation.

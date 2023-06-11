@@ -17,6 +17,7 @@ import crackers.kobots.utilities.toShort
  * * [Datasheet](https://cdn-learn.adafruit.com/assets/assets/000/037/608/original/VL6180X_datasheet.pdf)
  */
 class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, DistanceSensorInterface {
+    @JvmOverloads
     constructor(controller: Int = 1, address: Int = DEFAULT_I2C_ADDR) : this(I2CDevice(controller, address))
 
     val continuousModeEnabled: Boolean

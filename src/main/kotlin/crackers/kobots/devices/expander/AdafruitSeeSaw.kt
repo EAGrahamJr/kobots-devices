@@ -92,7 +92,7 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
     }
 
     // Digital modes --------------------------------------------------------------------------------------------------
-    fun pinMode(pin: Int, mode: SignalMode) {
+    internal fun pinMode(pin: Int, mode: SignalMode) {
         val selector = pin.digitalPin()
 
         when (mode) {
@@ -119,7 +119,7 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
     /**
      * Write an on/off value to a digital I/O port.
      */
-    fun digitalWrite(pin: Int, value: Boolean) {
+    internal fun digitalWrite(pin: Int, value: Boolean) {
         val selector = pin.digitalPin()
         val registerCommand = if (value) GPIO_BULK_SET else GPIO_BULK_CLEAR
         write(GPIO_BASE, registerCommand, selector)
@@ -128,7 +128,7 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
     /**
      * Read an on/off value from a digital I/O port.
      */
-    fun digitalRead(pin: Int): Boolean {
+    internal fun digitalRead(pin: Int): Boolean {
         val bPort = pin >= 32
         val (size, shift) = if (bPort) Pair(8, pin - 32) else Pair(4, pin)
         val bitMask = 1 shl shift
@@ -139,14 +139,14 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
         }
     }
 
-    fun digitalRead(ports: IntArray): Map<Int, Boolean> {
+    internal fun digitalRead(ports: IntArray): Map<Int, Boolean> {
         // N.B. note that reading 8 bytes in the `digitalRead` function
         // **includes** the A port as the first 4 bytes
         // this seems like it should be created as a class?
         TODO("Enhancement that does not appear in the Adafruit code")
     }
 
-    fun setGPIOInterrupts(pins: Int, enabled: Boolean) {
+    internal fun setGPIOInterrupts(pins: Int, enabled: Boolean) {
         TODO("Not yet")
     }
 
@@ -160,7 +160,7 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
      * Read value from [pin] as an Int (to avoid any potential negative values).
      */
     @Throws(UnsupportedOperationException::class, IllegalArgumentException::class)
-    fun analogRead(pin: Byte): Int {
+    internal fun analogRead(pin: Byte): Int {
         if (!::analogInputPins.isInitialized) {
             throw UnsupportedOperationException("No analog input pins defined for device.")
         }
@@ -173,7 +173,7 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
      * Write value to [pin] as a PWM value
      */
     @Throws(UnsupportedOperationException::class, IllegalArgumentException::class)
-    fun analogWrite(pin: Byte, value: Short, twoBytes: Boolean = true) {
+    internal fun analogWrite(pin: Byte, value: Short, twoBytes: Boolean = true) {
         if (!::pwmOutputPins.isInitialized) {
             throw UnsupportedOperationException("No analog output pins defined for device.")
         }
@@ -193,7 +193,7 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
      * set the basic pulsed output from the PWM pins on the device.
      */
     @Throws(UnsupportedOperationException::class, IllegalArgumentException::class)
-    fun setPWMFreq(pin: Byte, freq: Short) {
+    internal fun setPWMFreq(pin: Byte, freq: Short) {
         if (!::pwmOutputPins.isInitialized) {
             throw UnsupportedOperationException("No analog output pins defined for device.")
         }
@@ -221,83 +221,83 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
 
     // Other ----------------------------------------------------------------------------------------------------------
 
-    fun enableSercomDataRdyInterrupt(sercom: Byte = 0) {
+    internal fun enableSercomDataRdyInterrupt(sercom: Byte = 0) {
         TODO("Not yet")
     }
 
-    fun disableSercomDataRdyInterrupt(sercom: Byte = 0) {
+    internal fun disableSercomDataRdyInterrupt(sercom: Byte = 0) {
         TODO("Not yet")
     }
 
-    fun readSercomData(sercom: Byte = 0): Byte {
+    internal fun readSercomData(sercom: Byte = 0): Byte {
         TODO("Not yet")
     }
 
-    fun EEPROMWrite8(addr: Byte, value: Byte) {
+    internal fun EEPROMWrite8(addr: Byte, value: Byte) {
         TODO("Not yet")
     }
 
-    fun EEPROMWrite(addr: Byte, buffer: ByteArray, size: Byte) {
+    internal fun EEPROMWrite(addr: Byte, buffer: ByteArray, size: Byte) {
         TODO("Not yet")
     }
 
-    fun EEPROMRead8(addr: Byte): Byte {
+    internal fun EEPROMRead8(addr: Byte): Byte {
         TODO("Not yet")
     }
 
-    fun setI2CAddr(addr: Byte) {
+    internal fun setI2CAddr(addr: Byte) {
         TODO("Not yet")
     }
 
-    fun getI2CAddr(): Byte {
+    internal fun getI2CAddr(): Byte {
         TODO("Not yet")
     }
 
-    fun UARTSetBaud(baud: Int) {
+    internal fun UARTSetBaud(baud: Int) {
         TODO("Not yet")
     }
 
-    fun setKeypadEvent(key: Byte, edge: Byte, enable: Boolean = true) {
+    internal fun setKeypadEvent(key: Byte, edge: Byte, enable: Boolean = true) {
         TODO("Not yet")
     }
 
-    fun enableKeypadInterrupt() {
+    internal fun enableKeypadInterrupt() {
         TODO("Not yet")
     }
 
-    fun disableKeypadInterrupt() {
+    internal fun disableKeypadInterrupt() {
         TODO("Not yet")
     }
 
-    fun getKeypadCount(): Byte {
+    internal fun getKeypadCount(): Byte {
         TODO("Not yet")
     }
 
-    fun readKeypad(buffer: ByteArray, count: Byte) {
+    internal fun readKeypad(buffer: ByteArray, count: Byte) {
         TODO("Not yet")
     }
 
-    fun getTemp(): Float {
+    internal fun getTemp(): Float {
         TODO("Not yet")
     }
 
-    fun getEncoderPosition(encoder: Byte = 0): Int {
+    internal fun getEncoderPosition(encoder: Byte = 0): Int {
         TODO("Not yet")
     }
 
-    fun getEncoderDelta(encoder: Byte = 0): Int {
+    internal fun getEncoderDelta(encoder: Byte = 0): Int {
         TODO("Not yet")
     }
 
-    fun enableEncoderInterrupt(encoder: Byte = 0): Boolean {
+    internal fun enableEncoderInterrupt(encoder: Byte = 0): Boolean {
         TODO("Not yet")
     }
 
-    fun disableEncoderInterrupt(encoder: Byte = 0): Boolean {
+    internal fun disableEncoderInterrupt(encoder: Byte = 0): Boolean {
         TODO("Not yet")
     }
 
-    fun setEncoderPosition(pos: Int, encoder: Byte = 0) {
+    internal fun setEncoderPosition(pos: Int, encoder: Byte = 0) {
         TODO("Not yet")
     }
 

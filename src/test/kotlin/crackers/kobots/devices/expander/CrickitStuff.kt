@@ -40,14 +40,14 @@ fun initOtherBoardType(): Stack<ByteArray>.() -> Unit = {
     push(byteArrayOf(AdafruitSeeSaw.Companion.DeviceType.ATTINY8X7_HW_ID_CODE.pid.toByte()))
 }
 
-val testHat: CRICKITHat by lazy {
+internal val testHat: CRICKITHat by lazy {
     MockI2CDevice.responses.apply(initRaspberryPi())
     CRICKITHat(MockI2CDevice.device).also {
         MockI2CDevice.requests.clear()
     }
 }
 
-val testHatWithOtherBackpack by lazy {
+internal val testHatWithOtherBackpack by lazy {
     MockI2CDevice.responses.apply(initOtherBoardType())
     CRICKITHat(MockI2CDevice.device).also {
         MockI2CDevice.requests.clear()

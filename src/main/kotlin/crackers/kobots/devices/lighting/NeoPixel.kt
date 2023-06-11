@@ -27,7 +27,7 @@ import crackers.kobots.devices.twoBytesAndBuffer
 import kotlin.concurrent.withLock
 
 /**
- * NeoPixel handling via the SeeSaw
+ * NeoPixel aka [WS2811] handling via the Adafruit SeeSaw. This is available in several implementations.
  *
  * TODO add support for using "direct access" PWM pin?
  */

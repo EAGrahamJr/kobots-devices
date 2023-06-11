@@ -55,14 +55,15 @@ class CRICKITHatDeviceFactory(val seeSaw: AdafruitSeeSaw = CRICKITHat()) :
     ServoDeviceFactoryInterface,
     PwmOutputDeviceFactoryInterface {
 
+    @JvmOverloads
     constructor(i2CDevice: I2CDevice = defaultI2CDevice, initReset: Boolean = true) :
-        this(CRICKITHat(i2CDevice, initReset))
+            this(CRICKITHat(i2CDevice, initReset))
 
     private lateinit var neoPixelPort: NeoPixel
 
     private val statusPixel by lazy { NeoPixel(seeSaw, 1, STATUS_NEOPIXEL_PIN, 3) }
 
-    enum class Types(internal val offset: Int) {
+    internal enum class Types(internal val offset: Int) {
         SIGNAL(100), TOUCH(110), SERVO(120), MOTOR(130), DRIVE(140), NEOPIXEL(150), SPEAKER(160);
 
         fun deviceNumber(device: Int) = offset + device
@@ -153,10 +154,8 @@ class CRICKITHatDeviceFactory(val seeSaw: AdafruitSeeSaw = CRICKITHat()) :
         .map { PwmStepperPin(it) }
 
     /**
-     * Convenience function to use the NeoPixel port. Note that this does **not** have a `diozero` equivalent,
-     * so acquisition through "normal" factory operations is not possible.
-     *
-     * TODO reconcile with `LedDriverInterface`?
+     * Convenience function to use the [NeoPixel] port. Note that this is **not** a `diozero` WS2811 but an
+     * implementation from this library.
      */
     fun neoPixel(numPixels: Int, bitsPerPixel: Int = 3): NeoPixel =
         if (::neoPixelPort.isInitialized) {
@@ -166,8 +165,8 @@ class CRICKITHatDeviceFactory(val seeSaw: AdafruitSeeSaw = CRICKITHat()) :
         }
 
     /**
-     * Convenience function to access the on-board status NeoPixel. Note that this does **not** have a `diozero`
-     * equivalent, so acquisition through "normal" factory operations is not possible.
+     * Convenience function to access the on-board status [NeoPixel]. Note that this is **not** a `diozero` WS2811 but
+     * an implementation from this library.
      */
     fun statusPixel() = statusPixel
 
