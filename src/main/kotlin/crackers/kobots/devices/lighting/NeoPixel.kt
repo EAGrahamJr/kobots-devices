@@ -42,11 +42,32 @@ class NeoPixel(
         seeSaw.writeShort(NEOPIXEL_BASE, NEOPIXEL_BUF_LENGTH, (bitsPerPixel * numPixels).toShort())
     }
 
-    override fun sendBuffer(buffer: ByteArray) = seeSaw.lock.withLock {
-        val step = OUTPUT_BUFFER_SIZE - 2
+    private val step = OUTPUT_BUFFER_SIZE - 2
+    private lateinit var lastBuffer: ByteArray
 
-        buffer.toList().chunked(step).forEachIndexed { index, chunk: List<Byte> ->
-            val offset = (index * step).to2Bytes()
+    override fun sendBuffer(buffer: ByteArray) = seeSaw.lock.withLock {
+        var changeOffset = -1
+        // find the memory segments that changed since last time
+        val sendThis = if (!::lastBuffer.isInitialized) {
+            lastBuffer = ByteArray(buffer.size)
+            changeOffset = 0
+            buffer
+        } else if (lastBuffer.contentEquals(buffer)) {
+            return
+        } else {
+            var lastIndex = 0
+            buffer.forEachIndexed { index, byte ->
+                if (byte != lastBuffer[index]) {
+                    if (changeOffset < 0) changeOffset = index
+                    lastIndex = index
+                }
+            }
+            buffer.sliceArray(changeOffset..lastIndex)
+        }
+        buffer.copyInto(lastBuffer)
+
+        sendThis.toList().chunked(step).forEachIndexed { index, chunk: List<Byte> ->
+            val offset = (index * step + changeOffset).to2Bytes()
             val outputBuffer = twoBytesAndBuffer(offset.first, offset.second, chunk.toByteArray())
             seeSaw.write(NEOPIXEL_BASE, NEOPIXEL_BUF, outputBuffer)
         }

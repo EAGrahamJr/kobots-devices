@@ -72,7 +72,7 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
         val pid = getVersion().toInt() shr 16
     }
 
-    override fun close() {
+    override fun close() = lock.withLock {
         i2CDevice.close()
     }
 

@@ -57,7 +57,7 @@ class CRICKITHatDeviceFactory(val seeSaw: AdafruitSeeSaw = CRICKITHat()) :
 
     @JvmOverloads
     constructor(i2CDevice: I2CDevice = defaultI2CDevice, initReset: Boolean = true) :
-            this(CRICKITHat(i2CDevice, initReset))
+        this(CRICKITHat(i2CDevice, initReset))
 
     private lateinit var neoPixelPort: NeoPixel
 
