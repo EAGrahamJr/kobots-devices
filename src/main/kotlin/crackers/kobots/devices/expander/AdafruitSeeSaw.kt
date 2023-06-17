@@ -139,11 +139,27 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
         }
     }
 
-    internal fun digitalRead(ports: IntArray): Map<Int, Boolean> {
-        // N.B. note that reading 8 bytes in the `digitalRead` function
-        // **includes** the A port as the first 4 bytes
-        // this seems like it should be created as a class?
-        TODO("Enhancement that does not appear in the Adafruit code")
+    /**
+     * Read several on/off values from digital I/O ports.
+     *
+     * **WARNING** the ports _should_ be set for digital input, else the values are unpredictable.
+     */
+    internal fun digitalRead(pins: IntArray): Map<Int, Boolean> {
+        return read(GPIO_BASE, GPIO_BULK, 8).let {
+            // each 4-byte "word" contains the pin values in the last two bytes
+            val aPort = byteArrayOf(it[2], it[3]).toShort()
+            val bPort = byteArrayOf(it[6], it[7]).toShort()
+
+            pins.associate { pin ->
+                pin to if (pin >= 32) {
+                    val bitmask = 1 shl (pin - 32)
+                    bPort and bitmask != 0
+                } else {
+                    val bitmask = 1 shl pin
+                    aPort and bitmask != 0
+                }
+            }
+        }
     }
 
     internal fun setGPIOInterrupts(pins: Int, enabled: Boolean) {

@@ -53,7 +53,7 @@ class NeoKey(i2CDevice: I2CDevice = DEFAULT_I2C) : DeviceInterface, WS2811 {
      *
      * TODO for some reason, the read on a PULLUP is backwards
      */
-    fun read(): List<Boolean> = INPUT_PINS.map { !seeSaw.digitalRead(it) }
+    fun read(): List<Boolean> = seeSaw.digitalRead(INPUT_PINS.toIntArray()).values.toList().map { !it }
 
     /**
      * Get a button value.
@@ -92,7 +92,7 @@ class NeoKey(i2CDevice: I2CDevice = DEFAULT_I2C) : DeviceInterface, WS2811 {
     }
 
     companion object {
-        private val INPUT_PINS = (4..8).toList()
+        private val INPUT_PINS = (4 until 8).toList()
         private const val NEOPIX_DEVICE = 0x03.toByte()
 
         const val DEFAULT_ADDRESS = 0x30

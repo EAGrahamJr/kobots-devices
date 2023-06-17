@@ -111,8 +111,8 @@ class CrickitHatNeoPixelTest : FunSpec(
                             "0e040016121a00121a00121a00121a00121a00121a00121a0012" +
                             "0e04002c1a00121a00121a00121a00121a00121a00121a00121a" +
                             "0e04004200121a00121a00121a00121a00121a00121a00121a00" +
-                        "0e040058121a" +
-                        "0e05"
+                            "0e040058121a" +
+                            "0e05"
                 }
             }
 
@@ -127,7 +127,7 @@ class CrickitHatNeoPixelTest : FunSpec(
                     strand[14] = GOLDENROD
                     mockRequests.joinToString("") { it.hex().lowercase() } shouldBe
                             "0e04000000ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
-                        "0e040016ff0000ff0000ff0000ff0000ff0000ff0000ff0096ff" +
+                            "0e040016ff0000ff0000ff0000ff0000ff0000ff0000ff0096ff" +
                         "0e04002c0000ff0000ff0000ff0000ff0000ff0000ff0000ff00" +
                         "0e04004200ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
                         "0e040058ff00" +
