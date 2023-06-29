@@ -14,13 +14,13 @@
  * permissions and limitations under the License.
  */
 
-package crackers.kobots.devices.expander
+package crackers.kobots.devices.microcontroller
 
 import com.diozero.api.DeviceInterface
 import com.diozero.api.I2CDevice
 import com.diozero.api.RuntimeIOException
 import com.diozero.util.SleepUtil
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.SignalMode.*
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.SignalMode.*
 import crackers.kobots.devices.toBytes
 import crackers.kobots.devices.twoBytesAndBuffer
 import crackers.kobots.utilities.*

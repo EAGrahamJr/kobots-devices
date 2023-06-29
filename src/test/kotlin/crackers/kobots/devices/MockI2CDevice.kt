@@ -17,6 +17,7 @@
 package crackers.kobots.devices
 
 import com.diozero.api.I2CDevice
+import io.kotest.core.spec.style.FunSpec
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -83,5 +84,12 @@ object MockI2CDevice {
         every {
             d.close()
         } returns Unit
+    }
+}
+
+fun FunSpec.clearBeforeTest() {
+    beforeTest {
+        MockI2CDevice.requests.clear()
+        MockI2CDevice.responses.clear()
     }
 }

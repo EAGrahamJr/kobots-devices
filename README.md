@@ -12,6 +12,13 @@ Javadocs are at [kobots-devices](https://eagrahamjr.github.io/kobots-devices/)
 
 ![Just Build](https://github.com/EAGrahamJr/kobots-devices/actions/workflows/build.yaml/badge.svg)
 
+# Ch-ch-changes
+
+- v 0.1.0 introduced a breaking API changes
+  - `CRICHITHatDeviceFactory` was renamed to `CRICKITHat` and factory device creation is no longer directly accessible
+  - `AdafruitSeeSaw` and the former "CRICKIT Internals" were refactored to the `microcontroller` package
+  - New `GamepadQT` device added
+
 ## Building
 
 This project uses [Gradle](https://gradle.org), so the only thing you need is a compatible JDK<sup>**1**</sup>. Additionally, because the project is [Kotlin](https://kotlinlang.org) and uses the _Kotlin Gradle plugin_, a Kotlin installation is also not necessary.<sup>**2**</sup>
@@ -20,5 +27,5 @@ A default build will use the [gradle-plugins](https://github.com/EAGrahamJr/grad
 
 ---
 
-<sup>**1**</sup>Java 17 is the current build target.<br/>
+<sup>**1**</sup>Kotlin 1.8.22/Java 17 is the current build target.<br/>
 <sup>**2**</sup>This project _may_ depend on _my_ `diozero` changes as they may be ahead of the main repository branch. See the GitHub [actions](.github/workflows/build.yaml) for which version is being used. 

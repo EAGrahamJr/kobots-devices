@@ -17,7 +17,7 @@
 package crackers.kobots.devices.expander
 
 import crackers.kobots.devices.MockI2CDevice
-import io.kotest.core.spec.style.FunSpec
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
 import java.util.*
 
 /**
@@ -40,23 +40,16 @@ fun initOtherBoardType(): Stack<ByteArray>.() -> Unit = {
     push(byteArrayOf(AdafruitSeeSaw.Companion.DeviceType.ATTINY8X7_HW_ID_CODE.pid.toByte()))
 }
 
-internal val testHat: CRICKITHat by lazy {
+internal val testHat: CRICKITHatSeesaw by lazy {
     MockI2CDevice.responses.apply(initRaspberryPi())
-    CRICKITHat(MockI2CDevice.device).also {
+    CRICKITHatSeesaw(MockI2CDevice.device).also {
         MockI2CDevice.requests.clear()
     }
 }
 
 internal val testHatWithOtherBackpack by lazy {
     MockI2CDevice.responses.apply(initOtherBoardType())
-    CRICKITHat(MockI2CDevice.device).also {
+    CRICKITHatSeesaw(MockI2CDevice.device).also {
         MockI2CDevice.requests.clear()
-    }
-}
-
-fun FunSpec.clearBeforeTest() {
-    beforeTest {
-        MockI2CDevice.requests.clear()
-        MockI2CDevice.responses.clear()
     }
 }

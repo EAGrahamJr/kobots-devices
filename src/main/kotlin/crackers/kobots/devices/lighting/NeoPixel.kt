@@ -16,12 +16,12 @@
 
 package crackers.kobots.devices.lighting
 
-import crackers.kobots.devices.expander.AdafruitSeeSaw
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_BASE
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_BUF
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_BUF_LENGTH
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_PIN
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_SHOW
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.NEOPIXEL_BASE
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.NEOPIXEL_BUF
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.NEOPIXEL_BUF_LENGTH
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.NEOPIXEL_PIN
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.NEOPIXEL_SHOW
 import crackers.kobots.devices.to2Bytes
 import crackers.kobots.devices.twoBytesAndBuffer
 import kotlin.concurrent.withLock

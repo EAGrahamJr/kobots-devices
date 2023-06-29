@@ -17,7 +17,7 @@
 package crackers.kobots.devices.lighting
 
 import bytes
-import crackers.kobots.devices.expander.clearBeforeTest
+import crackers.kobots.devices.clearBeforeTest
 import crackers.kobots.devices.lighting.IS31FL3731.Companion.BANK_ADDRESS
 import crackers.kobots.devices.lighting.IS31FL3731.Companion.COLOR_OFFSET
 import crackers.kobots.devices.lighting.IS31FL3731.Companion.CONFIG_BANK

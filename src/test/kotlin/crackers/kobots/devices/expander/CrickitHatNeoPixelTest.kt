@@ -16,9 +16,11 @@
 
 package crackers.kobots.devices.expander
 
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_BASE
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.NEOPIXEL_BUF_LENGTH
+import crackers.kobots.devices.clearBeforeTest
 import crackers.kobots.devices.lighting.NeoPixel
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.NEOPIXEL_BASE
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.NEOPIXEL_BUF_LENGTH
 import crackers.kobots.utilities.GOLDENROD
 import crackers.kobots.utilities.PURPLE
 import crackers.kobots.utilities.hex
@@ -40,11 +42,11 @@ class CrickitHatNeoPixelTest : FunSpec(
 
         context("Setup") {
             test("Strand of 30") {
-                NeoPixel(seeSaw, 30, CRICKITHat.NEOPIXEL_PIN)
+                NeoPixel(seeSaw, 30, CRICKITHatSeesaw.NEOPIXEL_PIN)
                 mockRequests shouldContainExactly listOf(
                     NEOPIXEL_BASE,
                     AdafruitSeeSaw.NEOPIXEL_PIN,
-                    CRICKITHat.NEOPIXEL_PIN
+                    CRICKITHatSeesaw.NEOPIXEL_PIN
                 ) +
                     listOf(NEOPIXEL_BASE, NEOPIXEL_BUF_LENGTH, 0x00, 90)
                 println(mockRequests.joinToString("") { it.hex() })
@@ -55,7 +57,7 @@ class CrickitHatNeoPixelTest : FunSpec(
         }
 
         context("Use a 30-strand") {
-            val strand = NeoPixel(seeSaw, 30, CRICKITHat.NEOPIXEL_PIN)
+            val strand = NeoPixel(seeSaw, 30, CRICKITHatSeesaw.NEOPIXEL_PIN)
 
             context("Fill with colors") {
                 // because the output was capturred as text, this seems easier to validate with
@@ -128,10 +130,10 @@ class CrickitHatNeoPixelTest : FunSpec(
                     mockRequests.joinToString("") { it.hex().lowercase() } shouldBe
                             "0e04000000ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
                             "0e040016ff0000ff0000ff0000ff0000ff0000ff0000ff0096ff" +
-                        "0e04002c0000ff0000ff0000ff0000ff0000ff0000ff0000ff00" +
-                        "0e04004200ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
-                        "0e040058ff00" +
-                        "0e05"
+                            "0e04002c0000ff0000ff0000ff0000ff0000ff0000ff0000ff00" +
+                            "0e04004200ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
+                            "0e040058ff00" +
+                            "0e05"
                 }
                 test("Set a single pixel to YELLOW while dimmed") {
                     strand.brightness = .1f

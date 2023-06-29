@@ -17,11 +17,12 @@
 package crackers.kobots.devices.expander
 
 import crackers.kobots.devices.at
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.TIMER_BASE
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.TIMER_PWM
-import crackers.kobots.devices.expander.CRICKITHat.Companion.DRIVES
-import crackers.kobots.devices.expander.CRICKITHat.Companion.MOTORS
-import crackers.kobots.devices.expander.CRICKITHat.Companion.PWM_PINS
+import crackers.kobots.devices.clearBeforeTest
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.DRIVES
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.MOTORS
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.PWM_PINS
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.TIMER_BASE
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.TIMER_PWM
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import crackers.kobots.devices.MockI2CDevice.requests as mockRequests
@@ -30,7 +31,7 @@ class CRICKITMotorAndDriveTest : FunSpec(
     {
         clearBeforeTest()
 
-        val factory = CRICKITHatDeviceFactory(testHat)
+        val factory = CRICKITHat(testHat)
 
         context("Motor ports:") {
             (1..2).forEach { motorId ->

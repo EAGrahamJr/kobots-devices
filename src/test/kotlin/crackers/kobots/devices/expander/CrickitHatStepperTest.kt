@@ -18,8 +18,9 @@ package crackers.kobots.devices.expander
 
 import com.diozero.devices.sandpit.motor.BasicStepperMotor
 import com.diozero.devices.sandpit.motor.StepperMotorInterface
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.TIMER_BASE
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.TIMER_FREQ
+import crackers.kobots.devices.clearBeforeTest
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.TIMER_BASE
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.TIMER_FREQ
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import crackers.kobots.devices.MockI2CDevice.requests as mockRequests
@@ -31,9 +32,9 @@ class CrickitHatStepperTest : FunSpec(
     {
         clearBeforeTest()
         beforeTest {
-            testHat.pwmOutputPins = CRICKITHat.PWM_PINS
+            testHat.pwmOutputPins = CRICKITHatSeesaw.PWM_PINS
         }
-        val factory = CRICKITHatDeviceFactory(testHat)
+        val factory = CRICKITHat(testHat)
 
         context("Driver Setups:") {
             test("Unipolar driver") {

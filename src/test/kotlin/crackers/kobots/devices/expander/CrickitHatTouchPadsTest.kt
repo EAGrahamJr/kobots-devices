@@ -20,8 +20,9 @@ import com.diozero.api.AnalogInputDevice
 import com.diozero.api.DigitalInputDevice
 import com.diozero.api.GpioEventTrigger
 import com.diozero.api.GpioPullUpDown
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.TOUCH_BASE
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.TOUCH_CHANNEL_OFFSET
+import crackers.kobots.devices.clearBeforeTest
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.TOUCH_BASE
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.TOUCH_CHANNEL_OFFSET
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
@@ -74,7 +75,7 @@ class CrickitHatTouchPadsTest : FunSpec(
                     // N.B. this should not trigger the calibration reads
                     AnalogInputDevice(
                         deviceFactory,
-                        CRICKITHatDeviceFactory.Types.TOUCH.deviceNumber(touchPad)
+                        Types.TOUCH.deviceNumber(touchPad)
                     ).use { d ->
                         d.unscaledValue shouldBe 0.043010753f
                         d.unscaledValue shouldBe 0.50048876f
@@ -97,7 +98,7 @@ class CrickitHatTouchPadsTest : FunSpec(
 
                     DigitalInputDevice(
                         deviceFactory,
-                        CRICKITHatDeviceFactory.Types.TOUCH.deviceNumber(touchPad),
+                        Types.TOUCH.deviceNumber(touchPad),
                         GpioPullUpDown.NONE,
                         GpioEventTrigger.NONE
                     ).use { d ->

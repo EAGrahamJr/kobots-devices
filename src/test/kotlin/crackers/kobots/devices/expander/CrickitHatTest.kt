@@ -17,10 +17,12 @@
 package crackers.kobots.devices.expander
 
 import com.diozero.api.RuntimeIOException
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.STATUS_BASE
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.STATUS_HW_ID
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.STATUS_SWRST
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.STATUS_VERSION
+import crackers.kobots.devices.clearBeforeTest
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.STATUS_BASE
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.STATUS_HW_ID
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.STATUS_SWRST
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.STATUS_VERSION
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
@@ -41,7 +43,7 @@ class CrickitHatTest : FunSpec(
                 mockResponses.apply(initRaspberryPi())
 
                 // initializes
-                val hat = CRICKITHat(mockDevice)
+                val hat = CRICKITHatSeesaw(mockDevice)
 
                 // contains reset command, get board, get version
                 val expectedCommandBytes = listOf(STATUS_BASE, STATUS_SWRST, 0xff.toByte()) +
@@ -56,7 +58,7 @@ class CrickitHatTest : FunSpec(
                 mockResponses.apply(initOtherBoardType())
 
                 // initializes
-                val hat = CRICKITHat(mockDevice)
+                val hat = CRICKITHatSeesaw(mockDevice)
 
                 // contains reset command, get board, get version
                 val expectedCommandBytes = listOf(STATUS_BASE, STATUS_SWRST, 0xff.toByte()) +
@@ -70,7 +72,7 @@ class CrickitHatTest : FunSpec(
             test("Seesaw initialization with bad hardware") {
                 mockResponses.push(byteArrayOf(0xFF.toByte()))
                 assertThrows<RuntimeIOException> {
-                    CRICKITHat(mockDevice)
+                    CRICKITHatSeesaw(mockDevice)
                 }
             }
         }

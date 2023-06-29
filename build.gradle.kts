@@ -6,7 +6,7 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.8.20"
+    kotlin("jvm") version "1.8.22"
     idea
     id("org.jmailen.kotlinter") version "3.12.0"
     id("library-publish") version "1.0.1"
@@ -20,8 +20,7 @@ repositories {
 
 val DIOZERO_VER = "1.4.0"
 group = "crackers.kobots"
-version = "0.0.6"
-
+version = "0.1.0"
 
 dependencies {
     api("ch.qos.logback:logback-classic:1.4.0")
@@ -45,13 +44,15 @@ kotlinter {
     disabledRules = arrayOf("no-wildcard-imports")
 }
 
-
 tasks {
     build {
         dependsOn("formatKotlin")
     }
     test {
         useJUnitPlatform()
+    }
+    javadoc {
+        mustRunAfter("test")
     }
     // make docs
     dokkaJavadoc {

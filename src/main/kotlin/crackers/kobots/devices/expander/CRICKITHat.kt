@@ -16,89 +16,155 @@
 
 package crackers.kobots.devices.expander
 
-import com.diozero.api.I2CDevice
+import com.diozero.api.*
+import com.diozero.devices.motor.PwmMotor
+import com.diozero.devices.sandpit.motor.BasicStepperController
+import com.diozero.devices.sandpit.motor.BasicStepperController.*
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.MOTOR1A
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.MOTOR1B
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.MOTOR2A
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.MOTOR2B
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.NEOPIXEL_PIN
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.STATUS_NEOPIXEL_PIN
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.defaultI2CDevice
+import crackers.kobots.devices.expander.Types.*
+import crackers.kobots.devices.lighting.NeoPixel
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
+
+internal enum class Types(internal val offset: Int) {
+    SIGNAL(100), TOUCH(110), SERVO(120), MOTOR(130), DRIVE(140), NEOPIXEL(150), SPEAKER(160);
+
+    fun deviceNumber(device: Int) = offset + device
+    fun indexOf(deviceId: Int) = deviceId - offset
+}
 
 /**
- * CRICKIT Hat pin definitions for the SeeSaw device. Used internally as an extension of the SeeSaw.
+ * A device factory for the AdaFruit
+ * [CRICKIT](https://learn.adafruit.com/adafruit-crickit-hat-for-raspberry-pi-linux-computers?view=all).
+ *
+ * It is **HIGHLY** recommended to use the convenience functions instead of creating devices via the builders or
+ * constructors as the pin numbering gets a little odd.
  */
-internal class CRICKITHat(i2CDevice: I2CDevice = defaultI2CDevice, initReset: Boolean = true) :
-    AdafruitSeeSaw(i2CDevice, initReset) {
-    init {
-        analogInputPins = DIGITAL_PINS
-        pwmOutputPins = PWM_PINS
+class CRICKITHat(val seeSaw: AdafruitSeeSaw = CRICKITHatSeesaw()) : DeviceInterface {
+
+    @JvmOverloads
+    constructor(i2CDevice: I2CDevice = defaultI2CDevice, initReset: Boolean = true) :
+            this(CRICKITHatSeesaw(i2CDevice, initReset))
+
+    private lateinit var neoPixelPort: NeoPixel
+
+    private val statusPixel by lazy { NeoPixel(seeSaw, 1, STATUS_NEOPIXEL_PIN, 3) }
+
+    private val deviceFactory by lazy { CRICKITHatDeviceFactory(seeSaw) }
+
+    /**
+     * Convenience function to get a digital input on the Signal port [pin] (1-8), with optional [pullDown]
+     */
+    fun signalDigitalIn(pin: Int, pullDown: Boolean = false) =
+        DigitalInputDevice(
+            deviceFactory,
+            SIGNAL.deviceNumber(pin),
+            if (pullDown) GpioPullUpDown.PULL_DOWN else GpioPullUpDown.PULL_UP,
+            GpioEventTrigger.NONE
+        )
+
+    /**
+     * Convenience function to get a digital output on the Signal port [pin] (1-8)
+     */
+    fun signalDigitalOut(pin: Int) = DigitalOutputDevice(deviceFactory, SIGNAL.deviceNumber(pin), true, false)
+
+    /**
+     * Convenience function to get an analog input on the  Signal port [pin] (1-8)
+     */
+    fun signalAnalogIn(pin: Int) = AnalogInputDevice(deviceFactory, SIGNAL.deviceNumber(pin))
+
+    /**
+     * Convenience function to get a digital input on one of the touchpads.
+     */
+    fun touchDigitalIn(pin: Int) = DigitalInputDevice(deviceFactory, TOUCH.deviceNumber(pin))
+
+    /**
+     * Convenience function to get an analog input on one of the touchpads.
+     */
+    fun touchAnalogIn(pin: Int) = AnalogInputDevice(deviceFactory, TOUCH.deviceNumber(pin))
+
+    /**
+     * Convenience function to get a servo device on the Servo ports [pin] (1-4)
+     */
+    fun servo(pin: Int, servoTrim: ServoTrim = ServoTrim.DEFAULT): ServoDevice =
+        ServoDevice.Builder.builder(SERVO.deviceNumber(pin))
+            .setDeviceFactory(deviceFactory)
+            .setTrim(servoTrim)
+            .build()
+
+    /**
+     * Convenience function to use the Motor ports for bidirectional motors, where [index] is the motor _number_ (1 or
+     * 2). Note this is 5v.
+     */
+    fun motor(index: Int): PwmMotor {
+        val pins = if (index == 1) MOTOR1A to MOTOR1B else MOTOR2A to MOTOR2B
+        return PwmMotor(deviceFactory, pins.first, pins.second)
     }
 
-    companion object {
-        internal const val DEVICE_ADDRESS = 0x49
-        internal val defaultI2CDevice by lazy { I2CDevice(1, DEVICE_ADDRESS) }
+    /**
+     * Convenience function to get PWM-able outputs.  Note this is 5v.
+     */
+    fun drive(index: Int): PwmOutputDevice = PwmOutputDevice(deviceFactory, DRIVE.deviceNumber(index), 1000, 0f)
 
-        internal const val ANALOG_MAX = 1023f
+    /**
+     * Get **the** unipolar stepper controller from the `DRIVE` ports. Note this is 5v.
+     */
+    fun unipolarStepperPort(): BasicStepperController {
+        // create the pins - these are in the order to pass to the controller
+        val pins = stepperPins(DRIVE).toTypedArray()
+        return UnipolarBasicController(pins)
+    }
 
-        internal const val CAPTOUCH1 = 4
-        internal const val CAPTOUCH2 = 5
-        internal const val CAPTOUCH3 = 6
-        internal const val CAPTOUCH4 = 7
+    /**
+     * Get a controller from the motor ports. Note this is 5v.
+     */
+    fun motorStepperPort(): BasicStepperController {
+        val pins = stepperPins(MOTOR)
 
-        /**
-         * SeeSaw pins in order for the touchpads
-         */
-        internal val TOUCH_PAD_PINS = intArrayOf(CAPTOUCH1, CAPTOUCH2, CAPTOUCH3, CAPTOUCH4)
+        val terminalA = BiPolarTerminal(pins[0], pins[1])
+        val terminalB = BiPolarTerminal(pins[2], pins[3])
 
-        internal const val SIGNAL1 = 2
-        internal const val SIGNAL2 = 3
-        internal const val SIGNAL3 = 40
-        internal const val SIGNAL4 = 41
-        internal const val SIGNAL5 = 11
-        internal const val SIGNAL6 = 10
-        internal const val SIGNAL7 = 9
-        internal const val SIGNAL8 = 8
+        return BipolarBasicController(terminalA, terminalB)
+    }
 
-        /**
-         * SeeSaw pins in order for the signal ports
-         */
-        internal val DIGITAL_PINS = intArrayOf(SIGNAL1, SIGNAL2, SIGNAL3, SIGNAL4, SIGNAL5, SIGNAL6, SIGNAL7, SIGNAL8)
+    /**
+     * Four pins, get the ports.
+     */
+    private fun stepperPins(type: Types) = (1..4)
+        .map { deviceFactory.boardInfo.getByPwmOrGpioNumber(type.deviceNumber(it)).get() }
+        .map { deviceFactory.getInternalPwm(it, deviceFactory.createPwmPinKey(it)) }
+        .map { PwmStepperPin(it) }
 
-        internal const val SERVO4 = 14
-        internal const val SERVO3 = 15
-        internal const val SERVO2 = 16
-        internal const val SERVO1 = 17
+    /**
+     * Convenience function to use the [NeoPixel] port. Note that this is **not** a `diozero` WS2811 but an
+     * implementation from this library.
+     */
+    fun neoPixel(numPixels: Int, bitsPerPixel: Int = 3): NeoPixel =
+        if (::neoPixelPort.isInitialized) {
+            neoPixelPort
+        } else {
+            NeoPixel(seeSaw, numPixels, NEOPIXEL_PIN, bitsPerPixel).also { neoPixelPort = it }
+        }
 
-        /**
-         * Logical order - **NOT** pin order (see [PWM_PINS]
-         */
-        internal val SERVOS = intArrayOf(SERVO1, SERVO2, SERVO3, SERVO4)
+    /**
+     * Convenience function to access the on-board status [NeoPixel]. Note that this is **not** a `diozero` WS2811 but
+     * an implementation from this library.
+     */
+    fun statusPixel() = statusPixel
 
-        internal const val MOTOR2B = 18
-        internal const val MOTOR2A = 19
-        internal const val MOTOR1A = 22
-        internal const val MOTOR1B = 23
+    // -----------------------------------------------------------------------------------------------------------------
+    // diozero device and factory stuff
 
-        /**
-         * Logical order - **NOT** pin order (see [PWM_PINS]
-         */
-        internal val MOTORS = intArrayOf(MOTOR1A, MOTOR1B, MOTOR2A, MOTOR2B)
-
-        internal const val DRIVE4 = 42
-        internal const val DRIVE3 = 43
-        internal const val DRIVE2 = 12
-        internal const val DRIVE1 = 13
-
-        /**
-         * Logical order - **NOT** pin order (see [PWM_PINS])
-         */
-        internal val DRIVES = intArrayOf(DRIVE1, DRIVE2, DRIVE3, DRIVE4)
-
-        /**
-         * SeeSaw pins in order for the analog outputs
-         */
-        internal val PWM_PINS =
-            intArrayOf(
-                SERVO4, SERVO3, SERVO2, SERVO1,
-                MOTOR2B, MOTOR2A, MOTOR1B, MOTOR1A,
-                DRIVE4, DRIVE3, DRIVE2, DRIVE1
-            )
-
-        internal const val NEOPIXEL_PIN = 20.toByte()
-        internal const val STATUS_NEOPIXEL_PIN = 27.toByte()
+    override fun close() {
+        try {
+            deviceFactory.close()
+            seeSaw.close()
+        } catch (_: Throwable) {
+        }
     }
 }

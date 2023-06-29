@@ -14,13 +14,14 @@
  * permissions and limitations under the License.
  */
 
-package crackers.kobots.devices.expander
+package crackers.kobots.devices.microcontroller
 
 import com.diozero.api.AnalogInputEvent
 import com.diozero.api.DeviceMode
 import com.diozero.api.DigitalInputEvent
 import com.diozero.api.InvalidModeException
 import com.diozero.internal.spi.*
+import crackers.kobots.devices.expander.CRICKITHatSeesaw
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.truncate
 
@@ -30,7 +31,7 @@ import kotlin.math.truncate
  * Because there's always a value present, the initial `read()` function will max the next 5 values and
  * assume any value greater than that (+100) is a "touch" for basic true/false functions.
  */
-internal class CRICKITTouch(private val seeSaw: AdafruitSeeSaw, padNumber: Int) {
+internal class SeesawCapacitivePort(private val seeSaw: AdafruitSeeSaw, padNumber: Int) {
     private val seesawPadIndex = padNumber - 1
 
     private val noTouchThreshold: Int by lazy {
@@ -48,7 +49,7 @@ internal class DigitalTouch(
     key: String,
     factory: DeviceFactoryInterface,
     private val gpio: Int,
-    private val sensor: CRICKITTouch
+    private val sensor: SeesawCapacitivePort
 ) :
     AbstractInputDevice<DigitalInputEvent>(key, factory), GpioDigitalInputDeviceInterface {
 
@@ -66,11 +67,11 @@ internal class AnalogTouch(
     key: String,
     factory: DeviceFactoryInterface,
     private val adc: Int,
-    private val sensor: CRICKITTouch
+    private val sensor: SeesawCapacitivePort
 ) : AbstractInputDevice<AnalogInputEvent>(key, factory), AnalogInputDeviceInterface {
 
     override fun getAdcNumber() = adc
-    override fun getValue() = sensor.value / CRICKITHat.ANALOG_MAX
+    override fun getValue() = sensor.value / CRICKITHatSeesaw.ANALOG_MAX
     override fun generatesEvents() = false
 }
 
@@ -78,7 +79,7 @@ internal class AnalogTouch(
  * "Internal device" of the Crickit for the signal block. Note that changing modes of the device is allowed (although
  * not necessarily used in practice).
  */
-internal class CRICKITSignal(private val seeSaw: AdafruitSeeSaw, private val seeSawPin: Int) {
+internal class SeesawDigitalPort(private val seeSaw: AdafruitSeeSaw, private val seeSawPin: Int) {
 
     internal val canWrite = AtomicBoolean(false)
 
@@ -109,13 +110,13 @@ internal class CRICKITSignal(private val seeSaw: AdafruitSeeSaw, private val see
 }
 
 /**
- * "Internal device" of the Crickit for the signal block, digital (input/output) flavor.
+ * "Internal device" of the Seesaw for the signal block, digital (input/output) flavor.
  */
-internal class SignalDigitalDevice(
+internal class SeesawDigitalDevice(
     key: String,
     factory: DeviceFactoryInterface,
     private val deviceNumber: Int,
-    private val delegate: CRICKITSignal
+    private val delegate: SeesawDigitalPort
 ) : AbstractInputDevice<DigitalInputEvent>(key, factory),
     GpioDigitalOutputDeviceInterface,
     GpioDigitalInputDeviceInterface {
@@ -133,28 +134,28 @@ internal class SignalDigitalDevice(
 }
 
 /**
- * "Internal device" of the Crickit for the signal block, analog flavor.
+ * "Internal device" of the Seesaw for the signal block, analog flavor.
  */
-internal class SignalAnalogInputDevice(
+internal class SeesawAnalogInputDevice(
     key: String,
     factory: DeviceFactoryInterface,
     private val deviceNumber: Int,
-    private val delegate: CRICKITSignal
+    private val delegate: SeesawDigitalPort
 ) : AbstractInputDevice<AnalogInputEvent>(key, factory),
     AnalogInputDeviceInterface {
 
     override fun getAdcNumber() = deviceNumber
-    override fun getValue() = delegate.read() / CRICKITHat.ANALOG_MAX
+    override fun getValue() = delegate.read() / CRICKITHatSeesaw.ANALOG_MAX
     override fun generatesEvents() = false
 }
 
 /**
  * Internal PWM class for the Servo/Motor/Stepper ports on the CRICKIT.
  */
-internal class CRICKIInternalPwm(
+internal class SeesawPWMDevice(
     private val key: String,
     private val pwmNumber: Int,
-    private val factory: CRICKITHatDeviceFactory,
+    private val seeSaw: AdafruitSeeSaw,
     private val seeSawPin: Int,
     frequency: Int? = null
 ) : InternalPwmOutputDeviceInterface {
@@ -169,7 +170,6 @@ internal class CRICKIInternalPwm(
     }
 
     override fun close() {
-        if (!child) factory.deviceClosed(this)
         open = false
     }
 
@@ -189,13 +189,13 @@ internal class CRICKIInternalPwm(
 
     override fun getPwmFrequency() = frequencyHz
     override fun setPwmFrequency(frequencyHz: Int) {
-        factory.seeSaw.setPWMFreq(seeSawPin.toByte(), frequencyHz.toShort())
+        seeSaw.setPWMFreq(seeSawPin.toByte(), frequencyHz.toShort())
         this.frequencyHz = frequencyHz
     }
 
     override fun setValue(fraction: Float) {
         val dutyCycle = fraction * 0xFFFF
-        factory.seeSaw.analogWrite(seeSawPin.toByte(), truncate(dutyCycle).toInt().toShort(), true)
+        seeSaw.analogWrite(seeSawPin.toByte(), truncate(dutyCycle).toInt().toShort(), true)
         currentValue = fraction
     }
 

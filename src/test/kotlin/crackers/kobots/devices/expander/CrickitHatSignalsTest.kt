@@ -18,18 +18,19 @@ package crackers.kobots.devices.expander
 
 import com.diozero.api.DeviceAlreadyOpenedException
 import com.diozero.api.InvalidModeException
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.ADC_BASE
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.ADC_CHANNEL_OFFSET
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.GPIO_BASE
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.GPIO_BULK
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.GPIO_BULK_CLEAR
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.GPIO_BULK_SET
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.GPIO_DIRECTION_INPUT
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.GPIO_DIRECTION_OUTPUT
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.GPIO_PULL_RESISTOR_DISABLED
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.GPIO_PULL_RESISTOR_ENABLED
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.SignalMode
-import crackers.kobots.devices.expander.CRICKITHat.Companion.DIGITAL_PINS
+import crackers.kobots.devices.clearBeforeTest
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.DIGITAL_PINS
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.ADC_BASE
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.ADC_CHANNEL_OFFSET
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.GPIO_BASE
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.GPIO_BULK
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.GPIO_BULK_CLEAR
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.GPIO_BULK_SET
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.GPIO_DIRECTION_INPUT
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.GPIO_DIRECTION_OUTPUT
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.GPIO_PULL_RESISTOR_DISABLED
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.GPIO_PULL_RESISTOR_ENABLED
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.SignalMode
 import io.kotest.assertions.throwables.shouldThrowWithMessage
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
@@ -163,7 +164,7 @@ class CrickitHatSignalsTest : FunSpec(
             }
 
             context("Signal $signal diozero:") {
-                val deviceFactory = CRICKITHatDeviceFactory(testHat)
+                val deviceFactory = CRICKITHat(testHat)
                 test("DigitalInput") {
                     deviceFactory.signalDigitalIn(signal, true).use {
                         mockRequests shouldContainExactly inputPullDownSetupCommands(pinSelectorBytes)
@@ -209,9 +210,10 @@ class CrickitHatSignalsTest : FunSpec(
         }
         context("Device conflicts") {
             test("Between digital out and analog in on the same port") {
-                factory.signalAnalogIn(1).use {
+                val deviceFactory = CRICKITHat(testHat)
+                deviceFactory.signalAnalogIn(1).use {
                     shouldThrowWithMessage<DeviceAlreadyOpenedException>("Device 'CRICKIT-SIGNAL-101' is already opened") {
-                        factory.signalDigitalOut(1)
+                        deviceFactory.signalDigitalOut(1)
                     }
                 }
             }

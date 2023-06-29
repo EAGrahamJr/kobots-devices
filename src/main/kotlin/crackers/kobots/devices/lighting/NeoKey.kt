@@ -18,8 +18,8 @@ package crackers.kobots.devices.lighting
 
 import com.diozero.api.DeviceInterface
 import com.diozero.api.I2CDevice
-import crackers.kobots.devices.expander.AdafruitSeeSaw
 import crackers.kobots.devices.lighting.WS2811.PixelColor
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
 
 /**
  * Adafruit https://www.adafruit.com/product/4980

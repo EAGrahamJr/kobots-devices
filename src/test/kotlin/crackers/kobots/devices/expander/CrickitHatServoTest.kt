@@ -18,11 +18,12 @@ package crackers.kobots.devices.expander
 
 import com.diozero.api.ServoTrim
 import crackers.kobots.devices.at
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.TIMER_BASE
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.TIMER_FREQ
-import crackers.kobots.devices.expander.AdafruitSeeSaw.Companion.TIMER_PWM
-import crackers.kobots.devices.expander.CRICKITHat.Companion.PWM_PINS
-import crackers.kobots.devices.expander.CRICKITHat.Companion.SERVOS
+import crackers.kobots.devices.clearBeforeTest
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.PWM_PINS
+import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.SERVOS
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.TIMER_BASE
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.TIMER_FREQ
+import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.TIMER_PWM
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldStartWith
@@ -41,7 +42,7 @@ class CrickitHatServoTest : FunSpec(
             context("Servo $servoNumber:") {
                 val servoPin = SERVOS[servoNumber - 1]
                 val servoIndex = PWM_PINS.indexOf(servoPin).toByte() // because default Pi for testing
-                val factory = CRICKITHatDeviceFactory(testHat)
+                val factory = CRICKITHat(testHat)
 
                 test("Via builder") {
                     factory.servo(servoNumber, ServoTrim.TOWERPRO_SG90).apply {
