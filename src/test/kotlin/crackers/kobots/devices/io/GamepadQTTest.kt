@@ -18,9 +18,9 @@ class GamepadQTTest : FunSpec(
         context("Gampepad buttons") {
             test("A Button") {
                 // mock the bytes in the seesaw register
-                MockI2CDevice.responses.push(byteArrayOf(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00))
+                MockI2CDevice.responses.push(byteArrayOf(0x00, 0x00, 0x08, 0x00))
                 // read the button
-                gamepad.aButton.value shouldBe true
+                gamepad.aButton shouldBe true
                 MockI2CDevice.requests shouldContainExactly readDigitalInputCommand
             }
         }
@@ -32,10 +32,9 @@ class GamepadQTTest : FunSpec(
                     push(byteArrayOf(0, 4))
                 }
                 // read the button
-                gamepad.yAxis.run {
-                    scaledValue shouldBe 4
-                    scaledValue shouldBe 1022
-                }
+                gamepad.yAxis shouldBe 4
+                gamepad.yAxis shouldBe 1022
+
                 val offset = (AdafruitSeeSaw.ADC_CHANNEL_OFFSET + 1).toByte()
                 MockI2CDevice.requests shouldContainExactly listOf(
                     AdafruitSeeSaw.ADC_BASE,

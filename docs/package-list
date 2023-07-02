@@ -2,13 +2,13 @@ $dokka.format:javadoc-v1
 $dokka.linkExtension:html
 $dokka.location:crackers.kobots.devices.display/GrayOled.DisplayType///PointingToDeclaration/crackers/kobots/devices/display/GrayOled.DisplayType.html
 $dokka.location:crackers.kobots.devices.display/SSD1327.Companion///PointingToDeclaration/crackers/kobots/devices/display/SSD1327.Companion.html
-$dokka.location:crackers.kobots.devices.expander/AdafruitSeeSaw.Companion.DeviceType///PointingToDeclaration/crackers/kobots/devices/expander/AdafruitSeeSaw.Companion.DeviceType.html
-$dokka.location:crackers.kobots.devices.expander/AdafruitSeeSaw.Companion.SignalMode///PointingToDeclaration/crackers/kobots/devices/expander/AdafruitSeeSaw.Companion.SignalMode.html
-$dokka.location:crackers.kobots.devices.expander/AdafruitSeeSaw.Companion///PointingToDeclaration/crackers/kobots/devices/expander/AdafruitSeeSaw.Companion.html
-$dokka.location:crackers.kobots.devices.lighting/NeoKey.Companion///PointingToDeclaration/crackers/kobots/devices/lighting/NeoKey.Companion.html
+$dokka.location:crackers.kobots.devices.io/NeoKey.Companion///PointingToDeclaration/crackers/kobots/devices/io/NeoKey.Companion.html
 $dokka.location:crackers.kobots.devices.lighting/PimoroniLEDShim.Companion///PointingToDeclaration/crackers/kobots/devices/lighting/PimoroniLEDShim.Companion.html
 $dokka.location:crackers.kobots.devices.lighting/PixelBuf.Companion///PointingToDeclaration/crackers/kobots/devices/lighting/PixelBuf.Companion.html
 $dokka.location:crackers.kobots.devices.lighting/WS2811.PixelColor///PointingToDeclaration/crackers/kobots/devices/lighting/WS2811.PixelColor.html
+$dokka.location:crackers.kobots.devices.microcontroller/AdafruitSeeSaw.Companion.DeviceType///PointingToDeclaration/crackers/kobots/devices/microcontroller/AdafruitSeeSaw.Companion.DeviceType.html
+$dokka.location:crackers.kobots.devices.microcontroller/AdafruitSeeSaw.Companion.SignalMode///PointingToDeclaration/crackers/kobots/devices/microcontroller/AdafruitSeeSaw.Companion.SignalMode.html
+$dokka.location:crackers.kobots.devices.microcontroller/AdafruitSeeSaw.Companion///PointingToDeclaration/crackers/kobots/devices/microcontroller/AdafruitSeeSaw.Companion.html
 $dokka.location:crackers.kobots.devices.sensors/VCNL4040.AmbientLightIntegrationTime///PointingToDeclaration/crackers/kobots/devices/sensors/VCNL4040.AmbientLightIntegrationTime.html
 $dokka.location:crackers.kobots.devices.sensors/VCNL4040.AmbientLightPersistence///PointingToDeclaration/crackers/kobots/devices/sensors/VCNL4040.AmbientLightPersistence.html
 $dokka.location:crackers.kobots.devices.sensors/VCNL4040.LEDCurrent///PointingToDeclaration/crackers/kobots/devices/sensors/VCNL4040.LEDCurrent.html
@@ -25,7 +25,9 @@ $dokka.location:crackers.kobots.utilities/PointerGauge.Shape///PointingToDeclara
 crackers.kobots.devices
 crackers.kobots.devices.display
 crackers.kobots.devices.expander
+crackers.kobots.devices.io
 crackers.kobots.devices.lighting
+crackers.kobots.devices.microcontroller
 crackers.kobots.devices.sensors
 crackers.kobots.utilities
 

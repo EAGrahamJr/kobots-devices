@@ -14,10 +14,12 @@
  * permissions and limitations under the License.
  */
 
-package crackers.kobots.devices.lighting
+package crackers.kobots.devices.io
 
 import com.diozero.api.DeviceInterface
 import com.diozero.api.I2CDevice
+import crackers.kobots.devices.lighting.NeoPixel
+import crackers.kobots.devices.lighting.WS2811
 import crackers.kobots.devices.lighting.WS2811.PixelColor
 import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
 
