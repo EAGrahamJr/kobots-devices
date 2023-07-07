@@ -134,8 +134,9 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
         val bitMask = 1 shl shift
         return read(GPIO_BASE, GPIO_BULK, size).let {
             // TODO figure out little endian stuff?
-            // use the last two bytes for the data
-            byteArrayOf(it[size - 2], it[size - 1]).toShort() and bitMask != 0
+            // use the last four bytes for the data
+            val digitalData = byteArrayOf(it[size - 4], it[size - 3], it[size - 2], it[size - 1])
+            digitalData.toLong() and bitMask.toLong() != 0L
         }
     }
 

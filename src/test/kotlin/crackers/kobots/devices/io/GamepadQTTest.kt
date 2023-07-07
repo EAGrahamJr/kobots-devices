@@ -23,6 +23,13 @@ class GamepadQTTest : FunSpec(
                 gamepad.aButton shouldBe true
                 MockI2CDevice.requests shouldContainExactly readDigitalInputCommand
             }
+            test("Start button") {
+                // mock the bytes in the seesaw register
+                MockI2CDevice.responses.push(byteArrayOf(0x00, 0x00, 0x00, 0x01))
+                // read the button
+                gamepad.startButton shouldBe true
+                MockI2CDevice.requests shouldContainExactly readDigitalInputCommand
+            }
         }
         context("Gamepad joysticks") {
             test("Y Axis") {
