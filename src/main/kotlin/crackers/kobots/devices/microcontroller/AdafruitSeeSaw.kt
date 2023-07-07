@@ -135,7 +135,7 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
         return read(GPIO_BASE, GPIO_BULK, size).let {
             // TODO figure out little endian stuff?
             // use the last four bytes for the data
-            val digitalData = byteArrayOf(it[size - 4], it[size - 3], it[size - 2], it[size - 1])
+            val digitalData = byteArrayOf(*it.sliceArray(it.size - 4 until it.size))
             digitalData.toLong() and bitMask.toLong() != 0L
         }
     }
@@ -148,16 +148,16 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
     internal fun digitalRead(pins: IntArray): Map<Int, Boolean> {
         return read(GPIO_BASE, GPIO_BULK, 8).let {
             // each 4-byte "word" contains the pin values in the last two bytes
-            val aPort = byteArrayOf(it[2], it[3]).toShort()
-            val bPort = byteArrayOf(it[6], it[7]).toShort()
+            val aPort = byteArrayOf(*it.sliceArray(0..3)).toLong()
+            val bPort = byteArrayOf(*it.sliceArray(4..7)).toLong()
 
             pins.associate { pin ->
                 pin to if (pin >= 32) {
                     val bitmask = 1 shl (pin - 32)
-                    bPort and bitmask != 0
+                    bPort and bitmask.toLong() != 0L
                 } else {
                     val bitmask = 1 shl pin
-                    aPort and bitmask != 0
+                    aPort and bitmask.toLong() != 0L
                 }
             }
         }
