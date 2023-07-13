@@ -8,9 +8,9 @@ Javadocs are at [kobots-devices](https://eagrahamjr.github.io/kobots-devices/)
   not complete.
 * Another interesting note is the [PixelBuf](src/main/kotlin/crackers/kobots/devices/lighting/PixelBuf.kt) which, like it's Adafruit conterpart, underlies the various hardware-specific `NepPixel` (WS281x) interfaces. This deviates quite a bit from the `diozero` implementation, as I preferred using Java `Color` constructs since they are available.
 
-:bangbang: **STILL UNDER CONSTRUCTION!!!!** These items were constructed and verified **only** on a Raspberry Pi, but _should_ work where the `diozero` library will work.
+:bangbang: **STILL UNDER CONSTRUCTION!!!!** These items were constructed and verified **only** on a Raspberry Pi, but _should_ work where the [`diozero`](https://www.diozero.com) **main branch** library will work.
 
-![Just Build](https://github.com/EAGrahamJr/kobots-devices/actions/workflows/build.yaml/badge.svg)
+![Just Build](https://github.com/EAGrahamJr/kobots-devices/actions/workflows/build.yaml/badge.svg) ![Kotlin](https://badgen.net/badge/Kotlin/1.8.22/purple) ![Java](https://badgen.net/badge/Java/17/orange) ![Apache License](https://badgen.net/github/license/EAGrahamJr/kobots-devices)
 
 # Ch-ch-changes
 
