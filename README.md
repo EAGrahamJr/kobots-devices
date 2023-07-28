@@ -12,13 +12,6 @@ Javadocs are at [kobots-devices](https://eagrahamjr.github.io/kobots-devices/)
 
 ![Just Build](https://github.com/EAGrahamJr/kobots-devices/actions/workflows/build.yaml/badge.svg) ![Kotlin](https://badgen.net/badge/Kotlin/1.8.22/purple) ![Java](https://badgen.net/badge/Java/17/orange) ![Apache License](https://badgen.net/github/license/EAGrahamJr/kobots-devices)
 
-# Ch-ch-changes
-
-- v 0.1.0 introduced a breaking API changes
-  - `CRICHITHatDeviceFactory` was renamed to `CRICKITHat` and factory device creation is no longer directly accessible
-  - `AdafruitSeeSaw` and the former "CRICKIT Internals" were refactored to the `microcontroller` package
-  - New `GamepadQT` device added
-
 ## Building
 
 This project uses [Gradle](https://gradle.org), so the only thing you need is a compatible JDK<sup>**1**</sup>. Additionally, because the project is [Kotlin](https://kotlinlang.org) and uses the _Kotlin Gradle plugin_, a Kotlin installation is also not necessary.<sup>**2**</sup>

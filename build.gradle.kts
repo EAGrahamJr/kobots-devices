@@ -20,7 +20,7 @@ repositories {
 
 val DIOZERO_VER = "1.4.0"
 group = "crackers.kobots"
-version = "0.1.0"
+version = "0.1.1"
 
 dependencies {
     api("ch.qos.logback:logback-classic:1.4.0")

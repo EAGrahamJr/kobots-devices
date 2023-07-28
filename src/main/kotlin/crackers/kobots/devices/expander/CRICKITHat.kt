@@ -20,6 +20,7 @@ import com.diozero.api.*
 import com.diozero.devices.motor.PwmMotor
 import com.diozero.devices.sandpit.motor.BasicStepperController
 import com.diozero.devices.sandpit.motor.BasicStepperController.*
+import crackers.kobots.devices.expander.CRICKITHatDeviceFactory.Types
 import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.MOTOR1A
 import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.MOTOR1B
 import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.MOTOR2A
@@ -27,16 +28,8 @@ import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.MOTOR2B
 import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.NEOPIXEL_PIN
 import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.STATUS_NEOPIXEL_PIN
 import crackers.kobots.devices.expander.CRICKITHatSeesaw.Companion.defaultI2CDevice
-import crackers.kobots.devices.expander.Types.*
 import crackers.kobots.devices.lighting.NeoPixel
 import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
-
-internal enum class Types(internal val offset: Int) {
-    SIGNAL(100), TOUCH(110), SERVO(120), MOTOR(130), DRIVE(140), NEOPIXEL(150), SPEAKER(160);
-
-    fun deviceNumber(device: Int) = offset + device
-    fun indexOf(deviceId: Int) = deviceId - offset
-}
 
 /**
  * A device factory for the AdaFruit
@@ -63,7 +56,7 @@ class CRICKITHat(val seeSaw: AdafruitSeeSaw = CRICKITHatSeesaw()) : DeviceInterf
     fun signalDigitalIn(pin: Int, pullDown: Boolean = false) =
         DigitalInputDevice(
             deviceFactory,
-            SIGNAL.deviceNumber(pin),
+            Types.SIGNAL.deviceNumber(pin),
             if (pullDown) GpioPullUpDown.PULL_DOWN else GpioPullUpDown.PULL_UP,
             GpioEventTrigger.NONE
         )
@@ -71,28 +64,28 @@ class CRICKITHat(val seeSaw: AdafruitSeeSaw = CRICKITHatSeesaw()) : DeviceInterf
     /**
      * Convenience function to get a digital output on the Signal port [pin] (1-8)
      */
-    fun signalDigitalOut(pin: Int) = DigitalOutputDevice(deviceFactory, SIGNAL.deviceNumber(pin), true, false)
+    fun signalDigitalOut(pin: Int) = DigitalOutputDevice(deviceFactory, Types.SIGNAL.deviceNumber(pin), true, false)
 
     /**
      * Convenience function to get an analog input on the  Signal port [pin] (1-8)
      */
-    fun signalAnalogIn(pin: Int) = AnalogInputDevice(deviceFactory, SIGNAL.deviceNumber(pin))
+    fun signalAnalogIn(pin: Int) = AnalogInputDevice(deviceFactory, Types.SIGNAL.deviceNumber(pin))
 
     /**
      * Convenience function to get a digital input on one of the touchpads.
      */
-    fun touchDigitalIn(pin: Int) = DigitalInputDevice(deviceFactory, TOUCH.deviceNumber(pin))
+    fun touchDigitalIn(pin: Int) = DigitalInputDevice(deviceFactory, Types.TOUCH.deviceNumber(pin))
 
     /**
      * Convenience function to get an analog input on one of the touchpads.
      */
-    fun touchAnalogIn(pin: Int) = AnalogInputDevice(deviceFactory, TOUCH.deviceNumber(pin))
+    fun touchAnalogIn(pin: Int) = AnalogInputDevice(deviceFactory, Types.TOUCH.deviceNumber(pin))
 
     /**
      * Convenience function to get a servo device on the Servo ports [pin] (1-4)
      */
     fun servo(pin: Int, servoTrim: ServoTrim = ServoTrim.DEFAULT): ServoDevice =
-        ServoDevice.Builder.builder(SERVO.deviceNumber(pin))
+        ServoDevice.Builder.builder(Types.SERVO.deviceNumber(pin))
             .setDeviceFactory(deviceFactory)
             .setTrim(servoTrim)
             .build()
@@ -109,14 +102,14 @@ class CRICKITHat(val seeSaw: AdafruitSeeSaw = CRICKITHatSeesaw()) : DeviceInterf
     /**
      * Convenience function to get PWM-able outputs.  Note this is 5v.
      */
-    fun drive(index: Int): PwmOutputDevice = PwmOutputDevice(deviceFactory, DRIVE.deviceNumber(index), 1000, 0f)
+    fun drive(index: Int): PwmOutputDevice = PwmOutputDevice(deviceFactory, Types.DRIVE.deviceNumber(index), 1000, 0f)
 
     /**
      * Get **the** unipolar stepper controller from the `DRIVE` ports. Note this is 5v.
      */
     fun unipolarStepperPort(): BasicStepperController {
         // create the pins - these are in the order to pass to the controller
-        val pins = stepperPins(DRIVE).toTypedArray()
+        val pins = stepperPins(Types.DRIVE).toTypedArray()
         return UnipolarBasicController(pins)
     }
 
@@ -124,7 +117,7 @@ class CRICKITHat(val seeSaw: AdafruitSeeSaw = CRICKITHatSeesaw()) : DeviceInterf
      * Get a controller from the motor ports. Note this is 5v.
      */
     fun motorStepperPort(): BasicStepperController {
-        val pins = stepperPins(MOTOR)
+        val pins = stepperPins(Types.MOTOR)
 
         val terminalA = BiPolarTerminal(pins[0], pins[1])
         val terminalB = BiPolarTerminal(pins[2], pins[3])

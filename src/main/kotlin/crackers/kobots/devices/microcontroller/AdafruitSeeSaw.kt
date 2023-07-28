@@ -41,8 +41,7 @@ import kotlin.experimental.and
  *
  * The flow-control device is available, but typically not used.
  */
-
-open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boolean = true) : DeviceInterface {
+open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, initReset: Boolean = true) : DeviceInterface {
 
     /**
      * Analog pin inputs. This must be set for [analogRead] to work.
@@ -64,9 +63,8 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
         if (initReset) softwareReset()
 
         chipId = readByte(STATUS_BASE, STATUS_HW_ID).toInt() and 0xFF
-        if (chipId != DeviceType.ATTINY8X7_HW_ID_CODE.pid && chipId != DeviceType.SAMD09_HW_ID_CODE.pid) {
-            throw RuntimeIOException(String.format("Seesaw Hardware ID ${chipId.hex()} is not correct."))
-        }
+        // verify chip ID vs DeviceTypes
+        DeviceType.values().find { it.chipId == chipId } ?: throw RuntimeIOException("Unknown chip ID $chipId")
 
         // TODO this is currently not really used in this code - python code uses it to over-load pin-maps
         val pid = getVersion().toInt() shr 16
@@ -221,15 +219,15 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
     }
 
     /**
-     * Hardware chip determines if a straight "offset" is used or a pin-mapping
+     * Hardware chip determines if a straight "offset" is used or a pin-mapping. Even though some microprocessors do
+     * not _use_ an offset, a pin-mapping is still required to validate the pin requested.
      */
     private fun IntArray.pwmOffsets(pinToFind: Byte): Byte = indexOf(pinToFind.toInt()).let {
         if (it < 0) throw IllegalArgumentException("Unknown analog pin ${pinToFind.hex()}")
         // hardware differences (this is interesting)
         when (chipId) {
-            DeviceType.SAMD09_HW_ID_CODE.pid -> it
-            DeviceType.ATTINY8X7_HW_ID_CODE.pid -> pinToFind
-            else -> throw IllegalStateException("Unknown chip ${chipId.hex()} - this should not happen!")
+            DeviceType.SAMD09_HW_ID_CODE.chipId -> it
+            else -> pinToFind
         }
     }.toByte()
 
@@ -462,12 +460,17 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, val initReset: Boole
             INPUT, OUTPUT, INPUT_PULLUP, INPUT_PULLDOWN
         }
 
-        enum class DeviceType(val pid: Int) {
-            // TODO: update when we get real PID (hasn't happened after several years - shrug)
+        enum class DeviceType(val chipId: Int) {
+            // TODO: need to keep this updated
             CRICKIT_PID(9999),
             ROBOHATMM1_PID(9998),
             SAMD09_HW_ID_CODE(0x55),
-            ATTINY8X7_HW_ID_CODE(0x87)
+            ATTINY806_HW_ID_CODE(0x84),
+            ATTINY807_HW_ID_CODE(0x85),
+            ATTINY816_HW_ID_CODE(0x86),
+            ATTINY817_HW_ID_CODE(0x87),
+            ATTINY1616_HW_ID_CODE(0x88),
+            ATTINY1617_HW_ID_CODE(0x89)
         }
     }
 }

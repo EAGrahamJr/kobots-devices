@@ -10,8 +10,9 @@ interface WS2811 {
      * Wrapper for colors that includes an optional white level for devices that support that. An optional [brightness]
      * can also be applied.
      */
-    class PixelColor(val color: Color, val white: Int = 0, val brightness: Float? = null) : Cloneable {
+    data class PixelColor(val color: Color, val white: Int = 0, val brightness: Float? = null) : Cloneable {
         public override fun clone() = PixelColor(color, white, brightness)
+        fun same(color: Color) = color == this.color
     }
 
     var autoWrite: Boolean

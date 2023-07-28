@@ -51,7 +51,7 @@ class CrickitHatTest : FunSpec(
                     listOf(STATUS_BASE, STATUS_VERSION)
 
                 mockRequests shouldContainExactly expectedCommandBytes
-                hat.chipId shouldBe AdafruitSeeSaw.Companion.DeviceType.SAMD09_HW_ID_CODE.pid
+                hat.chipId shouldBe AdafruitSeeSaw.Companion.DeviceType.SAMD09_HW_ID_CODE.chipId
             }
 
             test("Seesaw initialization - ATTINY 8x7") {
@@ -66,7 +66,7 @@ class CrickitHatTest : FunSpec(
                     listOf(STATUS_BASE, STATUS_VERSION)
 
                 mockRequests shouldContainExactly expectedCommandBytes
-                hat.chipId shouldBe AdafruitSeeSaw.Companion.DeviceType.ATTINY8X7_HW_ID_CODE.pid
+                hat.chipId shouldBe AdafruitSeeSaw.Companion.DeviceType.ATTINY817_HW_ID_CODE.chipId
             }
 
             test("Seesaw initialization with bad hardware") {

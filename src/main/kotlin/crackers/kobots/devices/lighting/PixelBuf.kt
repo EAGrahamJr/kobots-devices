@@ -145,9 +145,7 @@ abstract class PixelBuf(
      * Fill the entire device with this color. If [autoWrite] is enabled, the results are immediately uploaded.
      */
     override fun fill(color: PixelColor) {
-        val parsed = parseColor(color)
-        (0 until size).forEach { setItem(it, parsed) }
-        if (_autoWrite) show()
+        set(0, size - 1, color)
     }
 
     /**
@@ -161,22 +159,24 @@ abstract class PixelBuf(
     }
 
     /**
-     * Set a range of pixels to a color. If [autoWrite] is enabled, the results are * immediately uploaded.
+     * Set a range of pixels to a color (end is **inclusive**). If [autoWrite] is enabled, the results are
+     * immediately uploaded.
      */
     override operator fun set(start: Int, end: Int, color: PixelColor) {
-        val c = parseColor(color)
+        val parsed = parseColor(color)
         (start..end).forEach {
-            setItem(it, c)
+            setItem(it, parsed)
             currentColors[it] = color
         }
         if (_autoWrite) show()
     }
 
     /**
-     * Set a range of pixels to a range of colors. The color list must be equal to or larger than the range specified.
-     * If [autoWrite] is enabled, the results are * immediately uploaded.
+     * Set a range of pixels to a range of colors (end is **inclusive**). The color list must be equal to or larger
+     * than the range specified. If [autoWrite] is enabled, the results are immediately uploaded.
      */
     override operator fun set(start: Int, end: Int, colors: List<PixelColor>) {
+        require(colors.size >= end - start + 1) { "List of colors does not match range." }
         (start..end).forEach {
             setItem(it, parseColor(colors[it]))
             currentColors[it] = colors[it]

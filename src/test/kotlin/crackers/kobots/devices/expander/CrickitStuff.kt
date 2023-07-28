@@ -32,12 +32,12 @@ fun initProperties() {
 
 fun initRaspberryPi(): Stack<ByteArray>.() -> Unit = {
     push(byteArrayOf(0x0f, 0x75, 0x27, 0x01))
-    push(byteArrayOf(AdafruitSeeSaw.Companion.DeviceType.SAMD09_HW_ID_CODE.pid.toByte()))
+    push(byteArrayOf(AdafruitSeeSaw.Companion.DeviceType.SAMD09_HW_ID_CODE.chipId.toByte()))
 }
 
 fun initOtherBoardType(): Stack<ByteArray>.() -> Unit = {
     push(byteArrayOf(0x0f, 0x75, 0x27, 0x01))
-    push(byteArrayOf(AdafruitSeeSaw.Companion.DeviceType.ATTINY8X7_HW_ID_CODE.pid.toByte()))
+    push(byteArrayOf(AdafruitSeeSaw.Companion.DeviceType.ATTINY817_HW_ID_CODE.chipId.toByte()))
 }
 
 internal val testHat: CRICKITHatSeesaw by lazy {

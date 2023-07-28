@@ -7,6 +7,9 @@ import com.diozero.sbc.BoardPinInfo
 import crackers.kobots.devices.microcontroller.*
 import javax.naming.OperationNotSupportedException
 
+/**
+ * A factory for the CRICKIT Hat: provides the `diozero` devices exposed via the CRICKIT Hat. Not to be used externally.
+ */
 internal class CRICKITHatDeviceFactory(private val seeSaw: AdafruitSeeSaw) :
     AbstractDeviceFactory(NAME),
     GpioDeviceFactoryInterface,
@@ -37,7 +40,7 @@ internal class CRICKITHatDeviceFactory(private val seeSaw: AdafruitSeeSaw) :
      *   - this is to distinguish creating conflicting devices (e.g. Touch and Signal both have digital inputs)
      * - `name`: header plus (device id - offset)
      */
-    val boardInfo: BoardPinInfo = BoardPinInfo().apply {
+    internal val boardInfo: BoardPinInfo = BoardPinInfo().apply {
         val gpioPinModes = setOf(DeviceMode.DIGITAL_INPUT, DeviceMode.DIGITAL_OUTPUT, DeviceMode.ANALOG_INPUT)
         CRICKITHatSeesaw.DIGITAL_PINS.forEachIndexed { index, pin ->
             val info = crickitPinInfo(Types.SIGNAL, index + 1, pin, gpioPinModes, CRICKITHatSeesaw.ANALOG_MAX)
@@ -195,5 +198,12 @@ internal class CRICKITHatDeviceFactory(private val seeSaw: AdafruitSeeSaw) :
 
     companion object {
         private const val NAME = "CRICKIT"
+    }
+
+    enum class Types(internal val offset: Int) {
+        SIGNAL(100), TOUCH(110), SERVO(120), MOTOR(130), DRIVE(140), NEOPIXEL(150), SPEAKER(160);
+
+        fun deviceNumber(device: Int) = offset + device
+        fun indexOf(deviceId: Int) = deviceId - offset
     }
 }

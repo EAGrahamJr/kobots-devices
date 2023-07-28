@@ -75,7 +75,7 @@ class CrickitHatTouchPadsTest : FunSpec(
                     // N.B. this should not trigger the calibration reads
                     AnalogInputDevice(
                         deviceFactory,
-                        Types.TOUCH.deviceNumber(touchPad)
+                        CRICKITHatDeviceFactory.Types.TOUCH.deviceNumber(touchPad)
                     ).use { d ->
                         d.unscaledValue shouldBe 0.043010753f
                         d.unscaledValue shouldBe 0.50048876f
@@ -98,7 +98,7 @@ class CrickitHatTouchPadsTest : FunSpec(
 
                     DigitalInputDevice(
                         deviceFactory,
-                        Types.TOUCH.deviceNumber(touchPad),
+                        CRICKITHatDeviceFactory.Types.TOUCH.deviceNumber(touchPad),
                         GpioPullUpDown.NONE,
                         GpioEventTrigger.NONE
                     ).use { d ->
