@@ -23,7 +23,7 @@ group = "crackers.kobots"
 version = "0.1.1"
 
 dependencies {
-    api("ch.qos.logback:logback-classic:1.4.0")
+    api("org.slf4j:slf4j-api:2.0.0")
     api("com.diozero:diozero-core:$DIOZERO_VER")
 
     // for adhoc testing
@@ -32,6 +32,7 @@ dependencies {
 
     testImplementation("io.kotest:kotest-runner-junit5:5.5.4")
     testImplementation("io.mockk:mockk:1.13.3")
+    testImplementation("ch.qos.logback:logback-classic:1.4.0")
 }
 
 kotlin {
