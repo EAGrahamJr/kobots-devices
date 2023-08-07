@@ -53,6 +53,20 @@ class GamepadQT(i2CDevice: I2CDevice = I2CDevice(DEFAULT_I2C_BUS, DEFAULT_I2C_AD
     val yAxis: Float
         get() = seeSaw.analogRead(seeSaw.analogInputPins[1].toByte()).toFloat()
 
+    class GamepadButtons(
+        val start: Boolean,
+        val select: Boolean,
+        val a: Boolean,
+        val b: Boolean,
+        val x: Boolean,
+        val y: Boolean
+    )
+
+    fun read(): GamepadButtons {
+        val buttons = allButtons
+        return GamepadButtons(buttons[0], buttons[1], buttons[2], buttons[3], buttons[4], buttons[5])
+    }
+
     override fun close() {
         seeSaw.close()
     }

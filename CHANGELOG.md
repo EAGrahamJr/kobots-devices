@@ -1,5 +1,10 @@
 # Changelog
 
+## v 0.1.2 - 8/7/2023
+
+- Add a new class `GamepadButtons` to handle reading all `GamepadQT` buttons at once
+- Fix up some dependencies
+
 ## v 0.1.1 - 7/28/2023
 
 - Fix `fill` bug in `PixelBuf` (not retaining "current" colors)
