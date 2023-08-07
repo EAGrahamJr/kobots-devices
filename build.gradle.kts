@@ -20,7 +20,7 @@ repositories {
 
 val DIOZERO_VER = "1.4.0"
 group = "crackers.kobots"
-version = "0.1.1"
+version = "0.1.2"
 
 dependencies {
     api("org.slf4j:slf4j-api:2.0.5")
