@@ -7,6 +7,7 @@ import com.diozero.devices.LuminositySensorInterface
 import crackers.kobots.utilities.KobotSleep
 import crackers.kobots.utilities.toBytes
 import crackers.kobots.utilities.toShort
+import kotlin.experimental.or
 
 /**
  * Close-range "time of flight" proximity sensor on an I2C board, works for ranges < 200 mm.
@@ -104,9 +105,30 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
 
     override fun getDistanceCm(): Float = range / 10f
 
-    override fun getLuminosity(): Float {
-        TODO("Not yet implemented")
+    override fun getLuminosity(): Float = getLuminosity(ALSGain.GAIN_10)
+
+    fun getLuminosity(gain: ALSGain): Float {
+        TODO("not working yet")
+        // IRQ on ALS ready
+        val reg = readByte(SYSTEM_INTERRUPT_CONFIG).toInt().let {
+            (it and 0x38.inv()) or (0x04 shl 3) // todo replace with real numbers
+        }
+        writeByte(SYSTEM_INTERRUPT_CONFIG, reg.toByte())
+        // 100 ms integration period
+        writeByte(SYSALS_INTEGRATION_PERIOD_HI, 0)
+        writeByte(SYSALS_INTEGRATION_PERIOD_LO, 100)
+
+        // analog gain and start polling
+        writeByte(SYSALS_ANALOGUE_GAIN, gain.setting or 0x40)
+        writeByte(SYSALS_START, 0x01)
+        while (luxInterrupt() != 4) {
+            KobotSleep.nanos(50)
+        }
+        return readInt(RESULT_ALS_VAL) / gain.divisor
     }
+
+    // todo really AND 0x20?
+    private fun luxInterrupt() = (readByte(RESULT_INTERRUPT_STATUS_GPIO).toInt() shr 3) and 0x07
 
     /**
      * Stops continuous ranging mode.
@@ -127,9 +149,15 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
         writeByte(SYSRANGE_START, 0x03)
     }
 
+    /**
+     * Returns the current range in millimeters.
+     */
     val range: Int
         get() = if (continuousModeEnabled) readRangeContinuous() else readRangeSingle()
 
+    /**
+     * Returns the range history buffer: there are 16 history entries available, each entry is the range in mm.
+     */
     val rangeFromHistory: List<Int>
         get() = if (!rangeHistoryEnabled) {
             emptyList()
@@ -139,13 +167,13 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
             }
         }
 
+    /**
+     * Returns true if the range history buffer is enabled.
+     */
     val rangeHistoryEnabled: Boolean
-        get() = readByte(SYSTEM_HISTORY_CTRL).toInt().let {
-            (it and 0x02) != 0 && (it and 0x01) == 0
-        }
+        get() = readByte(SYSTEM_HISTORY_CTRL).toInt() and 0x01 == 1
 
     private fun readRangeSingle(): Int {
-        // TODO this seems too fast?
         while (readByte(RESULT_RANGE_STATUS).toInt() and 0x01 == 0)
             KobotSleep.nanos(50)
         writeByte(SYSRANGE_START, 0x01)
@@ -211,8 +239,15 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
 
         const val DEFAULT_I2C_ADDR = 0x29
 
-        enum class ALSGain(val setting: Byte) {
-            GAIN_1(6), GAIN_1_25(5), GAIN_1_67(4), GAIN_2_5(3), GAIN_5(2), GAIN_10(1), GAIN_20(0), GAIN_40(7)
+        enum class ALSGain(val setting: Byte, val divisor: Float) {
+            GAIN_1(6, 1f),
+            GAIN_1_25(5, 1.25f),
+            GAIN_1_67(4, 1.67f),
+            GAIN_2_5(3, 2.5f),
+            GAIN_5(2, 5f),
+            GAIN_10(1, 10f),
+            GAIN_20(0, 20f),
+            GAIN_40(7, 40f)
         }
 
         enum class Errors(val code: Byte) {

@@ -20,11 +20,14 @@ repositories {
 
 val DIOZERO_VER = "1.4.0"
 group = "crackers.kobots"
-version = "0.1.2"
+version = "0.1.3"
 
 dependencies {
     api("org.slf4j:slf4j-api:2.0.5")
     api("com.diozero:diozero-core:$DIOZERO_VER")
+
+    // for remote control
+    compileOnly("org.eclipse.paho:org.eclipse.paho.mqttv5.client:1.2.5")
 
     // for adhoc testing
     testImplementation("com.diozero:diozero-provider-remote:$DIOZERO_VER")
