@@ -14,7 +14,8 @@ import java.util.concurrent.TimeUnit
 /**
  * MQTT wrapper for Kobots
  */
-class KobotsMQTT(private val clientName: String, broker: String = BROKER, persistence: MqttClientPersistence? = null) {
+class KobotsMQTT(private val clientName: String, broker: String = BROKER, persistence: MqttClientPersistence? = null) :
+    AutoCloseable {
     private val logger = LoggerFactory.getLogger("${clientName}MQTT")
 
     private val mqttClient by lazy {
@@ -102,6 +103,10 @@ class KobotsMQTT(private val clientName: String, broker: String = BROKER, persis
 
     fun publish(topic: String, payload: String) {
         mqttClient.publish(topic, MqttMessage(payload.toByteArray())).waitForCompletion()
+    }
+
+    override fun close() {
+        mqttClient.close()
     }
 
     companion object {

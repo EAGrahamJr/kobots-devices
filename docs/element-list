@@ -30,5 +30,6 @@ crackers.kobots.devices.io
 crackers.kobots.devices.lighting
 crackers.kobots.devices.microcontroller
 crackers.kobots.devices.sensors
+crackers.kobots.mqtt
 crackers.kobots.utilities
 
