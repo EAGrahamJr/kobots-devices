@@ -12,11 +12,15 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 /**
- * MQTT wrapper for Kobots
+ * MQTT wrapper for Kobots.
+ *
+ * Because this is still in the experimental phase, QoS is **always** `0` and each session starts "clean" (clients do not
+ * retain "state"). Auto-reconnect is enabled and any subscriptions are re-subscribed on re-connect.
  */
 class KobotsMQTT(private val clientName: String, broker: String = BROKER, persistence: MqttClientPersistence? = null) :
     AutoCloseable {
     private val logger = LoggerFactory.getLogger("${clientName}MQTT")
+    private val subscribers = mutableMapOf<String, List<(String) -> Unit>>()
 
     private val mqttClient by lazy {
         val options = MqttConnectionOptions().apply {
@@ -41,7 +45,15 @@ class KobotsMQTT(private val clientName: String, broker: String = BROKER, persis
         }
 
         override fun connectComplete(reconnect: Boolean, serverURI: String?) {
-            logger.warn(if (reconnect) "Re-connected" else "Connected")
+            if (reconnect) {
+                logger.error("Re-connected")
+                subscribers.forEach { topic, subscribers ->
+                    logger.warn("Re-subscribing to $topic")
+                    subscribers.forEach { subscribe(topic, it) }
+                }
+            } else {
+                logger.warn("Connected")
+            }
         }
 
         override fun authPacketArrived(reasonCode: Int, properties: MqttProperties?) {
@@ -86,6 +98,15 @@ class KobotsMQTT(private val clientName: String, broker: String = BROKER, persis
     }
 
     fun subscribe(topic: String, listener: (String) -> Unit) {
+        // assume the users of this will only call it once
+        subscribers.compute(topic) { _, list ->
+            if (list == null) {
+                listOf(listener)
+            } else {
+                list + listener
+            }
+        }
+
         val sub = MqttSubscription(topic, 0)
         // STUPID FUCKING BUG!!!!
         val props = MqttProperties().apply {

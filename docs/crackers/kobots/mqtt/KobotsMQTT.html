@@ -120,7 +120,7 @@ var pathtoroot = "../../../";
 public final class <span class="typeNameLabel"><a href=KobotsMQTT.html>KobotsMQTT</a></span>
  implements <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html>AutoCloseable</a>
                     </pre>
-                    <div class="block"><p>MQTT wrapper for Kobots</p></div>
+                    <div class="block"><p>MQTT wrapper for Kobots.</p><p>Because this is still in the experimental phase, QoS is always <code>0</code> and each session starts &quot;clean&quot; (clients do not retain &quot;state&quot;). Auto-reconnect is enabled and any subscriptions are re-subscribed on re-connect.</p></div>
                 </li>
             </ul>
         </div>
