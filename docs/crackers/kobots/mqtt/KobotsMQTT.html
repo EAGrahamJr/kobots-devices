@@ -120,7 +120,7 @@ var pathtoroot = "../../../";
 public final class <span class="typeNameLabel"><a href=KobotsMQTT.html>KobotsMQTT</a></span>
  implements <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html>AutoCloseable</a>
                     </pre>
-                    <div class="block"><p>MQTT wrapper for Kobots.</p><p>Because this is still in the experimental phase, QoS is always <code>0</code> and each session starts &quot;clean&quot; (clients do not retain &quot;state&quot;). Auto-reconnect is enabled and any subscriptions are re-subscribed on re-connect.</p></div>
+                    <div class="block"><p>MQTT wrapper for Kobots.</p><p>Because this is still in the experimental phase, QoS is always <code>0</code> and each session starts &quot;clean&quot; (the broker and clients do not retain &quot;state&quot;). Auto-reconnect is enabled and any subscriptions are re-subscribed on re-connect.</p><p>Because of the current default Qos, any actual persistence is not used.</p></div>
                 </li>
             </ul>
         </div>
@@ -170,12 +170,6 @@ public final class <span class="typeNameLabel"><a href=KobotsMQTT.html>KobotsMQT
                                         <tr class="altColor">
                                             <td class="colFirst"><code>public final static <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a></code></td>
                                             <th class="colSecond" scope="row"><code><a href=KobotsMQTT.html#KOBOTS_ALIVE>KOBOTS_ALIVE</a></code></th>
-                                            <td class="colLast"></td>
-                                        </tr>
-                                        
-                                        <tr class="rowColor">
-                                            <td class="colFirst"><code>public final static <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a></code></td>
-                                            <th class="colSecond" scope="row"><code><a href=KobotsMQTT.html#BROKER>BROKER</a></code></th>
                                             <td class="colLast"></td>
                                         </tr>
                                         
@@ -263,7 +257,7 @@ public final class <span class="typeNameLabel"><a href=KobotsMQTT.html>KobotsMQT
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=KobotsMQTT.html#startAliveCheck(java.lang.Long)>startAliveCheck</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html>Long</a> intervalSeconds) </code>
                                             </th>
-                                            <td class="colLast"></td>
+                                            <td class="colLast">Start an &quot;alive check&quot;/heartbeat message.</td>
                                         </tr>
                                         
                                         <tr id="i1" class="rowColor">
@@ -271,7 +265,7 @@ public final class <span class="typeNameLabel"><a href=KobotsMQTT.html>KobotsMQT
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=KobotsMQTT.html#handleAliveCheck(kotlin.jvm.functions.Function1,java.lang.Long)>handleAliveCheck</a>(Function1&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a>, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a>&gt; listener, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html>Long</a> deadIntervalSeconds) </code>
                                             </th>
-                                            <td class="colLast"></td>
+                                            <td class="colLast">Listens for <code>KOBOTS_ALIVE</code> messages and tracks the last time a message was received from each host.</td>
                                         </tr>
                                         
                                         <tr id="i2" class="altColor">
@@ -279,7 +273,7 @@ public final class <span class="typeNameLabel"><a href=KobotsMQTT.html>KobotsMQT
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=KobotsMQTT.html#subscribe(java.lang.String,kotlin.jvm.functions.Function1)>subscribe</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> topic, Function1&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a>, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a>&gt; listener) </code>
                                             </th>
-                                            <td class="colLast"></td>
+                                            <td class="colLast">Subscribe to a topic.</td>
                                         </tr>
                                         
                                         <tr id="i3" class="rowColor">
@@ -361,7 +355,7 @@ public final class <span class="typeNameLabel"><a href=KobotsMQTT.html>KobotsMQT
                                     <li class="blockList">
                                         <h4>startAliveCheck</h4>
                                         <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=KobotsMQTT.html#startAliveCheck(java.lang.Long)>startAliveCheck</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html>Long</a> intervalSeconds)</pre>
-                                        <div class="block"></div>
+                                        <div class="block"><p>Start an &quot;alive check&quot;/heartbeat message. This is a message published to the <a href=KobotsMQTT.html#KOBOTS_ALIVE>KOBOTS_ALIVE</a> topic.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>
@@ -376,7 +370,7 @@ public final class <span class="typeNameLabel"><a href=KobotsMQTT.html>KobotsMQT
                                     <li class="blockList">
                                         <h4>handleAliveCheck</h4>
                                         <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=KobotsMQTT.html#handleAliveCheck(kotlin.jvm.functions.Function1,java.lang.Long)>handleAliveCheck</a>(Function1&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a>, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a>&gt; listener, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html>Long</a> deadIntervalSeconds)</pre>
-                                        <div class="block"></div>
+                                        <div class="block"><p>Listens for <code>KOBOTS_ALIVE</code> messages and tracks the last time a message was received from each host. The <a href=KobotsMQTT.html#handleAliveCheck(kotlin.jvm.functions.Function1,java.lang.Long)>listener</a> is called when a host has not been seen for <a href=KobotsMQTT.html#handleAliveCheck(kotlin.jvm.functions.Function1,java.lang.Long)>deadIntervalSeconds</a> seconds.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>
@@ -391,7 +385,7 @@ public final class <span class="typeNameLabel"><a href=KobotsMQTT.html>KobotsMQT
                                     <li class="blockList">
                                         <h4>subscribe</h4>
                                         <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=KobotsMQTT.html#subscribe(java.lang.String,kotlin.jvm.functions.Function1)>subscribe</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> topic, Function1&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a>, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a>&gt; listener)</pre>
-                                        <div class="block"></div>
+                                        <div class="block"><p>Subscribe to a topic. The <a href=KobotsMQTT.html#subscribe(java.lang.String,kotlin.jvm.functions.Function1)>listener</a> is called when a message is received.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>

@@ -9,18 +9,23 @@ import org.slf4j.LoggerFactory
 import java.time.Duration
 import java.time.LocalTime
 import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
 /**
  * MQTT wrapper for Kobots.
  *
- * Because this is still in the experimental phase, QoS is **always** `0` and each session starts "clean" (clients do not
- * retain "state"). Auto-reconnect is enabled and any subscriptions are re-subscribed on re-connect.
+ * Because this is still in the experimental phase, QoS is **always** `0` and each session starts "clean" (the broker
+ * and clients do not retain "state"). Auto-reconnect is enabled and any subscriptions are re-subscribed on re-connect.
+ *
+ * Because of the current default Qos, any actual persistence is not used.
  */
-class KobotsMQTT(private val clientName: String, broker: String = BROKER, persistence: MqttClientPersistence? = null) :
+class KobotsMQTT(private val clientName: String, broker: String, persistence: MqttClientPersistence? = null) :
     AutoCloseable {
     private val logger = LoggerFactory.getLogger("${clientName}MQTT")
     private val subscribers = mutableMapOf<String, List<(String) -> Unit>>()
+    private var aliveCheckInterval = 60L
+    private lateinit var aliveCheckFuture: ScheduledFuture<*>
 
     private val mqttClient by lazy {
         val options = MqttConnectionOptions().apply {
@@ -51,6 +56,11 @@ class KobotsMQTT(private val clientName: String, broker: String = BROKER, persis
                     logger.warn("Re-subscribing to $topic")
                     subscribers.forEach { subscribe(topic, it) }
                 }
+                // kill the old alive-checkser and start a new one
+                if (::aliveCheckFuture.isInitialized) {
+                    aliveCheckFuture.cancel(true)
+                    startAliveCheck(aliveCheckInterval)
+                }
             } else {
                 logger.warn("Connected")
             }
@@ -70,17 +80,27 @@ class KobotsMQTT(private val clientName: String, broker: String = BROKER, persis
     }
 
     private val executor by lazy { Executors.newSingleThreadScheduledExecutor() }
-    fun startAliveCheck(intervalSeconds: Long = 60) {
-        executor.scheduleAtFixedRate(
-            { mqttClient.publish(KOBOTS_ALIVE, clientName.toByteArray(), 0, false) },
-            intervalSeconds,
+
+    /**
+     * Start an "alive check"/heartbeat message. This is a message published to the [KOBOTS_ALIVE] topic.
+     */
+    fun startAliveCheck(intervalSeconds: Long = 30) {
+        if (aliveCheckInterval != intervalSeconds) aliveCheckInterval = intervalSeconds
+        aliveCheckFuture = executor.scheduleAtFixedRate(
+            { publish(KOBOTS_ALIVE, clientName) },
+            intervalSeconds / 2,
             intervalSeconds,
             TimeUnit.SECONDS
         )
     }
 
     private val lastCheckIn = mutableMapOf<String, LocalTime>()
-    fun handleAliveCheck(listener: (String) -> Unit, deadIntervalSeconds: Long = 120) {
+
+    /**
+     * Listens for `KOBOTS_ALIVE` messages and tracks the last time a message was received from each host. The [listener]
+     * is called when a host has not been seen for [deadIntervalSeconds] seconds.
+     */
+    fun handleAliveCheck(listener: (String) -> Unit = {}, deadIntervalSeconds: Long = 15) {
         // store everybody's last time
         subscribe(KOBOTS_ALIVE) { s: String -> lastCheckIn[s] = LocalTime.now() }
 
@@ -97,6 +117,9 @@ class KobotsMQTT(private val clientName: String, broker: String = BROKER, persis
         executor.scheduleAtFixedRate(runner, deadIntervalSeconds / 2, deadIntervalSeconds / 2, TimeUnit.SECONDS)
     }
 
+    /**
+     * Subscribe to a topic. The [listener] is called when a message is received.
+     */
     fun subscribe(topic: String, listener: (String) -> Unit) {
         // assume the users of this will only call it once
         subscribers.compute(topic) { _, list ->
@@ -123,7 +146,11 @@ class KobotsMQTT(private val clientName: String, broker: String = BROKER, persis
     }
 
     fun publish(topic: String, payload: String) {
-        mqttClient.publish(topic, MqttMessage(payload.toByteArray())).waitForCompletion()
+        try {
+            mqttClient.publish(topic, MqttMessage(payload.toByteArray())).waitForCompletion()
+        } catch (t: Throwable) {
+            logger.error("Publisher error", t)
+        }
     }
 
     override fun close() {
@@ -135,10 +162,5 @@ class KobotsMQTT(private val clientName: String, broker: String = BROKER, persis
          * The alive-check topic used by Kobots.
          */
         const val KOBOTS_ALIVE = "kobots/alive"
-
-        /**
-         * Default broker.
-         */
-        const val BROKER = "tcp://192.168.1.4:1883"
     }
 }
