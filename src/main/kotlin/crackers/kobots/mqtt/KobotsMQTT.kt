@@ -7,7 +7,7 @@ import org.eclipse.paho.mqttv5.common.MqttSubscription
 import org.eclipse.paho.mqttv5.common.packet.MqttProperties
 import org.slf4j.LoggerFactory
 import java.time.Duration
-import java.time.LocalTime
+import java.time.ZonedDateTime
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -94,7 +94,7 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
         )
     }
 
-    private val lastCheckIn = mutableMapOf<String, LocalTime>()
+    private val lastCheckIn = mutableMapOf<String, ZonedDateTime>()
 
     /**
      * Listens for `KOBOTS_ALIVE` messages and tracks the last time a message was received from each host. The [listener]
@@ -102,16 +102,13 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
      */
     fun handleAliveCheck(listener: (String) -> Unit = {}, deadIntervalSeconds: Long = 15) {
         // store everybody's last time
-        subscribe(KOBOTS_ALIVE) { s: String -> lastCheckIn[s] = LocalTime.now() }
+        subscribe(KOBOTS_ALIVE) { s: String -> lastCheckIn[s] = ZonedDateTime.now() }
 
         // check for dead kobots
         val runner = Runnable {
-            val now = LocalTime.now()
+            val now = ZonedDateTime.now()
             lastCheckIn.forEach { (host, lastSeenAt) ->
-                if (Duration.between(lastSeenAt, now).seconds > deadIntervalSeconds) {
-                    logger.error("$host last seen $lastSeenAt")
-                    listener(host)
-                }
+                if (Duration.between(lastSeenAt, now).seconds > deadIntervalSeconds) listener(host)
             }
         }
         executor.scheduleAtFixedRate(runner, deadIntervalSeconds / 2, deadIntervalSeconds / 2, TimeUnit.SECONDS)
