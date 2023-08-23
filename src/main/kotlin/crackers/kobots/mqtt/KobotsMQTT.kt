@@ -42,7 +42,12 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
 
     private val mqttCallback = object : MqttCallback {
         override fun disconnected(disconnectResponse: MqttDisconnectResponse) {
-            logger.error("Disconnected: $disconnectResponse")
+            logger.error("Disconnected: ${disconnectResponse.exception}")
+            // kill the alive-checker
+            if (::aliveCheckFuture.isInitialized) {
+                logger.error("Stopping alive-check")
+                aliveCheckFuture.cancel(true)
+            }
         }
 
         override fun mqttErrorOccurred(exception: MqttException) {
@@ -83,6 +88,8 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
 
     /**
      * Start an "alive check"/heartbeat message. This is a message published to the [KOBOTS_ALIVE] topic.
+     *
+     * If the connection is lost, the heartbeat will stop and restart when the connection is re-established.
      */
     fun startAliveCheck(intervalSeconds: Long = 30) {
         if (aliveCheckInterval != intervalSeconds) aliveCheckInterval = intervalSeconds

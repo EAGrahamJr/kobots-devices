@@ -355,7 +355,7 @@ public final class <span class="typeNameLabel"><a href=KobotsMQTT.html>KobotsMQT
                                     <li class="blockList">
                                         <h4>startAliveCheck</h4>
                                         <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=KobotsMQTT.html#startAliveCheck(java.lang.Long)>startAliveCheck</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html>Long</a> intervalSeconds)</pre>
-                                        <div class="block"><p>Start an &quot;alive check&quot;/heartbeat message. This is a message published to the <a href=KobotsMQTT.html#KOBOTS_ALIVE>KOBOTS_ALIVE</a> topic.</p></div>
+                                        <div class="block"><p>Start an &quot;alive check&quot;/heartbeat message. This is a message published to the <a href=KobotsMQTT.html#KOBOTS_ALIVE>KOBOTS_ALIVE</a> topic.</p><p>If the connection is lost, the heartbeat will stop and restart when the connection is re-established.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>
