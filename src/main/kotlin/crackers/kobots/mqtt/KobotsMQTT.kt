@@ -93,6 +93,7 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
      */
     fun startAliveCheck(intervalSeconds: Long = 30) {
         if (aliveCheckInterval != intervalSeconds) aliveCheckInterval = intervalSeconds
+        logger.warn("Starting alive-check at $intervalSeconds seconds")
         aliveCheckFuture = executor.scheduleAtFixedRate(
             {
                 if (mqttClient.isConnected) {
