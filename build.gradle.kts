@@ -1,12 +1,11 @@
 buildscript {
     dependencies {
         classpath("crackers.buildstuff:crackers-gradle-plugins:1.0.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20-RC")
     }
 }
 
 plugins {
-    kotlin("jvm") version "1.8.22"
+    kotlin("jvm") version "1.9.0"
     idea
     id("org.jmailen.kotlinter") version "3.12.0"
     id("library-publish") version "1.0.1"
@@ -20,7 +19,7 @@ repositories {
 
 val DIOZERO_VER = "1.4.0"
 group = "crackers.kobots"
-version = "0.1.3"
+version = "0.1.4"
 
 dependencies {
     api("org.slf4j:slf4j-api:2.0.5")

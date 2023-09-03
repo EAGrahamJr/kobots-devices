@@ -113,8 +113,10 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
     /**
      * Listens for `KOBOTS_ALIVE` messages and tracks the last time a message was received from each host. The [listener]
      * is called when a host has not been seen for [deadIntervalSeconds] seconds.
+     *
+     * TODO this needs re-think
      */
-    fun handleAliveCheck(listener: (String) -> Unit = {}, deadIntervalSeconds: Long = 15) {
+    fun handleAliveCheck(listener: (String) -> Unit = {}, deadIntervalSeconds: Long = 30) {
         // store everybody's last time
         subscribe(KOBOTS_ALIVE) { s: String -> lastCheckIn[s] = ZonedDateTime.now() }
 

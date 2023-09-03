@@ -4,6 +4,7 @@ import com.diozero.api.I2CDevice
 import com.diozero.api.NoSuchDeviceException
 import com.diozero.devices.DistanceSensorInterface
 import com.diozero.devices.LuminositySensorInterface
+import crackers.kobots.devices.sensors.VL6180X.Companion.ALSGain.GAIN_10
 import crackers.kobots.utilities.KobotSleep
 import crackers.kobots.utilities.toBytes
 import crackers.kobots.utilities.toShort
@@ -12,7 +13,8 @@ import kotlin.experimental.or
 /**
  * Close-range "time of flight" proximity sensor on an I2C board, works for ranges < 200 mm.
  *
- * Shamelessly cribbed from the Adafruit CircuitPython driver.
+ * Shamelessly cribbed from the Adafruit CircuitPython driver at
+ * https://github.com/adafruit/Adafruit_CircuitPython_VL6180X/blob/main/adafruit_vl6180x.py
  *
  * * [Product description](https://www.adafruit.com/product/3316)
  * * [Datasheet](https://cdn-learn.adafruit.com/assets/assets/000/037/608/original/VL6180X_datasheet.pdf)
@@ -105,29 +107,33 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
 
     override fun getDistanceCm(): Float = range / 10f
 
-    override fun getLuminosity(): Float = getLuminosity(ALSGain.GAIN_10)
+    override fun getLuminosity(): Float = getLuminosity(GAIN_10)
 
     fun getLuminosity(gain: ALSGain): Float {
-        TODO("not working yet")
-        // IRQ on ALS ready
-        val reg = readByte(SYSTEM_INTERRUPT_CONFIG).toInt().let {
-            (it and 0x38.inv()) or (0x04 shl 3) // todo replace with real numbers
-        }
+        // set up the interrupt configuration
+        val reg = (readByte(SYSTEM_INTERRUPT_CONFIG).toInt() and 0x38.inv()) or 32
         writeByte(SYSTEM_INTERRUPT_CONFIG, reg.toByte())
+
         // 100 ms integration period
         writeByte(SYSALS_INTEGRATION_PERIOD_HI, 0)
         writeByte(SYSALS_INTEGRATION_PERIOD_LO, 100)
 
-        // analog gain and start polling
+        // analog gain
         writeByte(SYSALS_ANALOGUE_GAIN, gain.setting or 0x40)
+
+        // start ALS and wait for the interrupt
         writeByte(SYSALS_START, 0x01)
-        while (luxInterrupt() != 4) {
+        while (luxInterrupt() != 4)
             KobotSleep.nanos(50)
-        }
-        return readInt(RESULT_ALS_VAL) / gain.divisor
+
+        // read lux and "calibrate" it
+        val lux = readInt(RESULT_ALS_VAL) * .32f
+        // clear the interrupt
+        writeByte(SYSTEM_INTERRUPT_CLEAR, 0x07)
+
+        return gain / lux
     }
 
-    // todo really AND 0x20?
     private fun luxInterrupt() = (readByte(RESULT_INTERRUPT_STATUS_GPIO).toInt() shr 3) and 0x07
 
     /**
@@ -207,12 +213,6 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
         delegate.writeBytes(hi, lo, data)
     }
 
-    private fun writeInt(address: Int, data: Int) {
-        val (hi, lo) = address.toBytes()
-        val (dataHi, dataLo) = data.toBytes()
-        delegate.writeBytes(hi, lo, dataHi, dataLo)
-    }
-
     companion object {
         const val DEVICE_ID = 0xB4.toByte()
         private const val IDENTIFICATION_MODEL_ID = 0x000
@@ -247,7 +247,9 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
             GAIN_5(2, 5f),
             GAIN_10(1, 10f),
             GAIN_20(0, 20f),
-            GAIN_40(7, 40f)
+            GAIN_40(7, 40f);
+
+            operator fun div(lux: Float) = lux / divisor
         }
 
         enum class Errors(val code: Byte) {

@@ -1,5 +1,13 @@
 # Changelog
 
+## v 0.1.4 - 9/3/2023
+
+- finish/fix luminosity reading for VL6180X sensor
+
+## v 0.1.3 - 8/25/2023
+
+- Added MQTT support classes
+
 ## v 0.1.2 - 8/7/2023
 
 - Add a new class `GamepadButtons` to handle reading all `GamepadQT` buttons at once
