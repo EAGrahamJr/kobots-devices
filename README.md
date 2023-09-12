@@ -12,6 +12,10 @@ Javadocs are at [kobots-devices](https://eagrahamjr.github.io/kobots-devices/)
 
 ![Just Build](https://github.com/EAGrahamJr/kobots-devices/actions/workflows/build.yaml/badge.svg) ![Kotlin](https://badgen.net/badge/Kotlin/1.8.22/purple) ![Java](https://badgen.net/badge/Java/17/orange) ![Apache License](https://badgen.net/github/license/EAGrahamJr/kobots-devices)
 
+## Licensing
+
+Many driver translations are based on code from the [Adafruit Circuit Python](https://github.com/adafruit), which are generally licensed under the [MIT License](https://opensource.org/license/mit/), The [`diozero`](https://www.diozero.com) library is similarly licensed.
+
 ## Building
 
 This project uses [Gradle](https://gradle.org), so the only thing you need is a compatible JDK<sup>**1**</sup>. Additionally, because the project is [Kotlin](https://kotlinlang.org) and uses the _Kotlin Gradle plugin_, a Kotlin installation is also not necessary.<sup>**2**</sup>

@@ -204,18 +204,24 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                         </tr>
                                         
                                         <tr class="altColor">
-                                            <td class="colFirst"><code>private final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a></code></td>
-                                            <th class="colSecond" scope="row"><code><a href=SSD1327.html#width>width</a></code></th>
+                                            <td class="colFirst"><code>private  <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a></code></td>
+                                            <th class="colSecond" scope="row"><code><a href=SSD1327.html#autoShow>autoShow</a></code></th>
                                             <td class="colLast"></td>
                                         </tr>
                                         
                                         <tr class="rowColor">
                                             <td class="colFirst"><code>private final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a></code></td>
-                                            <th class="colSecond" scope="row"><code><a href=SSD1327.html#height>height</a></code></th>
+                                            <th class="colSecond" scope="row"><code><a href=SSD1327.html#width>width</a></code></th>
                                             <td class="colLast"></td>
                                         </tr>
                                         
                                         <tr class="altColor">
+                                            <td class="colFirst"><code>private final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a></code></td>
+                                            <th class="colSecond" scope="row"><code><a href=SSD1327.html#height>height</a></code></th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr class="rowColor">
                                             <td class="colFirst"><code>private final <a href=GrayOled.DisplayType.html>GrayOled.DisplayType</a></code></td>
                                             <th class="colSecond" scope="row"><code><a href=SSD1327.html#displayType>displayType</a></code></th>
                                             <td class="colLast"></td>
@@ -247,7 +253,7 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                         
                                             <tr class="altColor">
                                                 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a
-                                                        href="#GrayOled(com.diozero.devices.oled.SsdOledCommunicationChannel,java.lang.Integer,java.lang.Integer,crackers.kobots.devices.display.GrayOled.DisplayType,kotlin.IntArray,java.lang.Boolean)">GrayOled</a></span>(SsdOledCommunicationChannel delegate, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> width, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> height, <a href=GrayOled.DisplayType.html>GrayOled.DisplayType</a> displayType, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a> initializationSequence, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> reset)</code></th>
+                                                        href="#GrayOled(com.diozero.devices.oled.SsdOledCommunicationChannel,java.lang.Integer,java.lang.Integer,crackers.kobots.devices.display.GrayOled.DisplayType,kotlin.IntArray,java.lang.Boolean,java.lang.Boolean)">GrayOled</a></span>(SsdOledCommunicationChannel delegate, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> width, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> height, <a href=GrayOled.DisplayType.html>GrayOled.DisplayType</a> displayType, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a> initializationSequence, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> reset, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> initAutoShow)</code></th>
                                                 <td class="colLast"></td>
                                             </tr>
                                         
@@ -317,6 +323,22 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                         </tr>
                                         
                                         <tr id="i2" class="altColor">
+                                            <td class="colFirst"><code>final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=SSD1327.html#getAutoShow()>getAutoShow</a>() </code>
+                                            </th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr id="i3" class="rowColor">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=SSD1327.html#setAutoShow(java.lang.Boolean)>setAutoShow</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> autoShow) </code>
+                                            </th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr id="i4" class="altColor">
                                             <td class="colFirst"><code>final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=SSD1327.html#getWidth()>getWidth</a>() </code>
@@ -324,7 +346,7 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                             <td class="colLast"></td>
                                         </tr>
                                         
-                                        <tr id="i3" class="rowColor">
+                                        <tr id="i5" class="rowColor">
                                             <td class="colFirst"><code>final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=SSD1327.html#getHeight()>getHeight</a>() </code>
@@ -332,7 +354,7 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                             <td class="colLast"></td>
                                         </tr>
                                         
-                                        <tr id="i4" class="altColor">
+                                        <tr id="i6" class="altColor">
                                             <td class="colFirst"><code>final <a href=GrayOled.DisplayType.html>GrayOled.DisplayType</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=SSD1327.html#getDisplayType()>getDisplayType</a>() </code>
@@ -340,7 +362,7 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                             <td class="colLast"></td>
                                         </tr>
                                         
-                                        <tr id="i5" class="rowColor">
+                                        <tr id="i7" class="rowColor">
                                             <td class="colFirst"><code><a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=GrayOled.html#close()>close</a>() </code>
@@ -348,7 +370,7 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                             <td class="colLast"></td>
                                         </tr>
                                         
-                                        <tr id="i6" class="altColor">
+                                        <tr id="i8" class="altColor">
                                             <td class="colFirst"><code>abstract <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=GrayOled.html#invertDisplay(java.lang.Boolean)>invertDisplay</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> invert) </code>
@@ -356,7 +378,7 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                             <td class="colLast"></td>
                                         </tr>
                                         
-                                        <tr id="i7" class="rowColor">
+                                        <tr id="i9" class="rowColor">
                                             <td class="colFirst"><code><a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=SSD1327.html#getNativeImageType()>getNativeImageType</a>() </code>
@@ -364,7 +386,7 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                             <td class="colLast"></td>
                                         </tr>
                                         
-                                        <tr id="i8" class="altColor">
+                                        <tr id="i10" class="altColor">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=SSD1327.html#clear()>clear</a>() </code>
@@ -372,28 +394,20 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                             <td class="colLast">Basically displays a black rectangle, with optional dimensions.</td>
                                         </tr>
                                         
-                                        <tr id="i9" class="rowColor">
-                                            <td class="colFirst"><code>final <a href=https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html>BufferedImage</a></code>
+                                        <tr id="i11" class="rowColor">
+                                            <td class="colFirst"><code><a href=https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html>BufferedImage</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=SSD1327.html#display(java.awt.image.BufferedImage)>display</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html>BufferedImage</a> image) </code>
                                             </th>
-                                            <td class="colLast">Display an image.</td>
+                                            <td class="colLast">Display an image: scales and converts the image into the internal buffer.</td>
                                         </tr>
                                         
-                                        <tr id="i10" class="altColor">
-                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
-                                            </td>
-                                            <th class="colSecond" scope="row"><code><a href=SSD1327.html#appendBuffer(java.util.List)>appendBuffer</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/util/List.html>List</a>&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a>&gt; bytes) </code>
-                                            </th>
-                                            <td class="colLast"></td>
-                                        </tr>
-                                        
-                                        <tr id="i11" class="rowColor">
+                                        <tr id="i12" class="altColor">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=SSD1327.html#show()>show</a>() </code>
                                             </th>
-                                            <td class="colLast"></td>
+                                            <td class="colLast">Transfers the internal buffer to the display.</td>
                                         </tr>
                                         
                                         </tbody>
@@ -427,11 +441,11 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                             </a>
                                 <h3>Constructor Detail</h3>
                                 
-                                <a name="GrayOled(com.diozero.devices.oled.SsdOledCommunicationChannel,java.lang.Integer,java.lang.Integer,crackers.kobots.devices.display.GrayOled.DisplayType,kotlin.IntArray,java.lang.Boolean)"></a>
+                                <a name="GrayOled(com.diozero.devices.oled.SsdOledCommunicationChannel,java.lang.Integer,java.lang.Integer,crackers.kobots.devices.display.GrayOled.DisplayType,kotlin.IntArray,java.lang.Boolean,java.lang.Boolean)"></a>
                                 <ul class="blockList">
                                     <li class="blockList">
                                         <h4>GrayOled</h4>
-                                        <pre>GrayOled(SsdOledCommunicationChannel delegate, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> width, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> height, <a href=GrayOled.DisplayType.html>GrayOled.DisplayType</a> displayType, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a> initializationSequence, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> reset)</pre>
+                                        <pre>GrayOled(SsdOledCommunicationChannel delegate, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> width, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> height, <a href=GrayOled.DisplayType.html>GrayOled.DisplayType</a> displayType, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a> initializationSequence, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> reset, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> initAutoShow)</pre>
                                         <div class="block"></div>
                                         
                                     </li>
@@ -474,6 +488,36 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                     <li class="blockList">
                                         <h4>setDisplayOn</h4>
                                         <pre class="methodSignature"> abstract <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=GrayOled.html#setDisplayOn(java.lang.Boolean)>setDisplayOn</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> displayOn)</pre>
+                                        <div class="block"></div>
+                                        
+                                        <!-- TODO missing return annotation -->
+                                    </li>
+                                </ul>
+                                
+                                <a id="getAutoShow()">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>getAutoShow</h4>
+                                        <pre class="methodSignature"> final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> <a href=SSD1327.html#getAutoShow()>getAutoShow</a>()</pre>
+                                        <div class="block"></div>
+                                        
+                                        <!-- TODO missing return annotation -->
+                                    </li>
+                                </ul>
+                                
+                                <a id="setAutoShow(java.lang.Boolean)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>setAutoShow</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=SSD1327.html#setAutoShow(java.lang.Boolean)>setAutoShow</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> autoShow)</pre>
                                         <div class="block"></div>
                                         
                                         <!-- TODO missing return annotation -->
@@ -593,23 +637,8 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                           >
                                     <li class="blockList">
                                         <h4>display</h4>
-                                        <pre class="methodSignature"> final <a href=https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html>BufferedImage</a> <a href=SSD1327.html#display(java.awt.image.BufferedImage)>display</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html>BufferedImage</a> image)</pre>
-                                        <div class="block"><p>Display an image. This is the preferred method?</p></div>
-                                        
-                                        <!-- TODO missing return annotation -->
-                                    </li>
-                                </ul>
-                                
-                                <a id="appendBuffer(java.util.List)">
-                                    <!--   -->
-                                </a>
-                                <ul class=
-                                              "blockList"
-                                          >
-                                    <li class="blockList">
-                                        <h4>appendBuffer</h4>
-                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=SSD1327.html#appendBuffer(java.util.List)>appendBuffer</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/util/List.html>List</a>&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a>&gt; bytes)</pre>
-                                        <div class="block"></div>
+                                        <pre class="methodSignature"> <a href=https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html>BufferedImage</a> <a href=SSD1327.html#display(java.awt.image.BufferedImage)>display</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html>BufferedImage</a> image)</pre>
+                                        <div class="block"><p>Display an image: scales and converts the image into the internal buffer. If <a href=SSD1327.html#autoShow>autoShow</a> is true, the display will be updated.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>
@@ -624,7 +653,7 @@ public abstract class <span class="typeNameLabel"><a href=GrayOled.html>GrayOled
                                     <li class="blockList">
                                         <h4>show</h4>
                                         <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=SSD1327.html#show()>show</a>()</pre>
-                                        <div class="block"></div>
+                                        <div class="block"><p>Transfers the internal buffer to the display.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>

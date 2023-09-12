@@ -43,6 +43,12 @@ object MockI2CDevice {
 
         // capture all output writes into the output buffer - note this will continue to append to the buffer
         every {
+            d.writeByte(capture(requests))
+        } answers {
+            // do nothing
+        }
+
+        every {
             d.writeBytes(
                 *varargAllByte {
                     requests += it

@@ -31,8 +31,8 @@ import com.diozero.devices.oled.SsdOledCommunicationChannel.I2cCommunicationChan
  *
  * Check out https://github.com/OmniXRI/Pi_Pico_OLED_SSD1327_I2C
  */
-class SSD1327(delegate: SsdOledCommunicationChannel) :
-    GrayOled(delegate, HEIGHT, WIDTH, DisplayType.FOUR_BITS, initSequence(128, 128)) {
+class SSD1327(delegate: SsdOledCommunicationChannel, autoShow: Boolean = false) :
+    GrayOled(delegate, HEIGHT, WIDTH, DisplayType.FOUR_BITS, initSequence(128, 128), true, autoShow) {
     override val dataCommand: Int = DATA_MODE
     override val setColumnCommand: Int = SET_COL_ADDR
     override val setRowCommand: Int = SET_ROW_ADDR

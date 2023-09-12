@@ -41,7 +41,8 @@ abstract class GrayOled(
     val height: Int,
     val displayType: DisplayType,
     initializationSequence: IntArray = IntArray(0),
-    reset: Boolean = true
+    reset: Boolean = true,
+    initAutoShow: Boolean = false
 ) : DeviceInterface {
 
     enum class DisplayType(val pixelsPerByte: Int) {
@@ -52,8 +53,6 @@ abstract class GrayOled(
     protected abstract val setRowCommand: Int
     protected abstract val setColumnCommand: Int
     protected val sendBuffer = mutableListOf<Int>()
-
-    protected val screenBounds = Rectangle2D.Double(0.0, 0.0, width.toDouble(), height.toDouble())
 
     init {
         if (reset && initializationSequence.isNotEmpty()) command(initializationSequence)
@@ -68,25 +67,48 @@ abstract class GrayOled(
     abstract fun invertDisplay(invert: Boolean)
     open fun getNativeImageType() = BufferedImage.TYPE_BYTE_GRAY
 
+    private var _autoShow: Boolean = initAutoShow
+
+    private val BLACKOUT by lazy {
+        BufferedImage(128, 128, BufferedImage.TYPE_BYTE_GRAY).also {
+            with(it.graphics as Graphics2D) {
+                color = Color.BLACK
+                fill(Rectangle2D.Double(0.0, 0.0, width.toDouble(), height.toDouble()))
+            }
+        }
+    }
+
+    /**
+     * If true, the display will be updated after every call to [display].
+     */
+    var autoShow: Boolean
+        get() = _autoShow
+        set(value) {
+            _autoShow = value
+        }
+
     /**
      * Basically displays a black rectangle, with optional dimensions.
      */
     fun clear() {
-        display(
-            BufferedImage(128, 128, BufferedImage.TYPE_BYTE_GRAY).also {
-                with(it.graphics as Graphics2D) {
-                    color = Color.BLACK
-                    fill(screenBounds)
-                }
-            }
-        )
+        display(BLACKOUT)
         show()
     }
 
     /**
-     * Display an image. This is the preferred method?
+     * Display an image: scales and converts the image into the internal buffer. If [autoShow] is true, the display
+     * will be updated.
      */
-    fun display(image: BufferedImage): BufferedImage {
+    open fun display(image: BufferedImage): BufferedImage = scaleAndConvert(image).also {
+        // put it in the buffer
+        packBuffer(it)
+        if (autoShow) show()
+    }
+
+    /**
+     * Scale to the display size and convert the image to the native type.
+     */
+    protected open fun scaleAndConvert(image: BufferedImage): BufferedImage {
         val imageHt = image.height
         val imageWd = image.width
 
@@ -110,24 +132,18 @@ abstract class GrayOled(
             }
 
         // if the type already matches, just use it, otherwise convert to the default color space
-        val convertedImage = if (image.type == getNativeImageType()) {
+        return if (scaledImage.type == getNativeImageType()) {
             scaledImage
         } else {
             ColorConvertOp(COLOR_SPACE, null).filter(scaledImage, null)
         }
-
-        // put it in the buffer
-        return convertedImage.also {
-            displayImage(it)
-        }
     }
 
     /**
-     * The main methodology for pushing the image to the on-board display memory
+     * Set up the internal buffer for transfer to the display.
      */
-    protected open fun displayImage(image: BufferedImage) {
-        // set RAM for writing
-        home()
+    protected open fun packBuffer(image: BufferedImage) {
+        sendBuffer.clear()
 
         // start grabbing pixels
         val rasterized = (image.raster.dataBuffer as DataBufferByte).data
@@ -157,6 +173,11 @@ abstract class GrayOled(
         }
     }
 
+    /**
+     * Set the cursor to the home position.
+     *
+     * TODO investigate cursor posiitioning for partial buffer transfers
+     */
     protected fun home() {
         command(
             intArrayOf(
@@ -178,15 +199,17 @@ abstract class GrayOled(
         }
     }
 
-    fun appendBuffer(bytes: List<Int>) {
-        sendBuffer.addAll(bytes)
-    }
-
+    /**
+     * Transfers the internal buffer to the display.
+     */
     fun show() {
+        // TODO make a copy of the current buffer and determine the offset/size of the dirty region
+
+        // set the cursor to the home position and send the buffer
+        home()
         sendBuffer.chunked(4096) { it.toIntArray() }.forEach {
             data(it)
         }
-        sendBuffer.clear()
     }
 
     /**
