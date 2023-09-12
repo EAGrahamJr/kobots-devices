@@ -26,6 +26,7 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
     private val subscribers = mutableMapOf<String, List<(String) -> Unit>>()
     private var aliveCheckInterval = 60L
     private lateinit var aliveCheckFuture: ScheduledFuture<*>
+    private var aliveCheckEnabled = false
 
     private val mqttClient by lazy {
         val options = MqttConnectionOptions().apply {
@@ -62,10 +63,8 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
                     subscribers.forEach { subscribe(topic, it) }
                 }
                 // kill the old alive-checkser and start a new one
-                if (::aliveCheckFuture.isInitialized) {
-                    aliveCheckFuture.cancel(true)
-                    startAliveCheck(aliveCheckInterval)
-                }
+                if (::aliveCheckFuture.isInitialized) aliveCheckFuture.cancel(true)
+                if (aliveCheckEnabled) startAliveCheck(aliveCheckInterval)
             } else {
                 logger.warn("Connected")
             }
@@ -92,6 +91,7 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
      * If the connection is lost, the heartbeat will stop and restart when the connection is re-established.
      */
     fun startAliveCheck(intervalSeconds: Long = 30) {
+        aliveCheckEnabled = true
         if (aliveCheckInterval != intervalSeconds) aliveCheckInterval = intervalSeconds
         logger.warn("Starting alive-check at $intervalSeconds seconds")
         aliveCheckFuture = executor.scheduleAtFixedRate(
