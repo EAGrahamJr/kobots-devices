@@ -64,42 +64,42 @@ class CrickitHatNeoPixelTest : FunSpec(
                 test("Fill with RED") {
                     strand.fill(Color.RED)
                     mockRequests.joinToString("") { it.hex().lowercase() } shouldBe
-                            "0e04000000ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
-                            "0e040016ff0000ff0000ff0000ff0000ff0000ff0000ff0000ff" +
-                            "0e04002c0000ff0000ff0000ff0000ff0000ff0000ff0000ff00" +
-                            "0e04004200ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
-                            "0e040058ff00" +
-                            "0e05"
+                        "0e04000000ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
+                        "0e040016ff0000ff0000ff0000ff0000ff0000ff0000ff0000ff" +
+                        "0e04002c0000ff0000ff0000ff0000ff0000ff0000ff0000ff00" +
+                        "0e04004200ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
+                        "0e040058ff00" +
+                        "0e05"
                 }
                 xtest("Fill with GREEN") {
                     strand.fill(Color.GREEN)
                     mockRequests.joinToString("") { it.hex().lowercase() } shouldBe
-                            "0e040000ff0000ff0000ff0000ff0000ff0000ff0000ff0000ff" +
-                            "0e0400160000ff0000ff0000ff0000ff0000ff0000ff0000ff00" +
-                            "0e04002c00ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
-                            "0e040042ff0000ff0000ff0000ff0000ff0000ff0000ff0000ff" +
-                            "0e0400580000" +
-                            "0e05"
+                        "0e040000ff0000ff0000ff0000ff0000ff0000ff0000ff0000ff" +
+                        "0e0400160000ff0000ff0000ff0000ff0000ff0000ff0000ff00" +
+                        "0e04002c00ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
+                        "0e040042ff0000ff0000ff0000ff0000ff0000ff0000ff0000ff" +
+                        "0e0400580000" +
+                        "0e05"
                 }
                 xtest("Fill with CYAN") {
                     strand.fill(Color.CYAN)
                     mockRequests.joinToString("") { it.hex().lowercase() } shouldBe
-                            "0e040000ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff" +
-                            "0e04001600ffff00ffff00ffff00ffff00ffff00ffff00ffff00" +
-                            "0e04002cffff00ffff00ffff00ffff00ffff00ffff00ffff00ff" +
-                            "0e040042ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff" +
-                            "0e04005800ff" +
-                            "0e05"
+                        "0e040000ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff" +
+                        "0e04001600ffff00ffff00ffff00ffff00ffff00ffff00ffff00" +
+                        "0e04002cffff00ffff00ffff00ffff00ffff00ffff00ffff00ff" +
+                        "0e040042ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff" +
+                        "0e04005800ff" +
+                        "0e05"
                 }
                 xtest("Fill with PURPLE") {
                     strand.fill(PURPLE)
                     mockRequests.joinToString("") { it.hex().lowercase() } shouldBe
-                            "0e04000000b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00" +
-                            "0e040016b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00b4" +
-                            "0e04002cff00b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00b4ff" +
-                            "0e04004200b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00" +
-                            "0e040058b4ff" +
-                            "0e05"
+                        "0e04000000b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00" +
+                        "0e040016b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00b4" +
+                        "0e04002cff00b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00b4ff" +
+                        "0e04004200b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00b4ff00" +
+                        "0e040058b4ff" +
+                        "0e05"
                 }
             }
             xcontext("Dimming") {
@@ -109,12 +109,12 @@ class CrickitHatNeoPixelTest : FunSpec(
                     mockRequests.clear()
                     strand.brightness = .1f
                     mockRequests.joinToString("") { it.hex().lowercase() } shouldBe
-                            "0e04000000121a00121a00121a00121a00121a00121a00121a00" +
-                            "0e040016121a00121a00121a00121a00121a00121a00121a0012" +
-                            "0e04002c1a00121a00121a00121a00121a00121a00121a00121a" +
-                            "0e04004200121a00121a00121a00121a00121a00121a00121a00" +
-                            "0e040058121a" +
-                            "0e05"
+                        "0e04000000121a00121a00121a00121a00121a00121a00121a00" +
+                        "0e040016121a00121a00121a00121a00121a00121a00121a0012" +
+                        "0e04002c1a00121a00121a00121a00121a00121a00121a00121a" +
+                        "0e04004200121a00121a00121a00121a00121a00121a00121a00" +
+                        "0e040058121a" +
+                        "0e05"
                 }
             }
 
@@ -128,12 +128,12 @@ class CrickitHatNeoPixelTest : FunSpec(
                 test("Set a single pixel to YELLOW") {
                     strand[14] = GOLDENROD
                     mockRequests.joinToString("") { it.hex().lowercase() } shouldBe
-                            "0e04000000ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
-                            "0e040016ff0000ff0000ff0000ff0000ff0000ff0000ff0096ff" +
-                            "0e04002c0000ff0000ff0000ff0000ff0000ff0000ff0000ff00" +
-                            "0e04004200ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
-                            "0e040058ff00" +
-                            "0e05"
+                        "0e04000000ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
+                        "0e040016ff0000ff0000ff0000ff0000ff0000ff0000ff0096ff" +
+                        "0e04002c0000ff0000ff0000ff0000ff0000ff0000ff0000ff00" +
+                        "0e04004200ff0000ff0000ff0000ff0000ff0000ff0000ff0000" +
+                        "0e040058ff00" +
+                        "0e05"
                 }
                 test("Set a single pixel to YELLOW while dimmed") {
                     strand.brightness = .1f

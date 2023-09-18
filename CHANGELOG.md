@@ -1,5 +1,9 @@
 # Changelog
 
+## v 0.1.5 - 9.17/2023
+
+- Mostly working around the MQTT client to add resiliency
+
 ## v 0.1.4 - 9/3/2023
 
 - finish/fix luminosity reading for VL6180X sensor

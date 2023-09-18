@@ -11,6 +11,7 @@ import java.time.ZonedDateTime
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * MQTT wrapper for Kobots.
@@ -26,7 +27,7 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
     private val subscribers = mutableMapOf<String, List<(String) -> Unit>>()
     private var aliveCheckInterval = 60L
     private lateinit var aliveCheckFuture: ScheduledFuture<*>
-    private var aliveCheckEnabled = false
+    private val aliveCheckEnabled = AtomicBoolean(false)
 
     private val mqttClient by lazy {
         val options = MqttConnectionOptions().apply {
@@ -63,8 +64,11 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
                     subscribers.forEach { subscribe(topic, it) }
                 }
                 // kill the old alive-checkser and start a new one
-                if (::aliveCheckFuture.isInitialized) aliveCheckFuture.cancel(true)
-                if (aliveCheckEnabled) startAliveCheck(aliveCheckInterval)
+                if (aliveCheckEnabled.get()) {
+                    startAliveCheck(aliveCheckInterval)
+                } else {
+                    logger.warn("Alive-check is not enabled")
+                }
             } else {
                 logger.warn("Connected")
             }
@@ -91,9 +95,8 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
      * If the connection is lost, the heartbeat will stop and restart when the connection is re-established.
      */
     fun startAliveCheck(intervalSeconds: Long = 30) {
-        aliveCheckEnabled = true
+        aliveCheckEnabled.compareAndExchange(false, true)
         if (aliveCheckInterval != intervalSeconds) aliveCheckInterval = intervalSeconds
-        logger.warn("Starting alive-check at $intervalSeconds seconds")
         aliveCheckFuture = executor.scheduleAtFixedRate(
             {
                 if (mqttClient.isConnected) {
@@ -106,6 +109,7 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
             intervalSeconds,
             TimeUnit.SECONDS
         )
+        logger.warn("Started alive-check at $intervalSeconds seconds")
     }
 
     private val lastCheckIn = mutableMapOf<String, ZonedDateTime>()
@@ -156,6 +160,7 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
             }
         }
         mqttClient.subscribe(arrayOf(sub), null, null, wrapper, props).waitForCompletion()
+        logger.warn("Subscribed to topic $topic")
     }
 
     fun publish(topic: String, payload: String) {
