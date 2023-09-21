@@ -1,6 +1,6 @@
 # Changelog
 
-## v 0.1.5 - 9.17/2023
+## v 0.1.5 - 9/20/2023
 
 - Mostly working around the MQTT client to add resiliency
 

@@ -29,7 +29,7 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
     private lateinit var aliveCheckFuture: ScheduledFuture<*>
     private val aliveCheckEnabled = AtomicBoolean(false)
 
-    private val mqttClient by lazy {
+    private val mqttClient: MqttAsyncClient by lazy {
         val options = MqttConnectionOptions().apply {
             isAutomaticReconnect = true
             isCleanStart = true
@@ -50,6 +50,7 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
                 logger.error("Stopping alive-check")
                 aliveCheckFuture.cancel(true)
             }
+            mqttClient.unsubscribe(subscribers.keys.toTypedArray())
         }
 
         override fun mqttErrorOccurred(exception: MqttException) {
