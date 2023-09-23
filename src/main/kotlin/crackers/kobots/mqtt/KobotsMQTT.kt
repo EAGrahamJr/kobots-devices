@@ -1,3 +1,18 @@
+/*
+ * Copyright 2022-2023 by E. A. Graham, Jr.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
 package crackers.kobots.mqtt
 
 import org.eclipse.paho.mqttv5.client.*
@@ -50,7 +65,6 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
                 logger.error("Stopping alive-check")
                 aliveCheckFuture.cancel(true)
             }
-            mqttClient.unsubscribe(subscribers.keys.toTypedArray())
         }
 
         override fun mqttErrorOccurred(exception: MqttException) {
@@ -60,10 +74,6 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
         override fun connectComplete(reconnect: Boolean, serverURI: String?) {
             if (reconnect) {
                 logger.error("Re-connected")
-                subscribers.forEach { topic, subscribers ->
-                    logger.warn("Re-subscribing to $topic")
-                    subscribers.forEach { subscribe(topic, it) }
-                }
                 // kill the old alive-checkser and start a new one
                 if (aliveCheckEnabled.get()) {
                     startAliveCheck(aliveCheckInterval)
@@ -98,6 +108,7 @@ class KobotsMQTT(private val clientName: String, broker: String, persistence: Mq
     fun startAliveCheck(intervalSeconds: Long = 30) {
         aliveCheckEnabled.compareAndExchange(false, true)
         if (aliveCheckInterval != intervalSeconds) aliveCheckInterval = intervalSeconds
+        logger.warn("Starting alive-check at $intervalSeconds seconds")
         aliveCheckFuture = executor.scheduleAtFixedRate(
             {
                 if (mqttClient.isConnected) {
