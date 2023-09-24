@@ -21,8 +21,6 @@ import crackers.kobots.devices.lighting.NeoPixel
 import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
 import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.NEOPIXEL_BASE
 import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.NEOPIXEL_BUF_LENGTH
-import crackers.kobots.utilities.GOLDENROD
-import crackers.kobots.utilities.PURPLE
 import crackers.kobots.utilities.hex
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
@@ -39,6 +37,8 @@ class CrickitHatNeoPixelTest : FunSpec(
     {
         clearBeforeTest()
         val seeSaw = testHat
+        val PURPLE = Color(0xB4, 0, 0xFF)
+        val GOLDENROD = Color(255, 150, 0)
 
         context("Setup") {
             test("Strand of 30") {

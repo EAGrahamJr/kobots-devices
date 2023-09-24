@@ -357,7 +357,7 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, initReset: Boolean =
     ): ByteArray = lock.withLock {
         // set the register
         write(register, offset)
-        KobotSleep.duration(delay)
+        SleepUtil.busySleep(delay.toNanos())
         // read what we got
         return i2CDevice.readBytes(bytesToRead).also { ba ->
             ba.debug("Read")

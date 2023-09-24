@@ -41,7 +41,7 @@ class CRICKITMotorAndDriveTest : FunSpec(
                 val fullOn = listOf(0xFF.toByte(), 0xFF.toByte())
                 val fullOff = listOf(0x00.toByte(), 0x00)
                 val halfOn = listOf(0x7F.toByte(), 0xFF.toByte())
-                val fullStop = fullOn // interesting! - hard stop supplies current to both directions
+//                val fullStop = fullOn // interesting! - hard stop supplies current to both directions
 
                 val motor = factory.motor(motorId)
 

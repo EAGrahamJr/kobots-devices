@@ -1,5 +1,9 @@
 # Changelog
 
+## v 0.2.0 - 9/24/2023
+
+- Removed "application-specific" code: this makes this library _all_ about devices and interacting with them.
+
 ## v 0.1.5 - 9/23/2023
 
 - Mostly working around the MQTT client to add resiliency
@@ -87,9 +91,9 @@ These changes include those made on the robotics project prior to splitting.
 - Code re-use.
 - Re-set read delay.
 - Combining a servo, the range-finder, and OLED display.
-- Alternate contructor just from an image.
+- Alternate contsructor just from an image.
 - Fix formatting/tests, etc.
-- Allow direct useage of drive ports (e.g. solenoids)
+- Allow direct usage of drive ports (e.g. solenoids)
 - Tweak bus, run gauge stuff faster
 - Steppers added via `diozero` branch.
 - Add another operator for PixelBuf
@@ -98,7 +102,7 @@ These changes include those made on the robotics project prior to splitting.
 - Duplicate code.
 - Close some things when closed.
 - Not implemented on Pi Hat?
-- Collapse the Hat and SeeSaw codes (since the Hat is just pinouts)
+- Collapse the Hat and SeeSaw codes (since the Hat is just pin-outs)
 - Added blocking I/O for the CRICKIT.
 - Might help if it compiled...
 - Fix **ALL** the formatting, language, and other garbage.
@@ -120,7 +124,7 @@ These changes include those made on the robotics project prior to splitting.
 - SSD working!!!!!
 - Merge branch 'main' into oled
 - Fix threading issues and throw around some coroutine stuff
-- Remove uplidate test and ensure property is set
+- Remove update test and ensure property is set
 - Finish moving to full factory stuff.
 - Helpers to get "real" devices.
 - Split out "device factory" and add tests
@@ -136,7 +140,7 @@ These changes include those made on the robotics project prior to splitting.
 - Test maybe?
 - May or may not be working due to possibly non-functional display.
 - Lint gathering, etc.
-- Finish off the prox/light sensor
+- Finish off the proximity/light sensor
 - Almost done with sensor
 - First Qwiic device - light and proximity sensor
 - Initial stepper work is actually stepping
@@ -148,7 +152,7 @@ These changes include those made on the robotics project prior to splitting.
 - Clean up after LCD issues fixed.
 - Back to having fun: Kotlin LCD and a progress bar
 - LCD stuff
-- A kind of port for a specific 2x16 LCD display.
+- A kind of port for a specific 2x16 LCD.
 - Adding basic action and tweaking convenience.
 - Shift-register using 4-digit 8-segment
 - Shift register and 8-segment display
@@ -159,7 +163,7 @@ These changes include those made on the robotics project prior to splitting.
 - Tweaks to ADS7830, motor lesson.
 - Lessons on ADC and some clean up.
 - Turning this into something resembling a real project.
-- RGB LED and a different pinout picture.
-- A debounced button with Java construtor checks
+- RGB LED and a different pin-out picture.
+- A debounced button with Java constructor checks
 - Notes and first extensions.
 - Set up project

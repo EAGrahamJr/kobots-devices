@@ -19,7 +19,7 @@ package crackers.kobots.devices
 import com.diozero.api.DebouncedDigitalInputDevice
 import com.diozero.api.GpioPullUpDown
 import com.diozero.internal.spi.GpioDeviceFactoryInterface
-import crackers.kobots.utilities.nativeDeviceFactory
+import com.diozero.sbc.DeviceFactoryHelper
 import java.time.Duration
 import java.util.function.LongConsumer
 
@@ -31,7 +31,7 @@ class DebouncedButton @JvmOverloads constructor(
     debounceTime: Duration,
     pud: GpioPullUpDown = GpioPullUpDown.NONE,
     activeHigh: Boolean = pud != GpioPullUpDown.PULL_UP,
-    deviceFactory: GpioDeviceFactoryInterface = nativeDeviceFactory
+    deviceFactory: GpioDeviceFactoryInterface = DeviceFactoryHelper.getNativeDeviceFactory()
 ) : DebouncedDigitalInputDevice(
     deviceFactory,
     deviceFactory.boardPinInfo.getByGpioNumberOrThrow(gpio),

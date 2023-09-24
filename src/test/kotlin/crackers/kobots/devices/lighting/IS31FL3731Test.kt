@@ -52,6 +52,7 @@ class IS31FL3731Test : FunSpec(
                 (1..24).forEach { add(0x00) }
             }.bytes()
 
+            // just to initialize it
             val is31 = object : IS31FL3731(mockDevice) {
                 override val width = 1
                 override val height = 1

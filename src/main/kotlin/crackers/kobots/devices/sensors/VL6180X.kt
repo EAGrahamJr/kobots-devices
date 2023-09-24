@@ -20,10 +20,11 @@ import com.diozero.api.I2CDevice
 import com.diozero.api.NoSuchDeviceException
 import com.diozero.devices.DistanceSensorInterface
 import com.diozero.devices.LuminositySensorInterface
+import com.diozero.util.SleepUtil.busySleep
 import crackers.kobots.devices.sensors.VL6180X.Companion.ALSGain.GAIN_10
-import crackers.kobots.utilities.KobotSleep
 import crackers.kobots.utilities.toBytes
 import crackers.kobots.utilities.toShort
+import java.time.Duration
 import kotlin.experimental.or
 
 /**
@@ -41,6 +42,8 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
 
     val continuousModeEnabled: Boolean
         get() = (readByte(SYSRANGE_START).toInt() and 0x02) != 0
+
+    private val HUNDRED_MILLIS = Duration.ofMillis(100).toNanos()
 
     init {
         readByte(IDENTIFICATION_MODEL_ID).toByte().also { id ->
@@ -110,7 +113,7 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
         // reset sensor that crashed in continuous mode
         if (continuousModeEnabled) {
             stopContinuousMode()
-            KobotSleep.millis(100)
+            busySleep(HUNDRED_MILLIS)
         }
 
         // activate the history buffer
@@ -140,7 +143,7 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
         // start ALS and wait for the interrupt
         writeByte(SYSALS_START, 0x01)
         while (luxInterrupt() != 4)
-            KobotSleep.nanos(50)
+            busySleep(50)
 
         // read lux and "calibrate" it
         val lux = readInt(RESULT_ALS_VAL) * .32f
@@ -197,7 +200,7 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
 
     private fun readRangeSingle(): Int {
         while (readByte(RESULT_RANGE_STATUS).toInt() and 0x01 == 0)
-            KobotSleep.nanos(50)
+            busySleep(50)
         writeByte(SYSRANGE_START, 0x01)
         return readRangeContinuous()
     }
@@ -205,7 +208,7 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
     private fun readRangeContinuous(): Int {
         // wiat for the interrupt
         while (readByte(RESULT_INTERRUPT_STATUS_GPIO).toInt() and 0x04 == 0)
-            KobotSleep.nanos(50)
+            busySleep(50)
         return readByte(RESULT_RANGE_VAL).toInt().also {
             // clear the interrupt
             writeByte(SYSTEM_INTERRUPT_CLEAR, 0x07)

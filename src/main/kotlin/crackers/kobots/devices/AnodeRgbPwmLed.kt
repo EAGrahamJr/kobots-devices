@@ -19,7 +19,7 @@ package crackers.kobots.devices
 import com.diozero.api.DeviceInterface
 import com.diozero.devices.RgbPwmLed
 import com.diozero.internal.spi.PwmOutputDeviceFactoryInterface
-import crackers.kobots.utilities.nativeDeviceFactory
+import com.diozero.sbc.DeviceFactoryHelper
 import java.awt.Color
 
 /**
@@ -33,7 +33,7 @@ class AnodeRgbPwmLed @JvmOverloads constructor(
     redPin: Int,
     greenPin: Int,
     bluePin: Int,
-    deviceFactory: PwmOutputDeviceFactoryInterface = nativeDeviceFactory
+    deviceFactory: PwmOutputDeviceFactoryInterface = DeviceFactoryHelper.getNativeDeviceFactory()
 ) : DeviceInterface {
     private val realLed = RgbPwmLed(deviceFactory, redPin, greenPin, bluePin).apply {
         setValues(1f, 1f, 1f)

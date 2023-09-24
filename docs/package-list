@@ -22,7 +22,6 @@ $dokka.location:crackers.kobots.devices.sensors/VCNL4040.ProximityResolution///P
 $dokka.location:crackers.kobots.devices.sensors/VL6180X.Companion.ALSGain///PointingToDeclaration/crackers/kobots/devices/sensors/VL6180X.Companion.ALSGain.html
 $dokka.location:crackers.kobots.devices.sensors/VL6180X.Companion.Errors///PointingToDeclaration/crackers/kobots/devices/sensors/VL6180X.Companion.Errors.html
 $dokka.location:crackers.kobots.devices.sensors/VL6180X.Companion///PointingToDeclaration/crackers/kobots/devices/sensors/VL6180X.Companion.html
-$dokka.location:crackers.kobots.utilities/PointerGauge.Shape///PointingToDeclaration/crackers/kobots/utilities/PointerGauge.Shape.html
 crackers.kobots.devices
 crackers.kobots.devices.display
 crackers.kobots.devices.expander
@@ -30,6 +29,5 @@ crackers.kobots.devices.io
 crackers.kobots.devices.lighting
 crackers.kobots.devices.microcontroller
 crackers.kobots.devices.sensors
-crackers.kobots.mqtt
 crackers.kobots.utilities
 
