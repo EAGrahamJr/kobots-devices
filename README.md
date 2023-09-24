@@ -10,7 +10,7 @@ Javadocs are at [kobots-devices](https://eagrahamjr.github.io/kobots-devices/)
 
 :bangbang: **STILL UNDER CONSTRUCTION!!!!** These items were constructed and verified **only** on a Raspberry Pi, but _should_ work where the [`diozero`](https://www.diozero.com) **main branch** library will work.
 
-![Just Build](https://github.com/EAGrahamJr/kobots-devices/actions/workflows/build.yaml/badge.svg) ![Kotlin](https://badgen.net/badge/Kotlin/1.8.22/purple) ![Java](https://badgen.net/badge/Java/17/orange) ![Apache License](https://badgen.net/github/license/EAGrahamJr/kobots-devices)
+![Just Build](https://github.com/EAGrahamJr/kobots-devices/actions/workflows/build.yaml/badge.svg) ![Kotlin](https://badgen.net/badge/Kotlin/1.9.0/purple) ![Java](https://badgen.net/badge/Java/17/orange) ![Apache License](https://badgen.net/github/license/EAGrahamJr/kobots-devices)
 
 ## Licensing
 
@@ -24,5 +24,5 @@ A default build will use the [gradle-plugins](https://github.com/EAGrahamJr/grad
 
 ---
 
-<sup>**1**</sup>Kotlin 1.8.22/Java 17 is the current build target.<br/>
+<sup>**1**</sup>Kotlin 1.9.0/Java 17 is the current build target.<br/>
 <sup>**2**</sup>This project _may_ depend on _my_ `diozero` changes as they may be ahead of the main repository branch. See the GitHub [actions](.github/workflows/build.yaml) for which version is being used. 
