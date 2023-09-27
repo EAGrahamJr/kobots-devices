@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Assertions
 import java.util.*
 
 /**
- * What it says on the label.
+ * What it says on the label - this is a singleton instance
  */
 object MockI2CDevice {
     /**
@@ -58,7 +58,15 @@ object MockI2CDevice {
         } returns Unit
 
         every {
-            d.writeByteData(any(), any())
+            d.writeByteData(any<Int>(), any<Int>())
+        } answers {
+            it.invocation.args.apply {
+                requests += (get(0).toString().toInt() and 0xFF).toByte()
+                requests += (get(1).toString().toInt() and 0xFF).toByte()
+            }
+        }
+        every {
+            d.writeByteData(any<Int>(), any<Byte>())
         } answers {
             it.invocation.args.apply {
                 requests += (get(0).toString().toInt() and 0xFF).toByte()
@@ -86,6 +94,20 @@ object MockI2CDevice {
                     )
                 }
             }
+        }
+        every {
+            d.readBytes(any<ByteArray>())
+        } answers {
+            val buffer = invocation.args[0] as ByteArray
+            val nextResponse = responses.pop()
+            val actualResponseSize = nextResponse.size
+            Assertions.assertEquals(
+                actualResponseSize,
+                buffer.size,
+                "Number of bytes expected $actualResponseSize vs buffer ${buffer.size}"
+            )
+            nextResponse.copyInto(buffer)
+            actualResponseSize
         }
         every {
             d.close()

@@ -16,10 +16,7 @@
 
 package crackers.kobots.devices.expander
 
-import com.diozero.api.AnalogInputEvent
-import com.diozero.api.DeviceAlreadyOpenedException
-import com.diozero.api.I2CDevice
-import com.diozero.api.PinInfo
+import com.diozero.api.*
 import com.diozero.internal.spi.AbstractDeviceFactory
 import com.diozero.internal.spi.AbstractInputDevice
 import com.diozero.internal.spi.AnalogInputDeviceFactoryInterface
@@ -30,7 +27,7 @@ import com.diozero.sbc.BoardPinInfo
  * The [ADS7830 ](https://cdn.datasheetspdf.com/pdf-down/A/D/S/ADS7830-etcTI.pdf) is a single-supply, low-power,
  * 8-bit data acquisition device that features a serial I2C interface and an 8-channel multiplexer..
  */
-class ADS7830(val i2CDevice: I2CDevice = I2CDevice(1, DEFAULT_ADDRESS)) :
+class ADS7830(val i2CDevice: I2CDeviceInterface = I2CDevice(1, DEFAULT_ADDRESS)) :
     AbstractDeviceFactory(NAME), AnalogInputDeviceFactoryInterface {
 
     override fun getName() = NAME
@@ -51,7 +48,7 @@ class ADS7830(val i2CDevice: I2CDevice = I2CDevice(1, DEFAULT_ADDRESS)) :
      */
     fun readFromChannel(channel: Int): Short {
         if (channel !in (0..7)) throw IllegalArgumentException("Channel $channel is out of range (0 to 7)")
-        return i2CDevice.readUByte(channelToRegister(channel))
+        return i2CDevice.readByteData(channelToRegister(channel)).toShort()
     }
 
     /**

@@ -18,6 +18,7 @@ package crackers.kobots.devices.lighting
 
 import com.diozero.api.DeviceInterface
 import com.diozero.api.I2CDevice
+import com.diozero.api.I2CDeviceInterface
 import com.diozero.util.SleepUtil
 import crackers.kobots.devices.inRange
 import crackers.kobots.devices.toInt
@@ -33,7 +34,7 @@ import kotlin.math.roundToInt
  *
  * Additional information from the [docs](https://www.lumissil.com/assets/pdf/core/IS31FL3731_DS.pdf)
  */
-abstract class IS31FL3731(private val i2CDevice: I2CDevice = DEFAULT_DEVICE, frames: Iterable<Int> = (0..7)) :
+abstract class IS31FL3731(private val i2CDevice: I2CDeviceInterface = DEFAULT_DEVICE, frames: Iterable<Int> = (0..7)) :
     DeviceInterface {
     abstract val width: Int
     abstract val height: Int
@@ -69,7 +70,7 @@ abstract class IS31FL3731(private val i2CDevice: I2CDevice = DEFAULT_DEVICE, fra
     protected fun setBank(bank: Int) {
         if (currentBank.get() != bank) {
             currentBank.set(bank)
-            i2CDevice.writeByteData(BANK_ADDRESS, bank)
+            i2CDevice.writeByteData(BANK_ADDRESS, bank.toByte())
         }
     }
 
@@ -82,7 +83,7 @@ abstract class IS31FL3731(private val i2CDevice: I2CDevice = DEFAULT_DEVICE, fra
 
     protected fun writeToRegister(bank: Int, register: Int, value: Int) {
         setBank(bank)
-        i2CDevice.writeByteData(register, value)
+        i2CDevice.writeByteData(register, value.toByte())
     }
 
     protected fun mode(mode: Int) = writeToRegister(CONFIG_BANK, MODE_REGISTER, mode)

@@ -16,6 +16,7 @@
 package crackers.kobots.devices.sensors
 
 import com.diozero.api.I2CDevice
+import com.diozero.api.I2CDeviceInterface
 import com.diozero.api.NoSuchDeviceException
 import com.diozero.devices.LuminositySensorInterface
 import com.diozero.util.Hex
@@ -30,7 +31,7 @@ import kotlin.math.roundToInt
  * * [Datasheet](https://www.vishay.com/docs/84274/vcnl4040.pdf)
  * * [Adafruit guide](https://learn.adafruit.com/adafruit-vcnl4040-proximity-sensor?view=all)
  */
-class VCNL4040(private val delegate: I2CDevice) : LuminositySensorInterface {
+class VCNL4040(private val delegate: I2CDeviceInterface) : LuminositySensorInterface {
     @JvmOverloads
     constructor(controller: Int = 1, address: Int = DEFAULT_I2C_ADDRESS) : this(I2CDevice(controller, address))
 

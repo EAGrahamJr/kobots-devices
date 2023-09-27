@@ -17,6 +17,7 @@
 package crackers.kobots.devices.sensors
 
 import com.diozero.api.I2CDevice
+import com.diozero.api.I2CDeviceInterface
 import com.diozero.api.NoSuchDeviceException
 import com.diozero.devices.DistanceSensorInterface
 import com.diozero.devices.LuminositySensorInterface
@@ -36,7 +37,7 @@ import kotlin.experimental.or
  * * [Product description](https://www.adafruit.com/product/3316)
  * * [Datasheet](https://cdn-learn.adafruit.com/assets/assets/000/037/608/original/VL6180X_datasheet.pdf)
  */
-class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, DistanceSensorInterface {
+class VL6180X(private val delegate: I2CDeviceInterface) : LuminositySensorInterface, DistanceSensorInterface {
     @JvmOverloads
     constructor(controller: Int = 1, address: Int = DEFAULT_I2C_ADDR) : this(I2CDevice(controller, address))
 
@@ -224,7 +225,9 @@ class VL6180X(private val delegate: I2CDevice) : LuminositySensorInterface, Dist
     private fun readInt(address: Int): Int {
         val (hi, lo) = address.toBytes()
         delegate.writeBytes(hi, lo)
-        return delegate.readBytes(2).toShort()
+        val buffer = ByteArray(2)
+        delegate.readBytes(buffer)
+        return buffer.toShort()
     }
 
     private fun writeByte(address: Int, data: Byte) {

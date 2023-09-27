@@ -17,7 +17,7 @@
 package crackers.kobots.devices.microcontroller
 
 import com.diozero.api.DeviceInterface
-import com.diozero.api.I2CDevice
+import com.diozero.api.I2CDeviceInterface
 import com.diozero.api.RuntimeIOException
 import com.diozero.util.SleepUtil
 import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.SignalMode.*
@@ -41,7 +41,7 @@ import kotlin.experimental.and
  *
  * The flow-control device is available, but typically not used.
  */
-open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, initReset: Boolean = true) : DeviceInterface {
+open class AdafruitSeeSaw(private val i2CDevice: I2CDeviceInterface, initReset: Boolean = true) : DeviceInterface {
 
     /**
      * Analog pin inputs. This must be set for [analogRead] to work.
@@ -359,7 +359,9 @@ open class AdafruitSeeSaw(private val i2CDevice: I2CDevice, initReset: Boolean =
         write(register, offset)
         SleepUtil.busySleep(delay.toNanos())
         // read what we got
-        return i2CDevice.readBytes(bytesToRead).also { ba ->
+        val buffer = ByteArray(bytesToRead)
+        i2CDevice.readBytes(buffer)
+        return buffer.also { ba ->
             ba.debug("Read")
         }
     }

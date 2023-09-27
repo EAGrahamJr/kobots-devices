@@ -16,7 +16,7 @@
 
 package crackers.kobots.devices
 
-import com.diozero.api.I2CDevice
+import com.diozero.api.I2CDeviceInterface
 import java.time.Duration
 import kotlin.system.exitProcess
 
@@ -98,10 +98,19 @@ private abstract class SubRegister<N : Number>(final override val mask: Int) : I
 /**
  * Read and write from 16-bit registers (short) using a mask to extract/write values.
  */
-fun I2CDevice.shortSubRegister(register: Int, mask: Int): I2CSubRegister<Short> {
+fun I2CDeviceInterface.shortSubRegister(register: Int, mask: Int): I2CSubRegister<Short> {
     val i2c = this
     return object : SubRegister<Short>(mask) {
         override fun readRegister(): Short = i2c.readWordData(register)
         override fun writeRegister(data: Short) = i2c.writeWordData(register, data)
     }
+}
+
+/**
+ * Promote an I2CDevice concept to the I2CDeviceInterface
+ */
+fun I2CDeviceInterface.readBytes(n: Int): ByteArray {
+    val buffer = ByteArray(n)
+    readBytes(buffer)
+    return buffer
 }
