@@ -33,6 +33,12 @@ import com.diozero.devices.oled.SsdOledCommunicationChannel.I2cCommunicationChan
  */
 class SSD1327(delegate: SsdOledCommunicationChannel, autoShow: Boolean = false) :
     GrayOled(delegate, HEIGHT, WIDTH, DisplayType.FOUR_BITS, initSequence(128, 128), true, autoShow) {
+
+    /**
+     * Default constructor for convenience.
+     */
+    constructor() : this(I2cCommunicationChannel(I2CDevice(DEFAULT_I2C_BUS, QWIIC_I2C_ADDRESS)), false)
+
     override val dataCommand: Int = DATA_MODE
     override val setColumnCommand: Int = SET_COL_ADDR
     override val setRowCommand: Int = SET_ROW_ADDR
@@ -125,6 +131,6 @@ class SSD1327(delegate: SsdOledCommunicationChannel, autoShow: Boolean = false) 
 
         // Adafruit default address and device
         const val QWIIC_I2C_ADDRESS = 0x3D
-        val ADAFRUIT_STEMMA by lazy { I2cCommunicationChannel(I2CDevice(1, QWIIC_I2C_ADDRESS)) }
+        const val DEFAULT_I2C_BUS = 1
     }
 }

@@ -18,6 +18,7 @@ package crackers.kobots.devices.io
 
 import com.diozero.api.DeviceInterface
 import com.diozero.api.I2CDevice
+import com.diozero.api.I2CDeviceInterface
 import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
 import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.SignalMode
 
@@ -27,7 +28,7 @@ import crackers.kobots.devices.microcontroller.AdafruitSeeSaw.Companion.SignalMo
  *
  * Product page: https://www.adafruit.com/product/5743
  */
-class GamepadQT(i2CDevice: I2CDevice = I2CDevice(DEFAULT_I2C_BUS, DEFAULT_I2C_ADDRESS)) : DeviceInterface {
+class GamepadQT(i2CDevice: I2CDeviceInterface = I2CDevice(DEFAULT_I2C_BUS, DEFAULT_I2C_ADDRESS)) : DeviceInterface {
     private val seeSaw = object : AdafruitSeeSaw(i2CDevice) {
         init {
             analogInputPins = intArrayOf(X_AXIS, Y_AXIS)

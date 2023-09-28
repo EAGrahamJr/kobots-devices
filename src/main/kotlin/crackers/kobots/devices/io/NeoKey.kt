@@ -18,6 +18,7 @@ package crackers.kobots.devices.io
 
 import com.diozero.api.DeviceInterface
 import com.diozero.api.I2CDevice
+import com.diozero.api.I2CDeviceInterface
 import crackers.kobots.devices.lighting.NeoPixel
 import crackers.kobots.devices.lighting.WS2811
 import crackers.kobots.devices.lighting.WS2811.PixelColor
@@ -26,7 +27,8 @@ import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
 /**
  * Adafruit https://www.adafruit.com/product/4980
  */
-class NeoKey(i2CDevice: I2CDevice = DEFAULT_I2C) : DeviceInterface, WS2811 {
+class NeoKey(i2CDevice: I2CDeviceInterface = I2CDevice(DEFAULT_I2C_BUS, DEFAULT_I2C_ADDRESS)) : DeviceInterface,
+    WS2811 {
     private val seeSaw = AdafruitSeeSaw(i2CDevice)
 
     val pixels = NeoPixel(seeSaw, 4, NEOPIX_DEVICE).apply {
@@ -97,8 +99,8 @@ class NeoKey(i2CDevice: I2CDevice = DEFAULT_I2C) : DeviceInterface, WS2811 {
         private val INPUT_PINS = (4 until 8).toList()
         private const val NEOPIX_DEVICE = 0x03.toByte()
 
-        const val DEFAULT_ADDRESS = 0x30
-        val DEFAULT_I2C = I2CDevice(1, DEFAULT_ADDRESS)
+        const val DEFAULT_I2C_ADDRESS = 0x30
+        const val DEFAULT_I2C_BUS = 1
     }
 
     override fun close() {

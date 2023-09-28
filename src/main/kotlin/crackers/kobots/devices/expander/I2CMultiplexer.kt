@@ -3,6 +3,7 @@ package crackers.kobots.devices.expander
 import com.diozero.api.DeviceInterface
 import com.diozero.api.I2CDevice
 import com.diozero.api.I2CDeviceInterface
+import org.slf4j.LoggerFactory
 
 /**
  * TCA9548A/PCA9548 I2C Multiplexer.
@@ -16,6 +17,8 @@ class I2CMultiplexer(
     private val i2cDevice: I2CDevice = I2CDevice(1, DEFAULT_I2C_DEVICE)
 ) : DeviceInterface {
     private val devices = mutableMapOf<Pair<Int, Int>, I2CDeviceInterface>()
+    private val provisionedDevices = mutableMapOf<Int, I2CDeviceInterface>()
+    private val logger = LoggerFactory.getLogger("I2CMultiplexer")
 
     /**
      * Get the I2C device for the given [channel] and [deviceAddress]. Due to the way the multiplexer works, there
@@ -23,7 +26,14 @@ class I2CMultiplexer(
      */
     fun getI2CDevice(channel: Int, deviceAddress: Int): I2CDeviceInterface {
         require(channel in 0 until numberOfChannels) { "Channel must be between 0 and ${numberOfChannels - 1}" }
-        return devices.computeIfAbsent(channel to deviceAddress) { ChannelDevice(i2cDevice, channel, deviceAddress) }
+        return devices.computeIfAbsent(channel to deviceAddress) {
+            val childDevice = provisionedDevices.computeIfAbsent(deviceAddress) {
+                logger.info("Provisioning device at address $deviceAddress")
+                I2CDevice(i2cDevice.controller, deviceAddress)
+            }
+            logger.info("Provisioning channel $channel for device at address $deviceAddress")
+            ChannelDevice(i2cDevice, channel, childDevice)
+        }
     }
 
     override fun close() {
@@ -40,10 +50,8 @@ class I2CMultiplexer(
     private class ChannelDevice(
         private val multiplexer: I2CDevice,
         private val channel: Int,
-        private val deviceAddress: Int
+        private val device: I2CDeviceInterface
     ) : I2CDeviceInterface {
-
-        val device: I2CDeviceInterface by lazy { I2CDevice(multiplexer.controller, deviceAddress) }
 
         /**
          * Tell the multiplexer to select the channel, then execute the block, then deselect the channel.
