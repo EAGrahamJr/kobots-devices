@@ -27,7 +27,8 @@ import crackers.kobots.devices.microcontroller.AdafruitSeeSaw
 /**
  * Adafruit https://www.adafruit.com/product/4980
  */
-class NeoKey(i2CDevice: I2CDeviceInterface = I2CDevice(DEFAULT_I2C_BUS, DEFAULT_I2C_ADDRESS)) : DeviceInterface,
+class NeoKey(i2CDevice: I2CDeviceInterface = I2CDevice(DEFAULT_I2C_BUS, DEFAULT_I2C_ADDRESS)) :
+    DeviceInterface,
     WS2811 {
     private val seeSaw = AdafruitSeeSaw(i2CDevice)
 

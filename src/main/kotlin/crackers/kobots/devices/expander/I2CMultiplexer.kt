@@ -4,6 +4,8 @@ import com.diozero.api.DeviceInterface
 import com.diozero.api.I2CDevice
 import com.diozero.api.I2CDeviceInterface
 import org.slf4j.LoggerFactory
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 /**
  * TCA9548A/PCA9548 I2C Multiplexer.
@@ -20,11 +22,14 @@ class I2CMultiplexer(
     private val provisionedDevices = mutableMapOf<Int, I2CDeviceInterface>()
     private val logger = LoggerFactory.getLogger("I2CMultiplexer")
 
+    // device access requires a lock to prevent other devices from "grabbing" the bus
+    private val lock = ReentrantLock()
+
     /**
      * Get the I2C device for the given [channel] and [deviceAddress]. Due to the way the multiplexer works, there
      * may be timing issues with the underlying I2C bus, so additional error handling may be necessary.
      */
-    fun getI2CDevice(channel: Int, deviceAddress: Int): I2CDeviceInterface {
+    fun getI2CDevice(channel: Int, deviceAddress: Int): I2CDeviceInterface = lock.withLock {
         require(channel in 0 until numberOfChannels) { "Channel must be between 0 and ${numberOfChannels - 1}" }
         return devices.computeIfAbsent(channel to deviceAddress) {
             val childDevice = provisionedDevices.computeIfAbsent(deviceAddress) {
@@ -32,7 +37,7 @@ class I2CMultiplexer(
                 I2CDevice(i2cDevice.controller, deviceAddress)
             }
             logger.info("Provisioning channel $channel for device at address $deviceAddress")
-            ChannelDevice(i2cDevice, channel, childDevice)
+            ChannelDevice(i2cDevice, channel, childDevice, lock)
         }
     }
 
@@ -50,13 +55,14 @@ class I2CMultiplexer(
     private class ChannelDevice(
         private val multiplexer: I2CDevice,
         private val channel: Int,
-        private val device: I2CDeviceInterface
+        private val device: I2CDeviceInterface,
+        private val lock: ReentrantLock
     ) : I2CDeviceInterface {
 
         /**
          * Tell the multiplexer to select the channel, then execute the block, then deselect the channel.
          */
-        private fun <R> channelSelector(executionBlock: () -> R): R {
+        private fun <R> channelSelector(executionBlock: () -> R): R = lock.withLock {
             return try {
                 multiplexer.writeByte((1 shl channel).toByte())
                 executionBlock()
