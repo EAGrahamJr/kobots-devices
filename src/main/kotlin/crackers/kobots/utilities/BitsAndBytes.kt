@@ -20,6 +20,8 @@ import com.diozero.util.Hex
 
 /**
  * This has probably been defined a million ways in that many variations.
+ *
+ * TODO move this in with [DeviceUtils]
  */
 const val BYTE_MASK = 0x00FF
 
@@ -30,7 +32,7 @@ fun ByteArray.toLong(): Long = mapIndexed { index, byte ->
 
 fun Short.toByteArray() = toInt().let {
     val upper = it and 0xFF00
-    val lower = it and 0x00FF
+    val lower = it and BYTE_MASK
     byteArrayOf((upper shr 8).toByte(), lower.toByte())
 }
 
@@ -40,6 +42,8 @@ fun Int.toBytes(): Pair<Byte, Byte> {
     return Pair(hi, lo)
 }
 
+fun Boolean.asByte(): Byte = if (this) 0x01 else 0x00
+
 /**
  * Short form to get unsigned hex strings
  */
@@ -47,3 +51,12 @@ fun Int.hex(): String = Hex.encode(this)
 fun Short.hex(): String = Hex.encode(this)
 fun Byte.hex(): String = Hex.encode(this)
 fun ByteArray.hex(): String = joinToString(separator = "") { it.hex() }
+
+/**
+ * Get a binary string out of an Int, left padded with 0s to the specified number of [bits]
+ */
+fun Int.toBinaryString(bits: Int = 8): String {
+    var s = Integer.toBinaryString(this)
+    while (s.length < bits) s = "0$s"
+    return s
+}

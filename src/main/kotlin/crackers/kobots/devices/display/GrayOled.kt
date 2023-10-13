@@ -18,6 +18,7 @@ package crackers.kobots.devices.display
 
 import com.diozero.api.DeviceInterface
 import com.diozero.devices.oled.SsdOledCommunicationChannel
+import crackers.kobots.utilities.BYTE_MASK
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Image
@@ -155,7 +156,7 @@ abstract class GrayOled(
             }
 
             DisplayType.BLACK -> {
-                for (element in rasterized) sendBuffer += ((element.toInt()).inv() and 0x00FF)
+                for (element in rasterized) sendBuffer += ((element.toInt()).inv() and BYTE_MASK)
             }
 
             DisplayType.INVERSE -> {

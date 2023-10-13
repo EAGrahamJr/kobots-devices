@@ -269,14 +269,24 @@ class VL6180X(private val delegate: I2CDeviceInterface) : LuminositySensorInterf
             GAIN_5(2, 5f),
             GAIN_10(1, 10f),
             GAIN_20(0, 20f),
-            GAIN_40(7, 40f);
+            GAIN_40(7, 40f)
+            ;
 
             operator fun div(lux: Float) = lux / divisor
         }
 
         enum class Errors(val code: Byte) {
-            NONE(0), SYSERR_1(1), SYSERR_5(5), ECE_FAIL(6), NO_CONVERGE(6), RANGE_IGNORE(8), SNR(11), RAW_UNDERFLOW(12),
-            RAW_OVERFLOW(13), RANGE_UNDERFLOW(14), RANGE_OVERFLOW(15)
+            NONE(0),
+            SYSERR_1(1),
+            SYSERR_5(5),
+            ECE_FAIL(6),
+            NO_CONVERGE(6),
+            RANGE_IGNORE(8),
+            SNR(11),
+            RAW_UNDERFLOW(12),
+            RAW_OVERFLOW(13),
+            RANGE_UNDERFLOW(14),
+            RANGE_OVERFLOW(15)
         }
     }
 }
