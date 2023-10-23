@@ -10,6 +10,8 @@ plugins {
     id("org.jmailen.kotlinter") version "3.12.0"
     id("library-publish") version "1.0.1"
     id("org.jetbrains.dokka") version "1.8.10"
+    // ***NOTE*** semver is applied on push so it's the _next_ version
+    id("net.thauvin.erik.gradle.semver") version "1.0.4"
 }
 
 repositories {
@@ -19,7 +21,7 @@ repositories {
 
 val DIOZERO_VER = "1.4.0"
 group = "crackers.kobots"
-version = "0.2.3"
+version = "0.2.4"
 
 dependencies {
     api("org.slf4j:slf4j-api:2.0.5")

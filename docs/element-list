@@ -1,6 +1,8 @@
 $dokka.format:javadoc-v1
 $dokka.linkExtension:html
 $dokka.location:crackers.kobots.devices.display/GrayOled.DisplayType///PointingToDeclaration/crackers/kobots/devices/display/GrayOled.DisplayType.html
+$dokka.location:crackers.kobots.devices.display/HT16K33.BlinkRate///PointingToDeclaration/crackers/kobots/devices/display/HT16K33.BlinkRate.html
+$dokka.location:crackers.kobots.devices.display/HT16K33.Companion///PointingToDeclaration/crackers/kobots/devices/display/HT16K33.Companion.html
 $dokka.location:crackers.kobots.devices.display/SSD1327.Companion///PointingToDeclaration/crackers/kobots/devices/display/SSD1327.Companion.html
 $dokka.location:crackers.kobots.devices.io/GamepadQT.GamepadButtons///PointingToDeclaration/crackers/kobots/devices/io/GamepadQT.GamepadButtons.html
 $dokka.location:crackers.kobots.devices.lighting/PimoroniLEDShim.Companion///PointingToDeclaration/crackers/kobots/devices/lighting/PimoroniLEDShim.Companion.html
