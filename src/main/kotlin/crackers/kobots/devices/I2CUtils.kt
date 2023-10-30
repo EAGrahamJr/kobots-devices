@@ -16,7 +16,9 @@
 
 package crackers.kobots.devices
 
+import com.diozero.api.I2CDevice
 import com.diozero.api.I2CDeviceInterface
+import com.diozero.sbc.DeviceFactoryHelper
 import java.time.Duration
 import kotlin.system.exitProcess
 
@@ -114,3 +116,11 @@ fun I2CDeviceInterface.readBytes(n: Int): ByteArray {
     readBytes(buffer)
     return buffer
 }
+
+/**
+ * Get an existing I2C device or create a new one.
+ */
+fun getOrCreateI2CDevice(controller: Int, address: Int): I2CDeviceInterface =
+    DeviceFactoryHelper.getNativeDeviceFactory().let {
+        it.getDevice(it.createI2CKey(controller, address))
+    } ?: I2CDevice(controller, address)

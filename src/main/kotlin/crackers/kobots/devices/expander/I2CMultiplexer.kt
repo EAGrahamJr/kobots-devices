@@ -3,6 +3,7 @@ package crackers.kobots.devices.expander
 import com.diozero.api.DeviceInterface
 import com.diozero.api.I2CDevice
 import com.diozero.api.I2CDeviceInterface
+import crackers.kobots.devices.getOrCreateI2CDevice
 import crackers.kobots.utilities.hex
 import org.slf4j.LoggerFactory
 import java.util.concurrent.locks.ReentrantLock
@@ -30,12 +31,13 @@ class I2CMultiplexer(
      * Get the I2C device for the given [channel] and [deviceAddress]. Due to the way the multiplexer works, there
      * may be timing issues with the underlying I2C bus, so additional error handling may be necessary.
      */
+    @Synchronized
     fun getI2CDevice(channel: Int, deviceAddress: Int): I2CDeviceInterface = lock.withLock {
         require(channel in 0 until numberOfChannels) { "Channel must be between 0 and ${numberOfChannels - 1}" }
         return devices.computeIfAbsent(channel to deviceAddress) {
             val childDevice = provisionedDevices.computeIfAbsent(deviceAddress) {
                 logger.debug("Provisioning device at address ${deviceAddress.hex()}")
-                I2CDevice(i2cDevice.controller, deviceAddress)
+                getOrCreateI2CDevice(i2cDevice.controller, deviceAddress)
             }
             logger.debug("Provisioning channel $channel for device at address ${deviceAddress.hex()}")
             ChannelDevice(i2cDevice, channel, childDevice, lock)
