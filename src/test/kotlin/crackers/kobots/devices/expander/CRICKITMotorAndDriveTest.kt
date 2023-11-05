@@ -65,7 +65,7 @@ class CRICKITMotorAndDriveTest : FunSpec(
                 val deviceId = PWM_PINS.indexOf(DRIVES[index - 1]).toByte()
                 val drive = factory.drive(index)
 
-                test("PWM Motor on/off") {
+                test("PWM Motor on/off $index") {
                     val actionPrefix = listOf(TIMER_BASE, TIMER_PWM, deviceId)
                     val fullOn = listOf(0xFF.toByte(), 0xFF.toByte())
                     val fullOff = listOf<Byte>(0x00, 0x00)
