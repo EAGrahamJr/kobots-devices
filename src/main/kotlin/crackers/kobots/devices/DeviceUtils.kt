@@ -16,6 +16,7 @@
 
 package crackers.kobots.devices
 
+import com.diozero.api.ServoTrim
 import com.diozero.devices.sandpit.motor.StepperMotorInterface
 import com.diozero.devices.sandpit.motor.StepperMotorInterface.Direction
 import com.diozero.util.SleepUtil
@@ -89,3 +90,8 @@ fun StepperMotorInterface.rotate(
         SleepUtil.busySleep(pause.toNanos())
     }
 }
+
+/**
+ * Defines the servo trim for an MG90S servo.
+ */
+val MG90S_TRIM = ServoTrim(ServoTrim.DEFAULT_MID_US, 1_100)
