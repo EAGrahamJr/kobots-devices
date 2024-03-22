@@ -55,9 +55,10 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface 
     private var displayOn = true
 
     /**
-     * Whether to immediately show the buffer on the display(s) after a change or not.
+     * Whether to immediately show the buffer on the display(s) after a change or not. This is **`false`** by default
+     * as it causes a write operation for **every** pixel update.
      */
-    var autoShow = true
+    var autoShow = false
 
     /**
      * Get/set the brightness for the display(s).
