@@ -55,10 +55,9 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface 
     private var displayOn = true
 
     /**
-     * Whether to immediately show the buffer on the display(s) after a change or not. This is **`false`** by default
-     * as it causes a write operation for **every** pixel update.
+     * Whether to immediately show the buffer on the display(s) after a change or not.
      */
-    var autoShow = false
+    var autoShow = true
 
     /**
      * Get/set the brightness for the display(s).
@@ -125,11 +124,18 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface 
 
     /**
      * Set a pixel on or off based on the x,y coordinates, based on 7-segment display coordinates.
-     *
-     * TODO should this be protected or internal?
      */
     fun pixel(x: Int, y: Int, color: Boolean) {
-        // TODO simply this
+        setPixel(x, y, color)
+
+        if (autoShow) show()
+    }
+
+    /**
+     * Figures out where to flip bits in the buffer(s) to send to displays. Note that this only updates the buffers
+     * and does **not** invoke or check [autoShow].
+     */
+    open protected fun setPixel(x: Int, y: Int, color: Boolean) {
         val offset = (x.floorDiv(16) + y.floorDiv(8)) * BUFFER_SIZE
         val addr1 = 2 * (y % 8) + ((x % 16).floorDiv(8))
         val addr = (addr1 % 16) + offset
@@ -137,8 +143,6 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface 
 
         // set or clear (remember to offset by 1)
         buffer[addr + 1] = if (color) buffer[addr + 1] or mask else buffer[addr + 1] and mask.inv()
-
-        if (autoShow) show()
     }
 
     private fun writeCommand(device: Int, command: Byte) {

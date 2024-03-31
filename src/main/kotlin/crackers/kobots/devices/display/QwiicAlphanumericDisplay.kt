@@ -23,7 +23,7 @@ import java.time.temporal.Temporal
 import kotlin.math.min
 
 /**
- * TODO fill this in
+ * TODO temporary since I only have one display
  */
 class QwiicAlphanumericDisplay(devices: List<I2CDeviceInterface>) : HT16K33(devices), SegmentedDisplay {
     constructor() : this(listOf(DEFAULT_DEVICE))
@@ -62,6 +62,7 @@ class QwiicAlphanumericDisplay(devices: List<I2CDeviceInterface>) : HT16K33(devi
                 writeCharToDigit(index, c)
             }
         }
+        if (autoShow) show()
     }
 
     /**
@@ -103,10 +104,10 @@ class QwiicAlphanumericDisplay(devices: List<I2CDeviceInterface>) : HT16K33(devi
             val mask = 1 shl i
 
             val showLo = (mask and lowBits) != 0
-            pixel(digit, i, showLo)
+            setPixel(digit, i, showLo)
 
             val showHi = (mask and hiBits) != 0
-            pixel(digit + 4, i, showHi)
+            setPixel(digit + 4, i, showHi)
         }
     }
 

@@ -144,7 +144,7 @@ abstract class PixelBuf(
     /**
      * Fill the entire device with this color. If [autoWrite] is enabled, the results are immediately uploaded.
      */
-    override fun fill(color: PixelColor) {
+    override infix fun fill(color: PixelColor) {
         set(0, size - 1, color)
     }
 
@@ -188,6 +188,11 @@ abstract class PixelBuf(
      * Current color for the given pixel.
      */
     operator fun get(index: Int) = currentColors[index]
+
+    /**
+     * All the current colors. This is a clone, so any changes will not have effect.
+     */
+    fun get(): Array<PixelColor> = currentColors.clone()
 
     /**
      * Immutable operator - changing these colors has no effect.

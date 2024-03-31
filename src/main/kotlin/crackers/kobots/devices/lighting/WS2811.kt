@@ -44,12 +44,12 @@ interface WS2811 {
     /**
      * Fill the entire device with this color. If [autoWrite] is enabled, the results are immediately uploaded.
      */
-    fun fill(color: PixelColor)
+    infix fun fill(color: PixelColor)
 
     /**
      * Fill the entire device with this color. If [autoWrite] is enabled, the results are immediately uploaded.
      */
-    fun fill(color: Color) {
+    infix fun fill(color: Color) {
         fill(PixelColor(color))
     }
 
