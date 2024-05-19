@@ -69,17 +69,10 @@ abstract class PixelBuf(
         get() = _brightness
         set(b) {
             if (b < 0f || b > 1f) throw IllegalArgumentException("'brightness' is out of range (0.0-1.0)")
-            val delta = b - _brightness
-            _brightness = b
-
-            // adjust brightness of existing values
-            for (i in 0 until effectiveSize) {
-                if (dotstarMode && (i + 1) % 4 == 0) continue
-                val index = i + bufferOffset
-                val item = pixelBuffer[index].toUByte().toFloat()
-                val adjusted = (item * delta).roundToInt()
-                pixelBuffer[index] = (item + adjusted).toInt().toByte()
-            }
+            val currentAutoWrite = _autoWrite
+            _autoWrite = false
+            currentColors.clone().forEachIndexed { i, c -> set(i, PixelColor(c.color, c.white, b)) }
+            _autoWrite = currentAutoWrite
             if (_autoWrite) show()
         }
 
