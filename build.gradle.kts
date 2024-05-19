@@ -28,7 +28,7 @@ dependencies {
     api("com.diozero:diozero-core:$DIOZERO_VER")
 
     // for adhoc testing
-    implementation("com.diozero:diozero-provider-remote:$DIOZERO_VER")
+    testImplementation("com.diozero:diozero-provider-remote:$DIOZERO_VER")
     testImplementation("com.diozero:diozero-provider-mock:$DIOZERO_VER")
 
     testImplementation("io.kotest:kotest-runner-junit5:5.5.5")
