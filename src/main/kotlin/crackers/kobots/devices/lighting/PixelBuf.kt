@@ -69,7 +69,6 @@ abstract class PixelBuf(
         get() = _brightness
         set(b) {
             if (b < 0f || b > 1f) throw IllegalArgumentException("'brightness' is out of range (0.0-1.0)")
-            _brightness = b
             val currentAutoWrite = _autoWrite
             _autoWrite = false
             currentColors.clone().forEachIndexed { i, c -> set(i, PixelColor(c.color, c.white, b)) }

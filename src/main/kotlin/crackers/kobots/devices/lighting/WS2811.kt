@@ -20,14 +20,6 @@ import java.awt.Color
 
 /**
  * Defines [WS2811](https://cdn-shop.adafruit.com/datasheets/WS2811.pdf) aka **NeoPixels**.
- *
- * **NOTE:** when using Java `Color` settings, the [brightness] of the device will be applied to the colors. Example:
- * ```
- * p.brightness = .1
- * p.color = Color.RED
- * ```
- * will result in an "actual" color of 25 (.1 * 255). This _will_ conflict with adjusting the brightness of colors
- * "manually" (e.g. if the value is 25 and brightness is .1, the _actual_ value will be 2).
  */
 interface WS2811 {
     /**
@@ -55,26 +47,18 @@ interface WS2811 {
     infix fun fill(color: PixelColor)
 
     /**
-     * Fill the entire device with this color. If [autoWrite] is enabled, the results are immediately uploaded. The
-     * current [brightness] level is also applied.
-     */
-    infix fun fill(color: Color) {
-        fill(PixelColor(color, brightness = brightness))
-    }
-
-    /**
      * Fill the entire device with this color. If [autoWrite] is enabled, the results are immediately uploaded.
      */
-    operator fun plus(color: PixelColor) {
-        fill(color)
+    infix fun fill(color: Color) {
+        fill(PixelColor(color))
     }
 
-    /**
-     * Fill the entire device with this color. If [autoWrite] is enabled, the results are immediately uploaded. The
-     * current [brightness] level is also applied.
-     */
     operator fun plus(color: Color) {
-        fill(PixelColor(color, brightness = brightness))
+        fill(PixelColor(color))
+    }
+
+    operator fun plus(color: PixelColor) {
+        fill(color)
     }
 
     /**
@@ -83,12 +67,8 @@ interface WS2811 {
      */
     operator fun set(index: Int, color: PixelColor)
 
-    /**
-     * Set an individual pixel (this is available as an _indexed_ value). If [autoWrite] is enabled, the results are
-     * immediately uploaded.The current [brightness] level is also applied.
-     */
     operator fun set(index: Int, color: Color) {
-        set(index, PixelColor(color, brightness = brightness))
+        set(index, PixelColor(color))
     }
 
     /**
@@ -96,12 +76,8 @@ interface WS2811 {
      */
     operator fun set(start: Int, end: Int, color: PixelColor)
 
-    /**
-     * Set a range of pixels to a color. If [autoWrite] is enabled, the results are immediately uploaded. The
-     * current [brightness] level is also applied.
-     */
     operator fun set(start: Int, end: Int, color: Color) {
-        set(start, end, PixelColor(color, brightness = brightness))
+        set(start, end, PixelColor(color))
     }
 
     /**
