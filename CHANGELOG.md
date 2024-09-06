@@ -1,5 +1,7 @@
 # Changelog
 
+See **Releases** for more recent information.
+
 ## v 0.2.0 - 9/24/2023
 
 - Removed "application-specific" code: this makes this library _all_ about devices and interacting with them.
