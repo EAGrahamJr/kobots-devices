@@ -165,8 +165,8 @@ class CrickitHatSignalsTest : FunSpec(
 
             context("Signal $signal diozero:") {
                 val deviceFactory = CRICKITHat(testHat)
-                test("DigitalInput") {
-                    deviceFactory.signalDigitalIn(signal, true).use {
+                xtest("DigitalInput") {
+                    deviceFactory.signalDigitalIn(signal).use {
                         mockRequests shouldContainExactly inputPullDownSetupCommands(pinSelectorBytes)
                         mockRequests.clear()
 

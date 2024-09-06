@@ -51,13 +51,14 @@ class CRICKITHat(val seeSaw: AdafruitSeeSaw = CRICKITHatSeesaw()) : DeviceInterf
     private val deviceFactory by lazy { CRICKITHatDeviceFactory(seeSaw) }
 
     /**
-     * Convenience function to get a digital input on the Signal port [pin] (1-8), with optional [pullDown]
+     * Convenience function to get a digital input on the Signal port [pin] (1-8). This uses [GpioPullUpDown.PULL_UP]
+     * so the inputs are reversed from what one would expect.
      */
-    fun signalDigitalIn(pin: Int, pullDown: Boolean = false) =
+    fun signalDigitalIn(pin: Int) =
         DigitalInputDevice(
             deviceFactory,
             Types.SIGNAL.deviceNumber(pin),
-            if (pullDown) GpioPullUpDown.PULL_DOWN else GpioPullUpDown.PULL_UP,
+            GpioPullUpDown.PULL_UP,
             GpioEventTrigger.NONE
         )
 
