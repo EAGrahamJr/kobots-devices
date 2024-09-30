@@ -29,8 +29,11 @@ import kotlin.math.roundToInt
 
 /**
  * I2C-based LED matrix driver. Inspired by Adafruit's [HT16K33](https://github.com/adafruit/Adafruit_CircuitPython_HT16K33) library
+ *
+ * **NOTE** According to some implementations of this chip, it _can_ be inconsistent, so there is a very small number
+ * of [retries] that are attempted on **all** writes to each device in the chain.
  */
-abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface {
+abstract class HT16K33(val devices: List<I2CDeviceInterface>, val retries: Int = 5) : DeviceInterface {
     private val logger = LoggerFactory.getLogger(HT16K33::class.java.simpleName)
 
     override fun close() {
@@ -44,10 +47,25 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface 
     // each device gets a 17-byte buffer (1 for the "register" byte) and make sure it's filled with zeros
     private val buffer = ByteArray(devices.size * BUFFER_SIZE) { 0x00 }
 
-    init {
-        devices.forEachIndexed { index, device ->
-            writeCommand(index, CMD_SYSTEM_SETUP or OSCILLATOR)
+    private fun I2CDeviceInterface.sendBytes(vararg bytes: Byte) {
+        var lastError: Throwable? = null
+        repeat(5) {
+            try {
+                writeBytes(*bytes)
+                return
+            } catch (t: Throwable) {
+                lastError = t
+            }
         }
+        throw lastError!!
+    }
+
+    private fun writeCommand(command: Byte) {
+        devices.forEach { it.sendBytes(command) }
+    }
+
+    init {
+        writeCommand(CMD_SYSTEM_SETUP or OSCILLATOR)
     }
 
     private var _brightness = 1.0f
@@ -67,7 +85,7 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface 
         set(value) {
             require(value in 0.0f..1.0f)
             val b = ((value * 15).roundToInt() and 0x0F).toByte()
-            devices.forEachIndexed { index, device -> writeCommand(index, CMD_BRIGHTNESS or b) }
+            writeCommand(CMD_BRIGHTNESS or b)
         }
 
     /**
@@ -77,7 +95,7 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface 
         get() = displayOn
         set(value) {
             displayOn = value
-            setBlinking()
+            setDisplayStateAndBlinking()
         }
 
     /**
@@ -88,12 +106,12 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface 
         set(b) {
             _blinkRate = b
             displayOn = true
-            setBlinking()
+            setDisplayStateAndBlinking()
         }
 
-    private fun setBlinking() {
+    private fun setDisplayStateAndBlinking() {
         val setting = (_blinkRate.ordinal shl 1).toByte()
-        devices.forEachIndexed { index, device -> writeCommand(index, BLINK_CMD or displayOn.asByte() or setting) }
+        writeCommand(BLINK_CMD or displayOn.asByte() or setting)
     }
 
     /**
@@ -102,9 +120,9 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface 
     fun show() {
         devices.forEachIndexed { index, device ->
             val offset = index * BUFFER_SIZE
-            val slice = buffer.sliceArray(offset until offset + BUFFER_SIZE).toTypedArray().toByteArray()
+            val slice: ByteArray = buffer.sliceArray(offset until offset + BUFFER_SIZE).toTypedArray().toByteArray()
             if (logger.isDebugEnabled) logger.debug("Writing to device $index: ${slice.hex()}")
-            device.writeBytes(*slice)
+            device.sendBytes(*slice)
         }
     }
 
@@ -113,7 +131,7 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface 
      */
     fun fill(onOff: Boolean) {
         val fill = if (onOff) 0xFF.toByte() else 0x00.toByte()
-        devices.forEachIndexed { index, device ->
+        devices.forEachIndexed { index, _ ->
             val offset = index * BUFFER_SIZE
             for (i in 1 until BUFFER_SIZE) {
                 buffer[offset + i] = fill
@@ -143,10 +161,6 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>) : DeviceInterface 
 
         // set or clear (remember to offset by 1)
         buffer[addr + 1] = if (color) buffer[addr + 1] or mask else buffer[addr + 1] and mask.inv()
-    }
-
-    private fun writeCommand(device: Int, command: Byte) {
-        devices[device].writeByte(command)
     }
 
     companion object {
