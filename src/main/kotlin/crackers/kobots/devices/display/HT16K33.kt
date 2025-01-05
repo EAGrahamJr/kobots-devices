@@ -153,7 +153,7 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>, val retries: Int =
      * Figures out where to flip bits in the buffer(s) to send to displays. Note that this only updates the buffers
      * and does **not** invoke or check [autoShow].
      */
-    open protected fun setPixel(x: Int, y: Int, color: Boolean) {
+    protected open fun setPixel(x: Int, y: Int, color: Boolean) {
         val offset = (x.floorDiv(16) + y.floorDiv(8)) * BUFFER_SIZE
         val addr1 = 2 * (y % 8) + ((x % 16).floorDiv(8))
         val addr = (addr1 % 16) + offset

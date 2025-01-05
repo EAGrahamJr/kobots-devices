@@ -78,6 +78,12 @@ class I2CMultiplexer(
             // no op
         }
 
+        override fun getController() = multiplexer.controller
+
+        override fun getAddress() = device.address
+
+        override fun getByteOrder() = device.byteOrder
+
         override fun readByte(): Byte = channelSelector { device.readByte() }
         override fun readBytes(buffer: ByteArray): Int = channelSelector { device.readBytes(buffer) }
         override fun readByteData(register: Int): Byte = channelSelector { device.readByteData(register) }

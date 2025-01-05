@@ -1,7 +1,7 @@
 plugins {
-    kotlin("jvm") version "1.9.0"
+    kotlin("jvm") version "2.0.20"
     idea
-    id("org.jmailen.kotlinter") version "3.12.0"
+//    id("org.jmailen.kotlinter") version "3.12.0"
     id("org.jetbrains.dokka") version "1.8.10"
     // ***NOTE*** semver is applied on push, so it's the _next_ version
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
@@ -26,22 +26,22 @@ dependencies {
 
     testImplementation("io.kotest:kotest-runner-junit5:5.5.5")
     testImplementation("io.mockk:mockk:1.13.4")
-    testImplementation("ch.qos.logback:logback-classic:1.4.14")
+    testImplementation("ch.qos.logback:logback-classic:1.5.13")
 }
 
 kotlin {
     jvmToolchain(17)
 }
 
-kotlinter {
-    // ignore failures because the build re-formats it
-    ignoreFailures = true
-    disabledRules = arrayOf("no-wildcard-imports")
-}
+//kotlinter {
+//    // ignore failures because the build re-formats it
+//    ignoreFailures = true
+//    disabledRules = arrayOf("no-wildcard-imports")
+//}
 
 tasks {
     build {
-        dependsOn("formatKotlin")
+//        dependsOn("formatKotlin")
     }
     test {
         useJUnitPlatform()
