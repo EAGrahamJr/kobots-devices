@@ -1,17 +1,11 @@
-buildscript {
-    dependencies {
-        classpath("crackers.buildstuff:crackers-gradle-plugins:1.0.1")
-    }
-}
-
 plugins {
     kotlin("jvm") version "1.9.0"
     idea
     id("org.jmailen.kotlinter") version "3.12.0"
-    id("library-publish") version "1.0.1"
     id("org.jetbrains.dokka") version "1.8.10"
     // ***NOTE*** semver is applied on push, so it's the _next_ version
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
+    id("crackers.buildstuff.crackers-gradle-plugins") version "1.1.0"
 }
 
 repositories {
@@ -19,7 +13,7 @@ repositories {
     mavenLocal()
 }
 
-val DIOZERO_VER = "1.4.0"
+val DIOZERO_VER = "1.4.1"
 group = "crackers.kobots"
 
 dependencies {
