@@ -49,7 +49,7 @@ abstract class HT16K33(val devices: List<I2CDeviceInterface>, val retries: Int =
 
     private fun I2CDeviceInterface.sendBytes(vararg bytes: Byte) {
         var lastError: Throwable? = null
-        repeat(5) {
+        repeat(retries) {
             try {
                 writeBytes(*bytes)
                 return

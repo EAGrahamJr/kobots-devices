@@ -109,15 +109,6 @@ fun I2CDeviceInterface.shortSubRegister(register: Int, mask: Int): I2CSubRegiste
 }
 
 /**
- * Promote an I2CDevice concept to the I2CDeviceInterface
- */
-fun I2CDeviceInterface.readBytes(n: Int): ByteArray {
-    val buffer = ByteArray(n)
-    readBytes(buffer)
-    return buffer
-}
-
-/**
  * Get an existing I2C device or create a new one.
  */
 fun getOrCreateI2CDevice(controller: Int, address: Int): I2CDeviceInterface =

@@ -20,7 +20,6 @@ import com.diozero.api.DigitalInputDeviceInterface
 import com.diozero.api.I2CDevice
 import com.diozero.api.I2CDeviceInterface
 import crackers.kobots.devices.lighting.WS2811
-import crackers.kobots.devices.readBytes
 import java.awt.Color
 import kotlin.experimental.and
 import kotlin.math.abs

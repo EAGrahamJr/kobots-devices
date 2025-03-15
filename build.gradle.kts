@@ -1,11 +1,18 @@
+buildscript {
+    configurations.classpath {
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-compiler-embeddable")
+    }
+}
+
 plugins {
-    kotlin("jvm") version "2.0.20"
+    kotlin("jvm") version "2.1.10"
     idea
-//    id("org.jmailen.kotlinter") version "3.12.0"
-    id("org.jetbrains.dokka") version "1.8.10"
+    // not yet
+//    id("org.jmailen.kotlinter") version "4.5.0"
+    id("org.jetbrains.dokka") version "1.8.20"
     // ***NOTE*** semver is applied on push, so it's the _next_ version
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
-    id("crackers.buildstuff.library-publish") version "1.2.0"
+    id("crackers.buildstuff.library-publish") version "1.3.0"
 }
 
 repositories {
@@ -24,9 +31,9 @@ dependencies {
     testImplementation("com.diozero:diozero-provider-remote:$DIOZERO_VER")
     testImplementation("com.diozero:diozero-provider-mock:$DIOZERO_VER")
 
-    testImplementation("io.kotest:kotest-runner-junit5:5.5.5")
-    testImplementation("io.mockk:mockk:1.13.4")
-    testImplementation("ch.qos.logback:logback-classic:1.5.13")
+    testImplementation("io.kotest:kotest-runner-junit5:5.9.1")
+    testImplementation("io.mockk:mockk:1.13.17")
+    testImplementation("ch.qos.logback:logback-classic:1.5.17")
 }
 
 kotlin {
@@ -67,7 +74,7 @@ tasks {
     generateMetadataFileForLibraryPublication {
         mustRunAfter("dokkaJavadocJar")
     }
-    create("depSize") {
+    register("depSize") {
         doLast {
             val depSize = configurations["compileClasspath"].files.sumOf { it.length() }
             logger.warn(">>> Dependencies size: ${depSize / 1024} KB")
@@ -75,4 +82,4 @@ tasks {
     }
 }
 
-defaultTasks("clean", "build", "dokkaJavadocJar", "libraryDistribution")
+defaultTasks("build", "dokkaJavadocJar", "libraryDistribution")
