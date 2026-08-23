@@ -1,16 +1,9 @@
-buildscript {
-    configurations.classpath {
-        exclude(group = "org.jetbrains.kotlin", module = "kotlin-compiler-embeddable")
-    }
-}
-
 plugins {
-    kotlin("jvm") version "2.1.10"
+    kotlin("jvm") version "2.3.0"
     idea
     // not yet
 //    id("org.jmailen.kotlinter") version "4.5.0"
     id("org.jetbrains.dokka") version "1.8.20"
-    // ***NOTE*** semver is applied on push, so it's the _next_ version
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
     id("crackers.buildstuff.library-publish") version "1.3.0"
 }
@@ -20,7 +13,7 @@ repositories {
     mavenLocal()
 }
 
-val DIOZERO_VER = "1.4.1"
+val DIOZERO_VER = "1.4.2"
 group = "crackers.kobots"
 
 dependencies {

@@ -22,8 +22,6 @@ import java.awt.Color
 
 /**
  * Pimoroni LED shim - https://shop.pimoroni.com/products/led-shim?variant=3136952467466
- *
- * **NOTE** Discontinued.
  */
 class PimoroniLEDShim(shimDevice: I2CDeviceInterface = DEFAULT_SHIM_DEVICE) : IS31FL3731(shimDevice) {
     override val height = 3

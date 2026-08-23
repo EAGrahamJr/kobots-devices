@@ -35,6 +35,10 @@ internal class CRICKITHatDeviceFactory(private val seeSaw: AdafruitSeeSaw) :
 
     override fun getName() = NAME
 
+    override fun close() {
+        // does nothing since these devices are all "virtual" and don't need to be closed
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     // internal quick-access functionality
     /**

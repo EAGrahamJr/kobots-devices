@@ -53,7 +53,7 @@ class NeoPixel(
             changeOffset = 0
             buffer
         } else if (lastBuffer.contentEquals(buffer)) {
-            return
+            return@withLock
         } else {
             var lastIndex = 0
             buffer.forEachIndexed { index, byte ->
