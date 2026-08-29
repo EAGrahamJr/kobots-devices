@@ -64,7 +64,7 @@ jobs:
       - name: Build
         run: ./gradlew --no-daemon build dokkaJavadoc
       - name: Test Summary
-        uses: dorny/test-reporter@v1.9.1
+        uses: dorny/test-reporter@v3.0.0
         with:
           name: "JUnit Tests"
           path: "build/test-results/**/TEST-*.xml"
@@ -80,7 +80,7 @@ jobs:
           source: ./build/docs
           destination: ./_site
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@v6
 
   # Deployment job
   deploy:
@@ -92,4 +92,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v6
